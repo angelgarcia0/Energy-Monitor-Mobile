@@ -20,7 +20,7 @@ export const Typography = {
     normal: "400",
     medium: "500",
     bold: "600",
-  },
+  } as const,
 };
 
 export default Typography;

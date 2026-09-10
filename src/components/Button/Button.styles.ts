@@ -17,29 +17,29 @@ export const styles = StyleSheet.create({
   },
 
   size_small: {
-    height: 32,
     paddingVertical: Theme.spacing.xs,
     paddingHorizontal: Theme.spacing.sm,
   },
   size_medium: {
-    height: 40,
     paddingVertical: Theme.spacing.sm,
     paddingHorizontal: Theme.spacing.md,
   },
   size_large: {
-    height: 48,
     paddingVertical: Theme.spacing.md,
     paddingHorizontal: Theme.spacing.lg,
   },
 
   text_small: {
     fontSize: Theme.typography.size.xs,
+    lineHeight: Theme.typography.size.xs * 1.3,
   },
   text_medium: {
     fontSize: Theme.typography.size.sm,
+    lineHeight: Theme.typography.size.sm * 1.3,
   },
   text_large: {
     fontSize: Theme.typography.size.md,
+    lineHeight: Theme.typography.size.md * 1.3,
   },
 
   text: {

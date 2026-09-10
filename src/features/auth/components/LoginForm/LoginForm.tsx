@@ -156,7 +156,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           ¿No tienes una cuenta?{" "}
           <Text
             style={styles.registerLink}
-            onPress={() => console.log("Registro: pendiente de implementar")}
+            onPress={() => router.push("/register")}
           >
             Regístrate
           </Text>

@@ -1,21 +1,16 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 
-import { Sidebar } from "@/components/layout/Sidebar/Sidebar";
 import { Theme } from "@/constants/theme";
 
-export default function DashboardScreen() {
+export default function HomesScreen() {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <Text style={styles.title}>Dashboard (placeholder)</Text>
+      <Text style={styles.title}>Hogares (placeholder)</Text>
       <Text style={styles.subtitle}>
-        Pantalla temporal para comprobar la navegación desde Login.
+        Pantalla temporal de navegación desde el Sidebar.
       </Text>
-
-      {/* TEMPORAL: montaje de prueba manual del Sidebar; se retira cuando
-          se integre en un layout compartido para todas las pantallas. */}
-      <Sidebar />
     </View>
   );
 }

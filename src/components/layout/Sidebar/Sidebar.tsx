@@ -1,7 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter, usePathname, type Href } from "expo-router";
-// ponytail: route strings cast to Href — typedRoutes regenerates these
-// literals into the union automatically on next `expo start`.
 import React, { useEffect, useState } from "react";
 import {
   Animated,
@@ -16,7 +14,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Button } from "@/components/Button/Button";
 import { Theme } from "@/constants/theme";
-import { styles } from "./Sidebar.styles";
+import { styles, TRIGGER_TOP_OFFSET } from "./Sidebar.styles";
 
 export interface SidebarProps {}
 
@@ -100,7 +98,7 @@ export function Sidebar(_props: SidebarProps) {
     <>
       {!isOpen ? (
         <Pressable
-          style={[styles.trigger, { top: Math.max(insets.top, Theme.spacing.md) }]}
+          style={[styles.trigger, { top: Math.max(insets.top, Theme.spacing.md) + TRIGGER_TOP_OFFSET }]}
           onPress={() => setIsOpen(true)}
         >
           <Ionicons name="menu-outline" size={Theme.typography.size.lg} color={Theme.colors.surface} />

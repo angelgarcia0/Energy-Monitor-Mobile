@@ -2,12 +2,16 @@ import { StyleSheet } from "react-native";
 
 import { Theme } from "../../../constants/theme";
 
-const TRIGGER_SIZE = Theme.spacing.xl + Theme.spacing.sm + Theme.spacing.xs;
+export const TRIGGER_SIZE = Theme.spacing.xl + Theme.spacing.sm + Theme.spacing.xs;
+
+// Centra el trigger con el botón de acción del Header: borde (1) + paddingVertical del
+// Header + diferencia de tamaños entre ambos botones repartida a cada lado.
+const HEADER_ACTION_SIZE = Theme.spacing.xl + Theme.spacing.sm;
+export const TRIGGER_TOP_OFFSET =
+  1 + Theme.spacing.sm + (HEADER_ACTION_SIZE - TRIGGER_SIZE) / 2;
 const AVATAR_SIZE = Theme.spacing.xl + Theme.spacing.xs;
 const LOGO_SIZE = Theme.spacing.xl + Theme.spacing.md;
 
-// No Theme token covers translucent white-on-color tints or the backdrop dim;
-// same exception already used by Modal.styles.ts / AuthBrandHeader.styles.ts.
 const OVERLAY_COLOR = "rgba(0, 0, 0, 0.4)";
 const TINT_SUBTLE = "rgba(255, 255, 255, 0.08)";
 const TINT_AVATAR = "rgba(255, 255, 255, 0.15)";

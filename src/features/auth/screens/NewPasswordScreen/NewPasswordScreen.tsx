@@ -1,21 +1,17 @@
-import { Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
-import { useLocalSearchParams } from "expo-router";
 import React from "react";
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { Alert } from "@/components/Alert/Alert";
 import { Theme } from "@/constants/theme";
 import { AuthBrandHeader } from "../../components/AuthBrandHeader/AuthBrandHeader";
-import { LoginForm } from "../../components/LoginForm/LoginForm";
-import { styles } from "./LoginScreen.styles";
+import { NewPasswordForm } from "../../components/NewPasswordForm/NewPasswordForm";
+import { styles } from "./NewPasswordScreen.styles";
 
-export interface LoginScreenProps {}
+export interface NewPasswordScreenProps {}
 
-export function LoginScreen(_props: LoginScreenProps) {
+export function NewPasswordScreen(_props: NewPasswordScreenProps) {
   const insets = useSafeAreaInsets();
-  const { success } = useLocalSearchParams<{ success?: string }>();
 
   return (
     <KeyboardAvoidingView
@@ -36,22 +32,7 @@ export function LoginScreen(_props: LoginScreenProps) {
       >
         <AuthBrandHeader subtitle="Monitorea tu consumo eléctrico en tiempo real" />
 
-        {success === "passwordUpdated" ? (
-          <Alert
-            variant="success"
-            title="Contraseña actualizada"
-            message="Tu contraseña fue cambiada con éxito. Ahora puedes iniciar sesión."
-            icon={
-              <Ionicons
-                name="checkmark-circle"
-                size={Theme.typography.size.xl}
-                color={Theme.colors.successText}
-              />
-            }
-          />
-        ) : null}
-
-        <LoginForm />
+        <NewPasswordForm />
       </ScrollView>
     </KeyboardAvoidingView>
   );

@@ -107,11 +107,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
             <Text style={styles.rememberLabel}>Recordar datos</Text>
           </Pressable>
 
-          <Pressable
-            onPress={() =>
-              console.log("Recuperar contraseña: pendiente de implementar")
-            }
-          >
+          <Pressable onPress={() => router.push("/recover-password")}>
             <Text style={styles.link}>¿Olvidaste tu contraseña?</Text>
           </Pressable>
         </View>

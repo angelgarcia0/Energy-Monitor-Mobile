@@ -19,6 +19,7 @@ import { styles } from "./CreateHomeModal.styles";
 export interface CreateHomeModalProps {
   visible: boolean;
   onClose: () => void;
+  onSubmit: (values: CreateHomeFormValues) => void;
 }
 
 const DEFAULT_VALUES: CreateHomeFormValues = {
@@ -29,7 +30,7 @@ const DEFAULT_VALUES: CreateHomeFormValues = {
   description: "",
 };
 
-export function CreateHomeModal({ visible, onClose }: CreateHomeModalProps) {
+export function CreateHomeModal({ visible, onClose, onSubmit }: CreateHomeModalProps) {
   const { height } = useWindowDimensions();
   const {
     control,
@@ -47,15 +48,8 @@ export function CreateHomeModal({ visible, onClose }: CreateHomeModalProps) {
     onClose();
   };
 
-  const onSubmit = (data: CreateHomeFormValues) => {
-    // TODO: persistir cuando exista HomeContext/backend
-    console.log("Crear hogar:", {
-      name: data.name.trim(),
-      home_type: data.homeType,
-      other_type: data.homeType === "other" ? data.otherType.trim() : null,
-      address: data.address.trim(),
-      description: data.description.trim() || null,
-    });
+  const submit = (data: CreateHomeFormValues) => {
+    onSubmit(data);
     handleClose();
   };
 
@@ -69,7 +63,7 @@ export function CreateHomeModal({ visible, onClose }: CreateHomeModalProps) {
           <Button variant="secondary" onPress={handleClose}>
             Cancelar
           </Button>
-          <Button variant="primary" onPress={handleSubmit(onSubmit)}>
+          <Button variant="primary" onPress={handleSubmit(submit)}>
             Crear hogar
           </Button>
         </>

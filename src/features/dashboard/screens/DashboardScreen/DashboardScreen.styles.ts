@@ -11,9 +11,14 @@ export const styles = StyleSheet.create({
   header: {
     marginLeft: Theme.spacing.md + SIDEBAR_TRIGGER_SIZE + Theme.spacing.sm,
   },
-  content: {
+  contentEmpty: {
     flexGrow: 1,
     justifyContent: "center",
+    paddingBottom: Theme.spacing.xl,
+  },
+  contentList: {
+    gap: Theme.spacing.md,
+    paddingHorizontal: Theme.spacing.md,
     paddingBottom: Theme.spacing.xl,
   },
 });

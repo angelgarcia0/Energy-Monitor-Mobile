@@ -19,9 +19,10 @@ import { styles } from "./JoinHomeModal.styles";
 export interface JoinHomeModalProps {
   visible: boolean;
   onClose: () => void;
+  onSubmit: (code: string) => void;
 }
 
-export function JoinHomeModal({ visible, onClose }: JoinHomeModalProps) {
+export function JoinHomeModal({ visible, onClose, onSubmit }: JoinHomeModalProps) {
   const {
     control,
     handleSubmit,
@@ -37,9 +38,8 @@ export function JoinHomeModal({ visible, onClose }: JoinHomeModalProps) {
     onClose();
   };
 
-  const onSubmit = (data: JoinHomeFormValues) => {
-    // TODO: persistir cuando exista HomeContext/backend
-    console.log("Unirse a hogar:", data);
+  const submit = (data: JoinHomeFormValues) => {
+    onSubmit(data.code);
     handleClose();
   };
 
@@ -53,7 +53,7 @@ export function JoinHomeModal({ visible, onClose }: JoinHomeModalProps) {
           <Button variant="secondary" onPress={handleClose}>
             Cancelar
           </Button>
-          <Button variant="primary" onPress={handleSubmit(onSubmit)}>
+          <Button variant="primary" onPress={handleSubmit(submit)}>
             Unirme
           </Button>
         </>

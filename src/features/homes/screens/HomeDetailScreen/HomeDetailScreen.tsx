@@ -8,6 +8,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BottomTabBar, type BottomTabItem } from "@/components/layout/BottomTabBar/BottomTabBar";
 import { Theme } from "@/constants/theme";
 import type { Home } from "@/features/dashboard/components/HomeCard/HomeCard";
+import { ConsumptionHistoryTab } from "../../components/ConsumptionHistoryTab/ConsumptionHistoryTab";
 import { ConsumptionTab } from "../../components/ConsumptionTab/ConsumptionTab";
 import { styles } from "./HomeDetailScreen.styles";
 
@@ -45,6 +46,8 @@ export function HomeDetailScreen({ home }: HomeDetailScreenProps) {
       <View style={styles.body}>
         {activeTab === "Consumo" ? (
           <ConsumptionTab />
+        ) : activeTab === "Historial" ? (
+          <ConsumptionHistoryTab />
         ) : (
           <View style={styles.placeholder}>
             <Text style={styles.placeholderTitle}>{activeTab}</Text>

@@ -26,6 +26,8 @@ export const APPLIANCE_ICON: Record<ApplianceType, MaterialIconName> = {
   other: "power-plug-outline",
 };
 
+export const APPLIANCE_TYPE_IDS = Object.keys(APPLIANCE_ICON) as ApplianceType[];
+
 export const APPLIANCE_LABEL: Record<ApplianceType, string> = {
   fridge: "Nevera",
   washer: "Lavadora",

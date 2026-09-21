@@ -1,3 +1,4 @@
+import { useRouter, type Href } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { ScrollView, View } from "react-native";
@@ -16,6 +17,7 @@ import { styles } from "./DashboardScreen.styles";
 export interface DashboardScreenProps {}
 
 export function DashboardScreen(_props: DashboardScreenProps) {
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const [showCreate, setShowCreate] = useState(false);
   const [showJoin, setShowJoin] = useState(false);
@@ -55,8 +57,10 @@ export function DashboardScreen(_props: DashboardScreenProps) {
   };
 
   const handleHomePress = (home: Home) => {
-    // TODO: navegar al detalle del hogar cuando exista esa pantalla
-    console.log("Abrir hogar:", home.id, home.name);
+    // ponytail: cast a Href hasta que `expo start` regenere los tipos de rutas.
+    router.push(
+      `/home/${home.id}?home=${encodeURIComponent(JSON.stringify(home))}` as Href,
+    );
   };
 
   return (

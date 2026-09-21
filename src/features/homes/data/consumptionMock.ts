@@ -1,0 +1,22 @@
+export const mockConsumptionData = {
+  potencia: 2.4,
+  nivelPotencia: "Medio",
+  consumoHoy: 18.5,
+  limiteConsumo: 30,
+  limitesDiario: { usado: 18.5, limite: 30 },
+  limiteMensual: { usado: 320, limite: 500 },
+  consumoHoras: [
+    { hora: "00:00", kw: 0.8 }, { hora: "01:00", kw: 0.6 },
+    { hora: "02:00", kw: 0.5 }, { hora: "03:00", kw: 0.4 },
+    { hora: "04:00", kw: 0.3 }, { hora: "05:00", kw: 0.4 },
+    { hora: "06:00", kw: 1.0 }, { hora: "07:00", kw: 1.8 },
+    { hora: "08:00", kw: 2.4 }, { hora: "09:00", kw: 2.1 },
+    { hora: "10:00", kw: 1.9 }, { hora: "11:00", kw: 2.0 },
+    { hora: "12:00", kw: 2.3 }, { hora: "13:00", kw: 2.5 },
+    { hora: "14:00", kw: 2.2 }, { hora: "15:00", kw: 2.0 },
+    { hora: "16:00", kw: 1.7 }, { hora: "17:00", kw: 2.1 },
+    { hora: "18:00", kw: 2.8 }, { hora: "19:00", kw: 3.0 },
+    { hora: "20:00", kw: 2.7 }, { hora: "21:00", kw: 2.3 },
+    { hora: "22:00", kw: 1.5 }, { hora: "23:00", kw: 0.9 },
+  ],
+};

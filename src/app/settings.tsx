@@ -1,39 +1,13 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { View } from "react-native";
 
-import { Theme } from "@/constants/theme";
+import { Sidebar } from "@/components/layout/Sidebar/Sidebar";
+import { SettingsScreen } from "@/features/settings/screens/SettingsScreen/SettingsScreen";
 
-export default function SettingsScreen() {
+export default function Settings() {
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto" />
-      <Text style={styles.title}>Ajustes (placeholder)</Text>
-      <Text style={styles.subtitle}>
-        Pantalla temporal de navegación desde el Sidebar.
-      </Text>
+    <View style={{ flex: 1 }}>
+      <SettingsScreen />
+      <Sidebar />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    gap: Theme.spacing.sm,
-    padding: Theme.spacing.md,
-    backgroundColor: Theme.colors.background,
-  },
-  title: {
-    fontFamily: Theme.typography.fontPrimary,
-    fontSize: Theme.typography.size.lg,
-    fontWeight: Theme.typography.weight.bold,
-    color: Theme.colors.textPrimary,
-  },
-  subtitle: {
-    fontFamily: Theme.typography.fontPrimary,
-    fontSize: Theme.typography.size.sm,
-    color: Theme.colors.textSecondary,
-    textAlign: "center",
-  },
-});

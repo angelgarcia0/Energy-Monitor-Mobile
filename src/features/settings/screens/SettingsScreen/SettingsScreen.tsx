@@ -1,3 +1,4 @@
+import { useRouter, type Href } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -12,6 +13,7 @@ import { styles } from "./SettingsScreen.styles";
 
 export function SettingsScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
 
   return (
     <View
@@ -24,9 +26,18 @@ export function SettingsScreen() {
     >
       <StatusBar style="auto" />
 
-      <Header title="Ajustes" style={styles.header} />
+      <Header
+        breadcrumbItems={[
+          { label: "Inicio", onPress: () => router.push("/dashboard" as Href) },
+          { label: "Ajustes" },
+        ]}
+        style={styles.header}
+      />
 
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
         <LanguageSettings />
         <ThemeSettings />
         <NotificationSettings />

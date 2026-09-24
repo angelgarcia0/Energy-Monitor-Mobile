@@ -1,9 +1,12 @@
 import React from "react";
 import { Pressable, StyleProp, Text, View, ViewStyle } from "react-native";
+
+import { Breadcrumb, type BreadcrumbItem } from "../Breadcrumb/Breadcrumb";
 import { styles } from "./Header.styles";
 
 export interface HeaderProps {
-  title: string;
+  title?: string;
+  breadcrumbItems?: BreadcrumbItem[];
   onActionPress?: () => void;
   actionLabel?: string;
   actionIcon?: React.ReactNode;
@@ -13,6 +16,7 @@ export interface HeaderProps {
 
 export function Header({
   title,
+  breadcrumbItems,
   onActionPress,
   actionLabel = "Añadir",
   actionIcon,
@@ -22,9 +26,13 @@ export function Header({
   return (
     <View style={[styles.header, style]}>
       <View style={styles.titleWrapper}>
-        <Text style={styles.title} numberOfLines={1}>
-          {title}
-        </Text>
+        {breadcrumbItems && breadcrumbItems.length > 0 ? (
+          <Breadcrumb items={breadcrumbItems} />
+        ) : (
+          <Text style={styles.title} numberOfLines={1}>
+            {title}
+          </Text>
+        )}
       </View>
 
       <View style={styles.actionsWrapper}>

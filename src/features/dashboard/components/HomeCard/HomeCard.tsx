@@ -20,13 +20,19 @@ export interface Home {
 
 export interface HomeCardProps {
   home: Home;
+  favorite: boolean;
   onPress?: (home: Home) => void;
+  onToggleFavorite?: (id: number) => void;
 }
 
 const DESCRIPTION_LIMIT = 150;
 
-export function HomeCard({ home, onPress }: HomeCardProps) {
-  const [favorite, setFavorite] = useState(home.favorite);
+export function HomeCard({
+  home,
+  favorite,
+  onPress,
+  onToggleFavorite,
+}: HomeCardProps) {
   const [expanded, setExpanded] = useState(false);
 
   const headerColor =
@@ -50,7 +56,7 @@ export function HomeCard({ home, onPress }: HomeCardProps) {
         </View>
 
         <Pressable
-          onPress={() => setFavorite((prev) => !prev)}
+          onPress={() => onToggleFavorite?.(home.id)}
           accessibilityLabel={favorite ? "Quitar favorito" : "Añadir a favoritos"}
           style={[styles.favoriteButton, favorite && styles.favorited]}
         >

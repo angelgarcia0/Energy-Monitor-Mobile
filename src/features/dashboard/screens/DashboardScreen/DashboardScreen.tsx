@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ActionMenu } from "@/components/ActionMenu/ActionMenu";
 import { Header } from "@/components/Header/Header";
 import { Theme } from "@/constants/theme";
+import { useHomes } from "@/context/HomeContext";
 import { HomeCard, type Home } from "../../components/HomeCard/HomeCard";
 import { CreateHomeModal } from "../../components/CreateHomeModal/CreateHomeModal";
 import { DashboardEmptyState } from "../../components/DashboardEmptyState/DashboardEmptyState";
@@ -21,39 +22,32 @@ export function DashboardScreen(_props: DashboardScreenProps) {
   const insets = useSafeAreaInsets();
   const [showCreate, setShowCreate] = useState(false);
   const [showJoin, setShowJoin] = useState(false);
-  // TODO: persistir cuando exista HomeContext/backend
-  const [homes, setHomes] = useState<Home[]>([]);
+  const { homes, addHome, toggleFavorite } = useHomes();
 
   const handleCreateHome = (values: CreateHomeFormValues) => {
-    setHomes((prev) => [
-      ...prev,
-      {
-        id: Date.now(),
-        name: values.name,
-        address: values.address,
-        description: values.description,
-        homeTypeId: values.homeType,
-        otherHomeType: values.otherType,
-        userResponsible: "Tú",
-        variant: "owned",
-        favorite: false,
-      },
-    ]);
+    addHome({
+      id: Date.now(),
+      name: values.name,
+      address: values.address,
+      description: values.description,
+      homeTypeId: values.homeType,
+      otherHomeType: values.otherType,
+      userResponsible: "Tú",
+      variant: "owned",
+      favorite: false,
+    });
   };
 
   const handleJoinHome = () => {
-    setHomes((prev) => [
-      ...prev,
-      {
-        id: Date.now(),
-        name: "Hogar unido",
-        userResponsible: "Responsable del hogar",
-        address: "Av. Central 45, Oficina 3",
-        description: "Hogar al que te has unido como usuario regular.",
-        variant: "joined",
-        favorite: false,
-      },
-    ]);
+    addHome({
+      id: Date.now(),
+      name: "Hogar unido",
+      userResponsible: "Responsable del hogar",
+      address: "Av. Central 45, Oficina 3",
+      description: "Hogar al que te has unido como usuario regular.",
+      variant: "joined",
+      favorite: false,
+    });
   };
 
   const handleHomePress = (home: Home) => {
@@ -86,7 +80,13 @@ export function DashboardScreen(_props: DashboardScreenProps) {
           />
         ) : (
           homes.map((home) => (
-            <HomeCard key={home.id} home={home} onPress={handleHomePress} />
+            <HomeCard
+              key={home.id}
+              home={home}
+              favorite={home.favorite}
+              onPress={handleHomePress}
+              onToggleFavorite={toggleFavorite}
+            />
           ))
         )}
       </ScrollView>

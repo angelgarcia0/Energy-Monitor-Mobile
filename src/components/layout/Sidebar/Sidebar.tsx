@@ -15,6 +15,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Button } from "@/components/Button/Button";
 import { Theme } from "@/constants/theme";
 import { styles, TRIGGER_TOP_OFFSET } from "./Sidebar.styles";
+import { NavHomes } from "./NavHomes";
 
 export interface SidebarProps {}
 
@@ -24,13 +25,15 @@ type IoniconName = React.ComponentProps<typeof Ionicons>["name"];
 
 interface NavItemConfig {
   label: string;
-  route: string;
+  route: Href;
   icon: IoniconName;
 }
 
-const NAV_ITEMS: NavItemConfig[] = [
+const NAV_ITEMS_TOP: NavItemConfig[] = [
   { label: "Inicio", route: "/dashboard", icon: "home-outline" },
-  { label: "Hogares", route: "/homes", icon: "flash-outline" },
+];
+
+const NAV_ITEMS_BOTTOM: NavItemConfig[] = [
   { label: "Favoritos", route: "/favorites", icon: "heart-outline" },
   { label: "Notificaciones", route: "/notifications", icon: "notifications-outline" },
   { label: "Ajustes", route: "/settings", icon: "settings-outline" },
@@ -84,8 +87,8 @@ export function Sidebar(_props: SidebarProps) {
     setOpenMenu(false);
   };
 
-  const handleNavigate = (route: string) => {
-    router.push(route as Href);
+  const handleNavigate = (route: Href) => {
+    router.push(route);
     closeDrawer();
   };
 
@@ -128,9 +131,21 @@ export function Sidebar(_props: SidebarProps) {
         </View>
 
         <View style={styles.nav}>
-          {NAV_ITEMS.map((item) => (
+          {NAV_ITEMS_TOP.map((item) => (
             <NavItem
-              key={item.route}
+              key={item.label}
+              icon={item.icon}
+              label={item.label}
+              active={pathname === item.route}
+              onPress={() => handleNavigate(item.route)}
+            />
+          ))}
+
+          <NavHomes onNavigate={closeDrawer} />
+
+          {NAV_ITEMS_BOTTOM.map((item) => (
+            <NavItem
+              key={item.label}
               icon={item.icon}
               label={item.label}
               active={pathname === item.route}

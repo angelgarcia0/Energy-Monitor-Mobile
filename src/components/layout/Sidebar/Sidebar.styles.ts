@@ -91,6 +91,14 @@ export const styles = StyleSheet.create({
   navLabelActive: {
     color: Theme.colors.surface,
   },
+  homesChevron: {
+    marginLeft: "auto",
+  },
+  homesList: {
+    gap: Theme.spacing.xs,
+    marginTop: Theme.spacing.xs,
+    paddingLeft: Theme.spacing.md,
+  },
   profileSection: {
     marginTop: "auto",
     position: "relative",
@@ -157,6 +165,45 @@ export const styles = StyleSheet.create({
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.sm,
     color: Theme.colors.textPrimary,
+  },
+  homeItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Theme.spacing.sm,
+    paddingVertical: Theme.spacing.sm,
+    paddingHorizontal: Theme.spacing.sm,
+    borderRadius: Theme.radius.md,
+  },
+  homeItemActive: {
+    backgroundColor: TINT_ACTIVE,
+  },
+  homeAvatar: {
+    width: AVATAR_SIZE,
+    height: AVATAR_SIZE,
+    borderRadius: AVATAR_SIZE / 2,
+    backgroundColor: TINT_AVATAR,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  homeAvatarText: {
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.sm,
+    fontWeight: Theme.typography.weight.bold,
+    color: Theme.colors.surface,
+  },
+  homeName: {
+    flex: 1,
+    minWidth: 0,
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.sm,
+    color: TEXT_INACTIVE,
+  },
+  noHomes: {
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.sm,
+    color: TEXT_INACTIVE,
+    paddingVertical: Theme.spacing.sm,
+    paddingHorizontal: Theme.spacing.sm,
   },
   divider: {
     height: 1,

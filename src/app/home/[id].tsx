@@ -2,16 +2,16 @@ import { useLocalSearchParams } from "expo-router";
 import { Text, View } from "react-native";
 
 import { Theme } from "@/constants/theme";
-import type { Home } from "@/features/dashboard/components/HomeCard/HomeCard";
+import { useHomes } from "@/context/HomeContext";
 import { HomeDetailScreen } from "@/features/homes/screens/HomeDetailScreen/HomeDetailScreen";
 
 export default function HomeDetail() {
-  const { home } = useLocalSearchParams<{ id: string; home?: string }>();
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const { homes } = useHomes();
 
-  // TODO: leer el hogar desde HomeContext/backend en vez de serializarlo en la ruta
-  const parsed: Home | null = home ? JSON.parse(home) : null;
+  const home = homes.find((h) => String(h.id) === id) ?? null;
 
-  if (!parsed) {
+  if (!home) {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: Theme.colors.background }}>
         <Text>Hogar no encontrado</Text>
@@ -19,5 +19,5 @@ export default function HomeDetail() {
     );
   }
 
-  return <HomeDetailScreen home={parsed} />;
+  return <HomeDetailScreen home={home} />;
 }

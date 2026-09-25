@@ -1,4 +1,4 @@
-import { useRouter, type Href } from "expo-router";
+import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { ScrollView, View } from "react-native";
@@ -22,39 +22,18 @@ export function DashboardScreen(_props: DashboardScreenProps) {
   const insets = useSafeAreaInsets();
   const [showCreate, setShowCreate] = useState(false);
   const [showJoin, setShowJoin] = useState(false);
-  const { homes, addHome, toggleFavorite } = useHomes();
+  const { homes, toggleFavorite, addOwnedHome, addJoinedHome } = useHomes();
 
   const handleCreateHome = (values: CreateHomeFormValues) => {
-    addHome({
-      id: Date.now(),
-      name: values.name,
-      address: values.address,
-      description: values.description,
-      homeTypeId: values.homeType,
-      otherHomeType: values.otherType,
-      userResponsible: "Tú",
-      variant: "owned",
-      favorite: false,
-    });
+    addOwnedHome(values);
   };
 
   const handleJoinHome = () => {
-    addHome({
-      id: Date.now(),
-      name: "Hogar unido",
-      userResponsible: "Responsable del hogar",
-      address: "Av. Central 45, Oficina 3",
-      description: "Hogar al que te has unido como usuario regular.",
-      variant: "joined",
-      favorite: false,
-    });
+    addJoinedHome();
   };
 
   const handleHomePress = (home: Home) => {
-    // ponytail: cast a Href hasta que `expo start` regenere los tipos de rutas.
-    router.push(
-      `/home/${home.id}?home=${encodeURIComponent(JSON.stringify(home))}` as Href,
-    );
+    router.push(`/home/${home.id}`);
   };
 
   return (

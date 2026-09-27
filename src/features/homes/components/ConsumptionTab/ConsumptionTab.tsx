@@ -7,10 +7,12 @@ import { Chart } from "@/components/Chart/Chart";
 import { Theme } from "@/constants/theme";
 import { getDeviceColor } from "../../data/deviceChartColors";
 import { mockConsumptionData } from "../../data/consumptionMock";
-import { APPLIANCE_ICON, APPLIANCE_LABEL, INITIAL_DEVICES } from "../../data/deviceMocks";
+import { APPLIANCE_ICON, APPLIANCE_LABEL, type Device } from "../../data/deviceMocks";
 import { styles } from "./ConsumptionTab.styles";
 
-export interface ConsumptionTabProps {}
+export interface ConsumptionTabProps {
+  devices: Device[];
+}
 
 interface LimitBarProps {
   label: string;
@@ -37,11 +39,10 @@ function LimitBar({ label, used, limit }: LimitBarProps) {
   );
 }
 
-export function ConsumptionTab(_props: ConsumptionTabProps) {
+export function ConsumptionTab({ devices }: ConsumptionTabProps) {
   const { width } = useWindowDimensions();
   const chartWidth = width - Theme.spacing.md * 4;
   const data = mockConsumptionData;
-  const devices = INITIAL_DEVICES;
 
   const activeDevices = devices.filter((d) => d.status === "online").length;
 

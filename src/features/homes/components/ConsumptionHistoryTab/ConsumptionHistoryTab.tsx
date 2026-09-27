@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Pressable, ScrollView, Text, useWindowDimensions, View } from "react-native";
 
 import { Card } from "@/components/Card/Card";
 import { Chart } from "@/components/Chart/Chart";
 import { Theme } from "@/constants/theme";
 import { getDeviceColor, type ApplianceType } from "../../data/deviceChartColors";
-import { APPLIANCE_LABEL, APPLIANCE_TYPE_IDS, INITIAL_DEVICES } from "../../data/deviceMocks";
+import { APPLIANCE_LABEL, APPLIANCE_TYPE_IDS, type Device } from "../../data/deviceMocks";
 import { styles } from "./ConsumptionHistoryTab.styles";
 
-export interface ConsumptionHistoryTabProps {}
+export interface ConsumptionHistoryTabProps {
+  devices: Device[];
+}
 
 type FilterKey = "day" | "week" | "month" | "year";
 
@@ -73,15 +75,20 @@ function generateMockData(types: ApplianceType[]): Record<FilterKey, HistoryRow[
 
 const BAR_SLOT_WIDTH = Theme.spacing.xl + Theme.spacing.lg;
 
-export function ConsumptionHistoryTab(_props: ConsumptionHistoryTabProps) {
+export function ConsumptionHistoryTab({ devices }: ConsumptionHistoryTabProps) {
   const { width } = useWindowDimensions();
   const [activeFilter, setActiveFilter] = useState<FilterKey>("month");
   const [activeSubFilter, setActiveSubFilter] = useState<string | null>(null);
   const [manualType, setManualType] = useState<ApplianceType | null>(null);
 
-  const present = new Set(INITIAL_DEVICES.map((d) => d.applianceType));
-  const [categoryTypes] = useState(() => APPLIANCE_TYPE_IDS.filter((id) => present.has(id)));
-  const [mockData] = useState(() => generateMockData(categoryTypes));
+  // Los datos mock se generan una sola vez para todos los tipos posibles; las
+  // series de un dispositivo vinculado después ya existen y se recortan según
+  // los tipos que hay en `devices`.
+  const [mockData] = useState(() => generateMockData(APPLIANCE_TYPE_IDS));
+  const categoryTypes = useMemo(() => {
+    const present = new Set(devices.map((device) => device.applianceType));
+    return APPLIANCE_TYPE_IDS.filter((id) => present.has(id));
+  }, [devices]);
 
   const subFilters = SUBFILTERS[activeFilter];
   const fullData = mockData[activeFilter];

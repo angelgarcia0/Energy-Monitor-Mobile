@@ -10,6 +10,8 @@ import { Theme } from "@/constants/theme";
 import type { Home } from "@/features/dashboard/components/HomeCard/HomeCard";
 import { ConsumptionHistoryTab } from "../../components/ConsumptionHistoryTab/ConsumptionHistoryTab";
 import { ConsumptionTab } from "../../components/ConsumptionTab/ConsumptionTab";
+import { DevicesTab } from "../../components/DevicesTab/DevicesTab";
+import { useDevicesState } from "../../hooks/useDevicesState";
 import { styles } from "./HomeDetailScreen.styles";
 
 export interface HomeDetailScreenProps {
@@ -29,6 +31,8 @@ export function HomeDetailScreen({ home }: HomeDetailScreenProps) {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState(TABS[0].id);
+  const { devices, addDevice, removeDevice } = useDevicesState();
+  const isOwner = home.variant === "owned";
 
   return (
     <View style={[styles.container, { paddingTop: Math.max(insets.top, Theme.spacing.md) }]}>
@@ -45,9 +49,16 @@ export function HomeDetailScreen({ home }: HomeDetailScreenProps) {
 
       <View style={styles.body}>
         {activeTab === "Consumo" ? (
-          <ConsumptionTab />
+          <ConsumptionTab devices={devices} />
         ) : activeTab === "Historial" ? (
-          <ConsumptionHistoryTab />
+          <ConsumptionHistoryTab devices={devices} />
+        ) : activeTab === "Dispositivos" ? (
+          <DevicesTab
+            devices={devices}
+            onAddDevice={addDevice}
+            onRemoveDevice={removeDevice}
+            isOwner={isOwner}
+          />
         ) : (
           <View style={styles.placeholder}>
             <Text style={styles.placeholderTitle}>{activeTab}</Text>

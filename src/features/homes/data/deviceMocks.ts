@@ -5,10 +5,19 @@ import type { ApplianceType } from "./deviceChartColors";
 
 export type MaterialIconName = ComponentProps<typeof MaterialCommunityIcons>["name"];
 
+export type RoomKey =
+  | "livingRoom"
+  | "kitchen"
+  | "bedroom"
+  | "garage"
+  | "laundryRoom"
+  | "other";
+
 export interface Device {
   id: number;
+  name?: string;
   applianceType: ApplianceType;
-  roomKey: string;
+  roomKey: RoomKey;
   status: "online" | "offline";
   signal: number;
   consumption: number | null;
@@ -39,6 +48,19 @@ export const APPLIANCE_LABEL: Record<ApplianceType, string> = {
   lighting: "Iluminación",
   other: "Otro",
 };
+
+export const ROOM_LABEL: Record<RoomKey, string> = {
+  livingRoom: "Sala",
+  kitchen: "Cocina",
+  bedroom: "Habitación",
+  garage: "Garaje",
+  laundryRoom: "Zona de ropas",
+  other: "Otro",
+};
+
+export const ROOM_OPTIONS: { value: RoomKey; label: string }[] = (
+  Object.keys(ROOM_LABEL) as RoomKey[]
+).map((value) => ({ value, label: ROOM_LABEL[value] }));
 
 export const INITIAL_DEVICES: Device[] = [
   { id: 1, applianceType: "fridge", roomKey: "kitchen", status: "online", signal: 82, consumption: 0.42 },

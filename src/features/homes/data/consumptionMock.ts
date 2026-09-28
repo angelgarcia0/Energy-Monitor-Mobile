@@ -2,9 +2,9 @@ export const mockConsumptionData = {
   potencia: 2.4,
   nivelPotencia: "Medio",
   consumoHoy: 18.5,
-  limiteConsumo: 30,
-  limitesDiario: { usado: 18.5, limite: 30 },
-  limiteMensual: { usado: 320, limite: 500 },
+  // Solo consumo medido: los límites viven en data/thresholds.ts.
+  limitesDiario: { usado: 18.5 },
+  limiteMensual: { usado: 320 },
   consumoHoras: [
     { hora: "00:00", kw: 0.8 }, { hora: "01:00", kw: 0.6 },
     { hora: "02:00", kw: 0.5 }, { hora: "03:00", kw: 0.4 },

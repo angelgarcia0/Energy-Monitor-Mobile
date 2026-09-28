@@ -11,7 +11,9 @@ import type { Home } from "@/features/dashboard/components/HomeCard/HomeCard";
 import { ConsumptionHistoryTab } from "../../components/ConsumptionHistoryTab/ConsumptionHistoryTab";
 import { ConsumptionTab } from "../../components/ConsumptionTab/ConsumptionTab";
 import { DevicesTab } from "../../components/DevicesTab/DevicesTab";
+import { ThresholdsTab } from "../../components/ThresholdsTab/ThresholdsTab";
 import { useDevicesState } from "../../hooks/useDevicesState";
+import { useThresholdsState } from "../../hooks/useThresholdsState";
 import { styles } from "./HomeDetailScreen.styles";
 
 export interface HomeDetailScreenProps {
@@ -32,6 +34,7 @@ export function HomeDetailScreen({ home }: HomeDetailScreenProps) {
   const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState(TABS[0].id);
   const { devices, addDevice, removeDevice } = useDevicesState();
+  const { thresholds, saveThresholds } = useThresholdsState();
   const isOwner = home.variant === "owned";
 
   return (
@@ -49,7 +52,7 @@ export function HomeDetailScreen({ home }: HomeDetailScreenProps) {
 
       <View style={styles.body}>
         {activeTab === "Consumo" ? (
-          <ConsumptionTab devices={devices} />
+          <ConsumptionTab devices={devices} thresholds={thresholds} />
         ) : activeTab === "Historial" ? (
           <ConsumptionHistoryTab devices={devices} />
         ) : activeTab === "Dispositivos" ? (
@@ -57,6 +60,12 @@ export function HomeDetailScreen({ home }: HomeDetailScreenProps) {
             devices={devices}
             onAddDevice={addDevice}
             onRemoveDevice={removeDevice}
+            isOwner={isOwner}
+          />
+        ) : activeTab === "Umbrales" ? (
+          <ThresholdsTab
+            thresholds={thresholds}
+            saveThresholds={saveThresholds}
             isOwner={isOwner}
           />
         ) : (

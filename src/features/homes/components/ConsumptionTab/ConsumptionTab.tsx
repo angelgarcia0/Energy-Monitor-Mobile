@@ -8,10 +8,12 @@ import { Theme } from "@/constants/theme";
 import { getDeviceColor } from "../../data/deviceChartColors";
 import { mockConsumptionData } from "../../data/consumptionMock";
 import { APPLIANCE_ICON, APPLIANCE_LABEL, type Device } from "../../data/deviceMocks";
+import type { Thresholds } from "../../data/thresholds";
 import { styles } from "./ConsumptionTab.styles";
 
 export interface ConsumptionTabProps {
   devices: Device[];
+  thresholds: Thresholds;
 }
 
 interface LimitBarProps {
@@ -39,7 +41,7 @@ function LimitBar({ label, used, limit }: LimitBarProps) {
   );
 }
 
-export function ConsumptionTab({ devices }: ConsumptionTabProps) {
+export function ConsumptionTab({ devices, thresholds }: ConsumptionTabProps) {
   const { width } = useWindowDimensions();
   const chartWidth = width - Theme.spacing.md * 4;
   const data = mockConsumptionData;
@@ -81,9 +83,7 @@ export function ConsumptionTab({ devices }: ConsumptionTabProps) {
           <Text style={styles.kpiUnit}> kWh</Text>
         </Text>
         <Text style={styles.kpiSub}>
-          {data.limiteConsumo != null
-            ? `Límite actual: ${data.limiteConsumo} kWh`
-            : "Sin límite configurado"}
+          Límite actual: {thresholds.daily} kWh
         </Text>
       </Card>
 
@@ -164,8 +164,8 @@ export function ConsumptionTab({ devices }: ConsumptionTabProps) {
         </View>
       </Card>
 
-      <LimitBar label="Límite diario" used={data.limitesDiario.usado} limit={data.limitesDiario.limite} />
-      <LimitBar label="Límite mensual" used={data.limiteMensual.usado} limit={data.limiteMensual.limite} />
+      <LimitBar label="Límite diario" used={data.limitesDiario.usado} limit={thresholds.daily} />
+      <LimitBar label="Límite mensual" used={data.limiteMensual.usado} limit={thresholds.monthly} />
     </ScrollView>
   );
 }

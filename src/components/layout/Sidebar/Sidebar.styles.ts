@@ -121,6 +121,11 @@ export const styles = StyleSheet.create({
     backgroundColor: TINT_AVATAR,
     alignItems: "center",
     justifyContent: "center",
+    overflow: "hidden",
+  },
+  avatarImage: {
+    width: "100%",
+    height: "100%",
   },
   profileName: {
     flex: 1,
@@ -160,6 +165,9 @@ export const styles = StyleSheet.create({
     paddingVertical: Theme.spacing.sm,
     paddingHorizontal: Theme.spacing.sm,
     borderRadius: Theme.radius.md,
+  },
+  dropdownItemPressed: {
+    backgroundColor: Theme.colors.background,
   },
   dropdownItemText: {
     fontFamily: Theme.typography.fontPrimary,

@@ -14,6 +14,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Button } from "@/components/Button/Button";
 import { Theme } from "@/constants/theme";
+import { useUser } from "@/context/UserContext";
 import { styles, TRIGGER_TOP_OFFSET } from "./Sidebar.styles";
 import { NavHomes } from "./NavHomes";
 
@@ -72,6 +73,7 @@ export function Sidebar(_props: SidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const insets = useSafeAreaInsets();
+  const { user } = useUser();
 
   useEffect(() => {
     Animated.timing(translateX, {
@@ -97,12 +99,20 @@ export function Sidebar(_props: SidebarProps) {
     router.replace("/");
   };
 
+  const handleOpenAccount = () => {
+    closeDrawer();
+    // ponytail: cast a Href hasta que `expo start` regenere los tipos de rutas.
+    router.push("/account" as Href);
+  };
+
   return (
     <>
       {!isOpen ? (
         <Pressable
           style={[styles.trigger, { top: Math.max(insets.top, Theme.spacing.md) + TRIGGER_TOP_OFFSET }]}
           onPress={() => setIsOpen(true)}
+          accessibilityRole="button"
+          accessibilityLabel="Abrir menú de navegación"
         >
           <Ionicons name="menu-outline" size={Theme.typography.size.lg} color={Theme.colors.surface} />
         </Pressable>
@@ -164,10 +174,14 @@ export function Sidebar(_props: SidebarProps) {
         <View style={styles.profileSection}>
           <Pressable style={styles.profileRow} onPress={() => setOpenMenu((prev) => !prev)}>
             <View style={styles.avatar}>
-              <Ionicons name="person-outline" size={Theme.typography.size.md} color={Theme.colors.surface} />
+              {user.avatarUri ? (
+                <Image source={{ uri: user.avatarUri }} style={styles.avatarImage} />
+              ) : (
+                <Ionicons name="person-outline" size={Theme.typography.size.md} color={Theme.colors.surface} />
+              )}
             </View>
             <Text style={styles.profileName} numberOfLines={1}>
-              Usuario
+              {user.name}
             </Text>
             <View style={styles.menuButton}>
               <Ionicons name="ellipsis-horizontal" size={Theme.typography.size.md} color={Theme.colors.surface} />
@@ -176,10 +190,15 @@ export function Sidebar(_props: SidebarProps) {
 
           {openMenu ? (
             <View style={styles.dropdown}>
-              <View style={styles.dropdownItem}>
+              <Pressable
+                style={({ pressed }) => [styles.dropdownItem, pressed && styles.dropdownItemPressed]}
+                onPress={handleOpenAccount}
+                accessibilityRole="button"
+                accessibilityLabel="Mi cuenta"
+              >
                 <Ionicons name="person-outline" size={Theme.typography.size.md} color={Theme.colors.textSecondary} />
                 <Text style={styles.dropdownItemText}>Mi cuenta</Text>
-              </View>
+              </Pressable>
 
               <View style={styles.dropdownItem}>
                 <Ionicons name="add-outline" size={Theme.typography.size.md} color={Theme.colors.textSecondary} />

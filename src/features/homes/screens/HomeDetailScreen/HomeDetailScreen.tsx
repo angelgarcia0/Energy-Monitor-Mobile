@@ -12,6 +12,7 @@ import { ConsumptionHistoryTab } from "../../components/ConsumptionHistoryTab/Co
 import { ConsumptionTab } from "../../components/ConsumptionTab/ConsumptionTab";
 import { DevicesTab } from "../../components/DevicesTab/DevicesTab";
 import { ThresholdsTab } from "../../components/ThresholdsTab/ThresholdsTab";
+import { UsersTab } from "../../components/UsersTab/UsersTab";
 import { useDevicesState } from "../../hooks/useDevicesState";
 import { useThresholdsState } from "../../hooks/useThresholdsState";
 import { styles } from "./HomeDetailScreen.styles";
@@ -68,6 +69,8 @@ export function HomeDetailScreen({ home }: HomeDetailScreenProps) {
             saveThresholds={saveThresholds}
             isOwner={isOwner}
           />
+        ) : activeTab === "Usuarios" ? (
+          <UsersTab isOwner={isOwner} />
         ) : (
           <View style={styles.placeholder}>
             <Text style={styles.placeholderTitle}>{activeTab}</Text>

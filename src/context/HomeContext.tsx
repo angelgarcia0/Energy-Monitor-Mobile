@@ -16,6 +16,7 @@ export interface HomeContextValue {
   toggleFavorite: (id: number) => void;
   addOwnedHome: (values: CreateHomeFormValues) => void;
   addJoinedHome: () => void;
+  removeHome: (id: number) => void;
 }
 
 const HomeContext = createContext<HomeContextValue | null>(null);
@@ -71,9 +72,16 @@ export function HomeProvider({ children }: HomeProviderProps) {
     ]);
   }, []);
 
+  // Quita el hogar del listado compartido. Se usa tanto para "eliminar hogar"
+  // (dueño) como para "salirme del hogar" (no dueño): en ambos casos el hogar
+  // deja de mostrarse en Dashboard y Sidebar.
+  const removeHome = useCallback((id: number) => {
+    setHomes((prev) => prev.filter((home) => home.id !== id));
+  }, []);
+
   const value = useMemo(
-    () => ({ homes, addHome, toggleFavorite, addOwnedHome, addJoinedHome }),
-    [homes, addHome, toggleFavorite, addOwnedHome, addJoinedHome],
+    () => ({ homes, addHome, toggleFavorite, addOwnedHome, addJoinedHome, removeHome }),
+    [homes, addHome, toggleFavorite, addOwnedHome, addJoinedHome, removeHome],
   );
 
   return <HomeContext.Provider value={value}>{children}</HomeContext.Provider>;

@@ -39,21 +39,4 @@ export const styles = StyleSheet.create({
   body: {
     flex: 1,
   },
-  placeholder: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    gap: Theme.spacing.sm,
-  },
-  placeholderTitle: {
-    fontFamily: Theme.typography.fontPrimary,
-    fontSize: Theme.typography.size.lg,
-    fontWeight: Theme.typography.weight.bold,
-    color: Theme.colors.textPrimary,
-  },
-  placeholderText: {
-    fontFamily: Theme.typography.fontPrimary,
-    fontSize: Theme.typography.size.sm,
-    color: Theme.colors.textSecondary,
-  },
 });

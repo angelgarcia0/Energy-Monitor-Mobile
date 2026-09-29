@@ -11,6 +11,7 @@ import type { Home } from "@/features/dashboard/components/HomeCard/HomeCard";
 import { ConsumptionHistoryTab } from "../../components/ConsumptionHistoryTab/ConsumptionHistoryTab";
 import { ConsumptionTab } from "../../components/ConsumptionTab/ConsumptionTab";
 import { DevicesTab } from "../../components/DevicesTab/DevicesTab";
+import { HomeInfoTab } from "../../components/HomeInfoTab/HomeInfoTab";
 import { ThresholdsTab } from "../../components/ThresholdsTab/ThresholdsTab";
 import { UsersTab } from "../../components/UsersTab/UsersTab";
 import { useDevicesState } from "../../hooks/useDevicesState";
@@ -72,10 +73,7 @@ export function HomeDetailScreen({ home }: HomeDetailScreenProps) {
         ) : activeTab === "Usuarios" ? (
           <UsersTab isOwner={isOwner} />
         ) : (
-          <View style={styles.placeholder}>
-            <Text style={styles.placeholderTitle}>{activeTab}</Text>
-            <Text style={styles.placeholderText}>Próximamente</Text>
-          </View>
+          <HomeInfoTab home={home} isOwner={isOwner} />
         )}
       </View>
 

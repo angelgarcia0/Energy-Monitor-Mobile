@@ -1,0 +1,40 @@
+{
+  "header": {
+    "title": "Users",
+    "membersCount_one": "{{count}} member in this project",
+    "membersCount_other": "{{count}} members in this project"
+  },
+  "roles": {
+    "owner": "Owner",
+    "member": "Member"
+  },
+  "members": {
+    "title": "Project members"
+  },
+  "invite": {
+    "title": "Invite user by email",
+    "placeholder": "email@example.com",
+    "button": "Invite",
+    "errors": {
+      "empty": "Enter an email address.",
+      "invalid": "Invalid email address.",
+      "alreadyMember": "This user is already a member.",
+      "alreadyInvited": "An invitation has already been sent to this email."
+    }
+  },
+  "pending": {
+    "title": "Pending invitations",
+    "empty": "No pending invitations",
+    "sent": "Invitation sent",
+    "cancel": "Cancel"
+  },
+  "actions": {
+    "removeUser": "Remove {{name}}"
+  },
+  "confirmRemove": {
+    "title": "Remove member?",
+    "message": "You are about to remove \"{{name}}\" from the project. They will stop receiving the home consumption data and you will need to invite them again if you want them to participate.",
+    "confirm": "Remove",
+    "cancel": "Cancel"
+  }
+}

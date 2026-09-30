@@ -1,0 +1,37 @@
+{
+  "title": "Limites de consumo",
+  "subtitle": "Esses limites se aplicam somente a este lar e são usados para gerar alertas e recomendações personalizadas.",
+  "defaults": {
+    "label": "Usar os limites padrão do sistema",
+    "hint": "Os limites padrão são pensados para um consumo residencial médio. Desative-os para definir seus próprios limites neste lar.",
+    "on": "Ativado",
+    "off": "Desativado"
+  },
+  "periodicity": {
+    "label": "Configurar por",
+    "daily": "Diário",
+    "monthly": "Mensal"
+  },
+  "fields": {
+    "daily": "Limite diário",
+    "monthly": "Limite mensal"
+  },
+  "calculated": "Calculado",
+  "unit": "kWh",
+  "readOnly": {
+    "notice": "Somente o responsável pelo lar pode alterar esses limites."
+  },
+  "scopeNote": "Cada lar mantém seus próprios limites; alterá-los aqui não afeta seus outros lares.",
+  "buttons": {
+    "save": "Salvar alterações",
+    "saved": "Salvo"
+  },
+  "errors": {
+    "invalid": "Digite um valor maior que 0"
+  },
+  "accessibility": {
+    "daily": "Limite diário em kWh",
+    "monthly": "Limite mensal em kWh",
+    "monthlyPeriodicity": "Configurar por periodicidade mensal"
+  }
+}

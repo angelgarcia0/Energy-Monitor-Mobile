@@ -1,0 +1,72 @@
+{
+  "breadcrumb": {
+    "home": "Home",
+    "current": "Notifications"
+  },
+  "title": "Notifications",
+  "subtitle": "Alerts and recommendations generated from your homes' consumption.",
+  "tabs": {
+    "all": "All",
+    "alerts": "Alerts",
+    "recommendations": "Recommendations"
+  },
+  "status": {
+    "active": "Active",
+    "resolved": "Resolved",
+    "new": "New",
+    "read": "Read"
+  },
+  "actions": {
+    "markRead": "Mark as read",
+    "markAllRead": "Mark all as read"
+  },
+  "threshold": {
+    "dailyExceeded": {
+      "title": "Daily limit exceeded",
+      "message": "The home \"{{home}}\" went over the configured daily consumption limit."
+    },
+    "monthlyApproaching": {
+      "title": "Close to the monthly limit",
+      "message": "The home \"{{home}}\" is close to reaching the configured monthly consumption limit."
+    }
+  },
+  "connectivity": {
+    "deviceOffline": {
+      "title": "Device disconnected",
+      "message": "A device in \"{{home}}\" stopped reporting consumption data. Check its WiFi connection."
+    }
+  },
+  "recommendation": {
+    "shiftUsageOffPeak": {
+      "title": "Shift usage off-peak",
+      "message": "Move the use of your appliances in \"{{home}}\" to lower-demand hours to save energy and lower your bill."
+    },
+    "reduceStandby": {
+      "title": "Reduce standby consumption",
+      "message": "Unplug the devices you don't use in \"{{home}}\"; standby consumption adds up."
+    },
+    "scheduleMaintenance": {
+      "title": "Schedule maintenance",
+      "message": "Some appliances in \"{{home}}\" are consuming more than usual. Maintenance can improve their efficiency."
+    },
+    "upgradeAppliance": {
+      "title": "Consider replacing an appliance",
+      "message": "An appliance in \"{{home}}\" uses far more than a modern efficient model. Replacing it could lower your bill."
+    }
+  },
+  "empty": {
+    "all": {
+      "title": "No notifications",
+      "description": "When the system detects something relevant in your homes, you'll see it here."
+    },
+    "alerts": {
+      "title": "No active alerts",
+      "description": "There are no pending alerts to review right now."
+    },
+    "recommendations": {
+      "title": "No recommendations",
+      "description": "There are no recommendations generated for your homes yet."
+    }
+  },
+  "markReadLabel": "Mark as read: {{title}}"
+}

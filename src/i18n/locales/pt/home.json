@@ -1,0 +1,39 @@
+{
+  "title": {
+    "homeInfo": "Informações do lar",
+    "accessCode": "Código de acesso",
+    "owner": "Usuário responsável"
+  },
+  "fields": {
+    "name": "Nome",
+    "homeType": "Tipo de lar",
+    "address": "Endereço",
+    "description": "Descrição",
+    "creationDate": "Data de criação",
+    "email": "E-mail",
+    "phone": "Telefone"
+  },
+  "placeholders": {
+    "empty": "—",
+    "noCode": "——————"
+  },
+  "hints": {
+    "accessCode": "Compartilhe este código para que outros usuários possam entrar."
+  },
+  "buttons": {
+    "copy": "Copiar código de acesso",
+    "deleteHome": "Excluir lar",
+    "leaveHome": "Sair do lar"
+  },
+  "status": {
+    "responsible": "Responsável"
+  },
+  "confirm": {
+    "leaveTitle": "Sair do lar?",
+    "leave": "Tem certeza de que deseja sair deste lar?",
+    "deleteTitle": "Excluir o lar?",
+    "delete": "Excluir este lar? Esta ação não pode ser desfeita.",
+    "cancel": "Cancelar"
+  },
+  "copyLabel": "Copiar código de acesso"
+}

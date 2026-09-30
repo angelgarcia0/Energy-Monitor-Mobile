@@ -1,0 +1,14 @@
+{
+  "home": "Home",
+  "homes": "Homes",
+  "favorites": "Favorites",
+  "notifications": "Notifications",
+  "settings": "Settings",
+  "profile": {
+    "myAccount": "My account",
+    "addAccount": "Add account",
+    "logout": "Log out"
+  },
+  "openNav": "Open navigation menu",
+  "noHomes": "No homes"
+}

@@ -1,0 +1,17 @@
+{
+  "breadcrumb": {
+    "home": "Accueil"
+  },
+  "actions": {
+    "joinHome": "Rejoindre une maison",
+    "createHome": "Créer une maison",
+    "openMenu": "Ouvrir le menu d'actions"
+  },
+  "home": {
+    "joinedName": "Maison rejointe",
+    "responsible": "Propriétaire de la maison",
+    "joinedDescription": "Maison que vous avez rejointe en tant qu'utilisateur standard.",
+    "you": "Vous"
+  },
+  "homeAddress": "Av. Central 45, Bureau 3"
+}

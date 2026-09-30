@@ -1,0 +1,17 @@
+{
+  "breadcrumb": {
+    "home": "Home"
+  },
+  "actions": {
+    "joinHome": "Join home",
+    "createHome": "Create home",
+    "openMenu": "Open actions menu"
+  },
+  "home": {
+    "joinedName": "Joined home",
+    "responsible": "Home owner",
+    "joinedDescription": "Home you joined as a regular user.",
+    "you": "You"
+  },
+  "homeAddress": "Av. Central 45, Office 3"
+}

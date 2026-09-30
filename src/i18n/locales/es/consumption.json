@@ -1,0 +1,57 @@
+{
+  "tabs": {
+    "consumption": "Consumo",
+    "history": "Historial",
+    "users": "Usuarios",
+    "devices": "Dispositivos",
+    "home": "Hogar",
+    "thresholds": "Umbrales"
+  },
+  "breadcrumb": {
+    "home": "Inicio",
+    "homes": "Hogares",
+    "homeFallback": "Hogar"
+  },
+  "kpi": {
+    "currentPower": "POTENCIA ACTUAL ⚡",
+    "todayConsumption": "CONSUMO HOY 📊",
+    "devices": "DISPOSITIVOS 🔌",
+    "level": "Nivel",
+    "currentLimit": "Límite actual: ",
+    "noLimit": "Sin límite configurado",
+    "allOperational": "Todos operativos",
+    "noData": "Sin datos",
+    "levels": {
+      "LOW": "Bajo",
+      "MEDIUM": "Medio",
+      "HIGH": "Alto",
+      "CRITICAL": "Crítico"
+    }
+  },
+  "charts": {
+    "globalConsumption": "Consumo Global —",
+    "last24h": "Últimas 24 horas",
+    "activePower": "Potencia activa en kW",
+    "historyUnavailable": "Historial de consumo no disponible",
+    "currentDistribution": "Distribución actual",
+    "distributionUnavailable": "Distribución no disponible",
+    "deviceConsumption": "Consumo por dispositivo (ahora)",
+    "deviceConsumptionUnavailable": "Consumo por dispositivo no disponible"
+  },
+  "limits": {
+    "daily": "Límite diario",
+    "monthly": "Límite mensual"
+  },
+  "empty": {
+    "noData": "Sin datos disponibles",
+    "backend": "Se mostrará cuando el back-end esté conectado",
+    "devicesDev": "Dispositivos en desarrollo"
+  },
+  "tooltip": {
+    "consumption": "Consumo"
+  },
+  "devicesValueUnit": " / ",
+  "deviceChartValues": "Valores en W",
+  "deviceLegendUnit": "kW",
+  "limitsUnit": "kWh"
+}

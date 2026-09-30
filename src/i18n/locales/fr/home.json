@@ -1,0 +1,39 @@
+{
+  "title": {
+    "homeInfo": "Informations de la maison",
+    "accessCode": "Code d'accès",
+    "owner": "Utilisateur responsable"
+  },
+  "fields": {
+    "name": "Nom",
+    "homeType": "Type de maison",
+    "address": "Adresse",
+    "description": "Description",
+    "creationDate": "Date de création",
+    "email": "E-mail",
+    "phone": "Téléphone"
+  },
+  "placeholders": {
+    "empty": "—",
+    "noCode": "——————"
+  },
+  "hints": {
+    "accessCode": "Partagez ce code pour que d'autres utilisateurs puissent rejoindre."
+  },
+  "buttons": {
+    "copy": "Copier le code d'accès",
+    "deleteHome": "Supprimer la maison",
+    "leaveHome": "Quitter la maison"
+  },
+  "status": {
+    "responsible": "Responsable"
+  },
+  "confirm": {
+    "leaveTitle": "Quitter la maison ?",
+    "leave": "Êtes-vous sûr de vouloir quitter cette maison ?",
+    "deleteTitle": "Supprimer la maison ?",
+    "delete": "Supprimer cette maison ? Cette action est irréversible.",
+    "cancel": "Annuler"
+  },
+  "copyLabel": "Copier le code d'accès"
+}

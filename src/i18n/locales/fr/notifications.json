@@ -1,0 +1,72 @@
+{
+  "breadcrumb": {
+    "home": "Accueil",
+    "current": "Notifications"
+  },
+  "title": "Notifications",
+  "subtitle": "Alertes et recommandations générées à partir de la consommation de vos foyers.",
+  "tabs": {
+    "all": "Toutes",
+    "alerts": "Alertes",
+    "recommendations": "Recommandations"
+  },
+  "status": {
+    "active": "Active",
+    "resolved": "Résolue",
+    "new": "Nouvelle",
+    "read": "Lue"
+  },
+  "actions": {
+    "markRead": "Marquer comme lue",
+    "markAllRead": "Tout marquer comme lu"
+  },
+  "threshold": {
+    "dailyExceeded": {
+      "title": "Limite quotidienne dépassée",
+      "message": "Le foyer « {{home}} » a dépassé la limite de consommation quotidienne configurée."
+    },
+    "monthlyApproaching": {
+      "title": "Proche de la limite mensuelle",
+      "message": "Le foyer « {{home}} » approche de la limite de consommation mensuelle configurée."
+    }
+  },
+  "connectivity": {
+    "deviceOffline": {
+      "title": "Appareil déconnecté",
+      "message": "Un appareil de « {{home}} » ne transmet plus de données de consommation. Vérifiez sa connexion WiFi."
+    }
+  },
+  "recommendation": {
+    "shiftUsageOffPeak": {
+      "title": "Décalez la consommation hors heures de pointe",
+      "message": "Déplacez l'utilisation de vos appareils dans « {{home}} » vers des heures de moindre demande pour économiser de l'énergie et réduire votre facture."
+    },
+    "reduceStandby": {
+      "title": "Réduisez la consommation en veille",
+      "message": "Débranchez dans « {{home}} » les appareils que vous n'utilisez pas ; la consommation en veille s'accumule."
+    },
+    "scheduleMaintenance": {
+      "title": "Planifiez un entretien",
+      "message": "Certains appareils de « {{home}} » consomment plus que d'habitude. Un entretien peut améliorer leur efficacité."
+    },
+    "upgradeAppliance": {
+      "title": "Envisagez de remplacer un appareil",
+      "message": "Un appareil de « {{home}} » consomme bien plus qu'un modèle efficace récent. Le remplacer pourrait réduire votre facture."
+    }
+  },
+  "empty": {
+    "all": {
+      "title": "Aucune notification",
+      "description": "Lorsque le système détectera quelque chose de pertinent dans vos foyers, vous le verrez ici."
+    },
+    "alerts": {
+      "title": "Aucune alerte active",
+      "description": "Aucune alerte en attente pour le moment."
+    },
+    "recommendations": {
+      "title": "Aucune recommandation",
+      "description": "Aucune recommandation n'a encore été générée pour vos foyers."
+    }
+  },
+  "markReadLabel": "Marquer comme lue : {{title}}"
+}

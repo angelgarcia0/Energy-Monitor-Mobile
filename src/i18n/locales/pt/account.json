@@ -1,0 +1,57 @@
+{
+  "title": "Minha conta",
+  "photoOptions": "Opções de foto",
+  "addPhoto": "Adicionar foto",
+  "viewPhoto": "Ver foto",
+  "delete": "Excluir",
+  "name": "Nome",
+  "email": "Email",
+  "phone": "Telefone",
+  "noPhone": "Você não tem no momento",
+  "password": "Senha",
+  "deleteQuestion": "Deseja excluir sua conta?",
+  "deleteAccount": {
+    "title": "Excluir sua conta?",
+    "message": "Esta ação é permanente. Você perderá o acesso às suas casas e aos seus dados de consumo.",
+    "confirm": "Excluir",
+    "cancel": "Cancelar"
+  },
+  "breadcrumb": {
+    "home": "Início",
+    "current": "Minha conta"
+  },
+  "personalData": "Dados pessoais",
+  "avatarHint": "Toque na foto para ver as opções",
+  "avatarChangeLabel": "Alterar foto de perfil",
+  "closePhoto": "Fechar foto",
+  "edit": "Editar {{label}}",
+  "maskedPassword": "••••••••",
+  "editField": {
+    "nameTitle": "Editar nome",
+    "emailTitle": "Editar e-mail",
+    "phoneTitle": "Editar telefone",
+    "save": "Salvar",
+    "placeholderName": "Ex: João Silva",
+    "placeholderEmail": "Ex: seu@email.com",
+    "placeholderPhone": "Ex: 3001234567"
+  },
+  "changePassword": {
+    "title": "Alterar senha",
+    "currentLabel": "Senha atual",
+    "newLabel": "Nova senha",
+    "confirmLabel": "Confirmar senha",
+    "newPlaceholder": "Mínimo 8 caracteres",
+    "confirmPlaceholder": "Repita a nova senha",
+    "save": "Salvar"
+  },
+  "success": {
+    "nameUpdated": "Nome atualizado",
+    "emailUpdated": "E-mail atualizado",
+    "phoneUpdated": "Telefone atualizado",
+    "phoneRemoved": "Telefone removido",
+    "avatarUpdated": "Foto de perfil atualizada",
+    "avatarRemoved": "Foto de perfil removida",
+    "permissionDenied": "Precisamos de permissão da galeria para adicionar uma foto",
+    "passwordUpdated": "Senha atualizada"
+  }
+}

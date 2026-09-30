@@ -1,0 +1,22 @@
+{
+  "errors": {
+    "required": "Ce champ est obligatoire",
+    "invalidEmail": "Email invalide",
+    "passwordMin": "Minimum 8 caractères",
+    "passwordUpper": "Doit contenir une majuscule",
+    "passwordLower": "Doit contenir au moins 3 minuscules",
+    "passwordNumber": "Doit contenir au moins 3 chiffres",
+    "passwordSpecial": "Doit contenir un caractère spécial",
+    "repeatPassword": "Confirmez votre mot de passe",
+    "terms": "Vous devez accepter les conditions",
+    "passwordMatch": "Les mots de passe ne correspondent pas",
+    "codeInvalid": "Le code doit contenir 6 chiffres",
+    "codeDigits": "Le code ne doit contenir que des chiffres",
+    "currentPasswordRequired": "Saisissez votre mot de passe actuel",
+    "confirmNewPassword": "Confirmez votre nouveau mot de passe",
+    "nameMin": "Minimum 2 caractères",
+    "phoneDigitsOnly": "Vous ne pouvez saisir que des chiffres",
+    "phoneDigitsRange": "Entre 7 et 15 chiffres",
+    "networkPassword": "Saisissez le mot de passe du réseau"
+  }
+}

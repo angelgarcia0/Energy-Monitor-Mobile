@@ -1,0 +1,57 @@
+{
+  "title": "My account",
+  "photoOptions": "Photo options",
+  "addPhoto": "Add photo",
+  "viewPhoto": "View photo",
+  "delete": "Delete",
+  "name": "Name",
+  "email": "Email",
+  "phone": "Phone",
+  "noPhone": "You don't have one at the moment",
+  "password": "Password",
+  "deleteQuestion": "Do you want to delete your account?",
+  "deleteAccount": {
+    "title": "Delete your account?",
+    "message": "This action is permanent. You will lose access to your homes and your consumption data.",
+    "confirm": "Delete",
+    "cancel": "Cancel"
+  },
+  "breadcrumb": {
+    "home": "Home",
+    "current": "My account"
+  },
+  "personalData": "Personal details",
+  "avatarHint": "Tap the photo to see the options",
+  "avatarChangeLabel": "Change profile photo",
+  "closePhoto": "Close photo",
+  "edit": "Edit {{label}}",
+  "maskedPassword": "••••••••",
+  "editField": {
+    "nameTitle": "Edit name",
+    "emailTitle": "Edit email",
+    "phoneTitle": "Edit phone",
+    "save": "Save",
+    "placeholderName": "E.g. John Smith",
+    "placeholderEmail": "E.g. you@example.com",
+    "placeholderPhone": "E.g. 3001234567"
+  },
+  "changePassword": {
+    "title": "Change password",
+    "currentLabel": "Current password",
+    "newLabel": "New password",
+    "confirmLabel": "Confirm password",
+    "newPlaceholder": "Minimum 8 characters",
+    "confirmPlaceholder": "Repeat the new password",
+    "save": "Save"
+  },
+  "success": {
+    "nameUpdated": "Name updated",
+    "emailUpdated": "Email updated",
+    "phoneUpdated": "Phone updated",
+    "phoneRemoved": "Phone removed",
+    "avatarUpdated": "Profile photo updated",
+    "avatarRemoved": "Profile photo removed",
+    "permissionDenied": "We need gallery permission to add a photo",
+    "passwordUpdated": "Password updated"
+  }
+}

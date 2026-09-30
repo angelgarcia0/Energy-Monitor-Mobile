@@ -1,0 +1,43 @@
+{
+  "title": "Criar lar",
+  "close": "Fechar",
+  "fields": {
+    "name": "Nome do lar",
+    "type": "Tipo de lar",
+    "other": "Qual?",
+    "address": "Endereço",
+    "description": "Descrição",
+    "optional": "(opcional)",
+    "addressExamples": "Ex: Cra. 15 # 93-47, Calle 100 # 15-20, Vereda El Bosque Finca La Esperanza"
+  },
+  "placeholders": {
+    "name": "Ex: Meu lar, Escritório central...",
+    "type": "Selecione um tipo...",
+    "other": "Descreva o tipo de lar...",
+    "address": "Ex: Calle 45 # 12-34, Bogotá",
+    "description": "Descreva brevemente o lar..."
+  },
+  "buttons": {
+    "cancel": "Cancelar",
+    "create": "Criar lar",
+    "creating": "Criando..."
+  },
+  "errors": {
+    "nameRequired": "O nome do lar é obrigatório.",
+    "nameMax": "Máximo de 50 caracteres.",
+    "typeRequired": "Selecione um tipo de lar.",
+    "otherRequired": "Especifique o tipo de lar.",
+    "otherMax": "Máximo de 50 caracteres.",
+    "addressRequired": "O endereço é obrigatório.",
+    "addressMax": "Máximo de 200 caracteres",
+    "addressInvalidChars": "Caracteres não permitidos (< > { } [ ] | \" ` ')",
+    "addressInvalidFormat": "Formato de endereço inválido. Ex: Cra. 15 # 93-47",
+    "descriptionMax": "Máximo de 200 caracteres."
+  },
+  "homeTypes": {
+    "house": "Casa",
+    "apartment": "Apartamento",
+    "studio": "Estúdio",
+    "other": "Outro"
+  }
+}

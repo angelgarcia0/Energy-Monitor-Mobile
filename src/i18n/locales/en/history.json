@@ -1,0 +1,78 @@
+{
+  "filters": {
+    "day": "Day",
+    "week": "Week",
+    "month": "Month",
+    "year": "Year"
+  },
+  "dates": {
+    "day": "Last 24 hours",
+    "week": "Last 7 days",
+    "month": "April 01, 2026 - April 30, 2026",
+    "year": "January 2026 - December 2026"
+  },
+  "chart": {
+    "title": "CONSUMPTION DISTRIBUTION BY DEVICE",
+    "empty": "Link a device to see its consumption history"
+  },
+  "ranking": {
+    "title": "CONSUMPTION RANKING",
+    "headers": {
+      "position": "#",
+      "device": "DEVICE",
+      "total": "TOTAL",
+      "percentage": "%"
+    }
+  },
+  "stats": {
+    "totalConsumption": "TOTAL CONSUMPTION PERIOD",
+    "average": "AVERAGE",
+    "topConsumer": "TOP CONSUMER",
+    "vsPrevious": "↑ 10% vs previous period",
+    "periodAverage": "Period average"
+  },
+  "subfilters": {
+    "showAll": "Show all",
+    "day": {
+      "0-6": "0h - 6h",
+      "6-12": "6h - 12h",
+      "12-18": "12h - 18h",
+      "18-24": "18h - 24h"
+    },
+    "month": {
+      "sem1": "Week 1",
+      "sem2": "Week 2",
+      "sem3": "Week 3",
+      "sem4": "Week 4"
+    },
+    "year": {
+      "q1": "Jan - Mar",
+      "q2": "Apr - Jun",
+      "q3": "Jul - Sep",
+      "q4": "Oct - Dec"
+    }
+  },
+  "weekDays": {
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
+  },
+  "months": {
+    "jan": "Jan",
+    "feb": "Feb",
+    "mar": "Mar",
+    "apr": "Apr",
+    "may": "May",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Aug",
+    "sep": "Sep",
+    "oct": "Oct",
+    "nov": "Nov",
+    "dec": "Dec"
+  }
+}

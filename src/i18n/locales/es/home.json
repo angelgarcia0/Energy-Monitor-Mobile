@@ -1,0 +1,39 @@
+{
+  "title": {
+    "homeInfo": "Información del hogar",
+    "accessCode": "Código de acceso",
+    "owner": "Usuario responsable"
+  },
+  "fields": {
+    "name": "Nombre",
+    "homeType": "Tipo de hogar",
+    "address": "Dirección",
+    "description": "Descripción",
+    "creationDate": "Fecha de creación",
+    "email": "Correo",
+    "phone": "Teléfono"
+  },
+  "placeholders": {
+    "empty": "—",
+    "noCode": "——————"
+  },
+  "hints": {
+    "accessCode": "Comparte este código para que otros usuarios puedan unirse."
+  },
+  "buttons": {
+    "copy": "Copiar código de acceso",
+    "deleteHome": "Eliminar hogar",
+    "leaveHome": "Salirse del hogar"
+  },
+  "status": {
+    "responsible": "Responsable"
+  },
+  "confirm": {
+    "leaveTitle": "¿Salirte del hogar?",
+    "leave": "¿Seguro que deseas salirte de este hogar?",
+    "deleteTitle": "¿Eliminar hogar?",
+    "delete": "¿Eliminar este hogar? Esta acción no se puede deshacer.",
+    "cancel": "Cancelar"
+  },
+  "copyLabel": "Copiar código de acceso"
+}

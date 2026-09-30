@@ -1,0 +1,57 @@
+{
+  "title": "Mon compte",
+  "photoOptions": "Options de photo",
+  "addPhoto": "Ajouter une photo",
+  "viewPhoto": "Voir la photo",
+  "delete": "Supprimer",
+  "name": "Nom",
+  "email": "Email",
+  "phone": "Téléphone",
+  "noPhone": "Vous n'en avez pas pour le moment",
+  "password": "Mot de passe",
+  "deleteQuestion": "Voulez-vous supprimer votre compte ?",
+  "deleteAccount": {
+    "title": "Supprimer votre compte ?",
+    "message": "Cette action est définitive. Vous perdrez l'accès à vos foyers et à vos données de consommation.",
+    "confirm": "Supprimer",
+    "cancel": "Annuler"
+  },
+  "breadcrumb": {
+    "home": "Accueil",
+    "current": "Mon compte"
+  },
+  "personalData": "Informations personnelles",
+  "avatarHint": "Touchez la photo pour voir les options",
+  "avatarChangeLabel": "Changer la photo de profil",
+  "closePhoto": "Fermer la photo",
+  "edit": "Modifier {{label}}",
+  "maskedPassword": "••••••••",
+  "editField": {
+    "nameTitle": "Modifier le nom",
+    "emailTitle": "Modifier l'email",
+    "phoneTitle": "Modifier le téléphone",
+    "save": "Enregistrer",
+    "placeholderName": "Ex : Jean Dupont",
+    "placeholderEmail": "Ex : votre@email.com",
+    "placeholderPhone": "Ex : 3001234567"
+  },
+  "changePassword": {
+    "title": "Changer le mot de passe",
+    "currentLabel": "Mot de passe actuel",
+    "newLabel": "Nouveau mot de passe",
+    "confirmLabel": "Confirmer le mot de passe",
+    "newPlaceholder": "Minimum 8 caractères",
+    "confirmPlaceholder": "Répétez le nouveau mot de passe",
+    "save": "Enregistrer"
+  },
+  "success": {
+    "nameUpdated": "Nom mis à jour",
+    "emailUpdated": "Email mis à jour",
+    "phoneUpdated": "Téléphone mis à jour",
+    "phoneRemoved": "Téléphone supprimé",
+    "avatarUpdated": "Photo de profil mise à jour",
+    "avatarRemoved": "Photo de profil supprimée",
+    "permissionDenied": "Nous avons besoin de l'autorisation de la galerie pour ajouter une photo",
+    "passwordUpdated": "Mot de passe mis à jour"
+  }
+}

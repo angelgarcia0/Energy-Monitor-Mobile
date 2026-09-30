@@ -1,0 +1,17 @@
+{
+  "breadcrumb": {
+    "home": "Início"
+  },
+  "actions": {
+    "joinHome": "Entrar no lar",
+    "createHome": "Criar lar",
+    "openMenu": "Abrir menu de ações"
+  },
+  "home": {
+    "joinedName": "Lar ingressado",
+    "responsible": "Responsável pelo lar",
+    "joinedDescription": "Lar no qual você entrou como usuário comum.",
+    "you": "Você"
+  },
+  "homeAddress": "Av. Central 45, Escritório 3"
+}

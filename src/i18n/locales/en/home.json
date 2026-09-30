@@ -1,0 +1,39 @@
+{
+  "title": {
+    "homeInfo": "Home Information",
+    "accessCode": "Access Code",
+    "owner": "Responsible User"
+  },
+  "fields": {
+    "name": "Name",
+    "homeType": "Home Type",
+    "address": "Address",
+    "description": "Description",
+    "creationDate": "Creation Date",
+    "email": "Email",
+    "phone": "Phone"
+  },
+  "placeholders": {
+    "empty": "—",
+    "noCode": "——————"
+  },
+  "hints": {
+    "accessCode": "Share this code so other users can join."
+  },
+  "buttons": {
+    "copy": "Copy access code",
+    "deleteHome": "Delete home",
+    "leaveHome": "Leave home"
+  },
+  "status": {
+    "responsible": "Responsible"
+  },
+  "confirm": {
+    "leaveTitle": "Leave this home?",
+    "leave": "Are you sure you want to leave this home?",
+    "deleteTitle": "Delete this home?",
+    "delete": "Delete this home? This action cannot be undone.",
+    "cancel": "Cancel"
+  },
+  "copyLabel": "Copy access code"
+}

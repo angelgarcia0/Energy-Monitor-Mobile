@@ -1,0 +1,57 @@
+{
+  "title": "Mi cuenta",
+  "photoOptions": "Opciones de foto",
+  "addPhoto": "Agregar foto",
+  "viewPhoto": "Ver foto",
+  "delete": "Eliminar",
+  "name": "Nombre",
+  "email": "Correo",
+  "phone": "Teléfono",
+  "noPhone": "No tienes en el momento",
+  "password": "Contraseña",
+  "deleteQuestion": "¿Deseas eliminar tu cuenta?",
+  "deleteAccount": {
+    "title": "¿Eliminar tu cuenta?",
+    "message": "Esta acción es permanente. Perderás el acceso a tus hogares y a tus datos de consumo.",
+    "confirm": "Eliminar",
+    "cancel": "Cancelar"
+  },
+  "breadcrumb": {
+    "home": "Inicio",
+    "current": "Mi cuenta"
+  },
+  "personalData": "Datos personales",
+  "avatarHint": "Toca la foto para ver las opciones",
+  "avatarChangeLabel": "Cambiar foto de perfil",
+  "closePhoto": "Cerrar foto",
+  "edit": "Editar {{label}}",
+  "maskedPassword": "••••••••",
+  "editField": {
+    "nameTitle": "Editar nombre",
+    "emailTitle": "Editar correo",
+    "phoneTitle": "Editar teléfono",
+    "save": "Guardar",
+    "placeholderName": "Ej: Juan Esteban",
+    "placeholderEmail": "Ej: tucorreo@ejemplo.com",
+    "placeholderPhone": "Ej: 3001234567"
+  },
+  "changePassword": {
+    "title": "Cambiar contraseña",
+    "currentLabel": "Contraseña actual",
+    "newLabel": "Nueva contraseña",
+    "confirmLabel": "Confirmar contraseña",
+    "newPlaceholder": "Mínimo 8 caracteres",
+    "confirmPlaceholder": "Repite la nueva contraseña",
+    "save": "Guardar"
+  },
+  "success": {
+    "nameUpdated": "Nombre actualizado",
+    "emailUpdated": "Correo actualizado",
+    "phoneUpdated": "Teléfono actualizado",
+    "phoneRemoved": "Teléfono eliminado",
+    "avatarUpdated": "Foto de perfil actualizada",
+    "avatarRemoved": "Foto de perfil eliminada",
+    "permissionDenied": "Necesitamos permiso de la galería para agregar una foto",
+    "passwordUpdated": "Contraseña actualizada"
+  }
+}

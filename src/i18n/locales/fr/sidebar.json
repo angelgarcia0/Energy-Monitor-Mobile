@@ -1,0 +1,14 @@
+{
+  "home": "Accueil",
+  "homes": "Maisons",
+  "favorites": "Favoris",
+  "notifications": "Notifications",
+  "settings": "Paramètres",
+  "profile": {
+    "myAccount": "Mon compte",
+    "addAccount": "Ajouter un compte",
+    "logout": "Se déconnecter"
+  },
+  "openNav": "Ouvrir le menu de navigation",
+  "noHomes": "Aucun foyer"
+}

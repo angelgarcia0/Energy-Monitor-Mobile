@@ -18,7 +18,7 @@ export function Header({
   title,
   breadcrumbItems,
   onActionPress,
-  actionLabel = "Añadir",
+  actionLabel,
   actionIcon,
   children,
   style,

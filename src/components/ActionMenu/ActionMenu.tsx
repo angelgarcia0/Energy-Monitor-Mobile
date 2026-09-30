@@ -24,6 +24,8 @@ export interface ActionMenuOption {
 export interface ActionMenuProps {
   options: ActionMenuOption[];
   triggerIcon?: IoniconName;
+  /** Texto ya traducido por la pantalla que lo usa. */
+  accessibilityLabel?: string;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -35,6 +37,7 @@ interface Anchor {
 export function ActionMenu({
   options,
   triggerIcon = "add-outline",
+  accessibilityLabel,
   style,
 }: ActionMenuProps) {
   const triggerRef = useRef<View>(null);
@@ -56,7 +59,7 @@ export function ActionMenu({
     <View ref={triggerRef} collapsable={false} style={style}>
       <Pressable
         onPress={open}
-        accessibilityLabel="Abrir menú de acciones"
+        accessibilityLabel={accessibilityLabel}
         style={({ pressed }) => [styles.trigger, pressed && styles.triggerPressed]}
       >
         <Ionicons name={triggerIcon} size={Theme.typography.size.lg} color={Theme.colors.surface} />

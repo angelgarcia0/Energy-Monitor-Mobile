@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Controller, useForm } from "react-hook-form";
 import { Text, View } from "react-native";
 
@@ -23,6 +24,7 @@ export interface JoinHomeModalProps {
 }
 
 export function JoinHomeModal({ visible, onClose, onSubmit }: JoinHomeModalProps) {
+  const { t } = useTranslation("joinHomeModal");
   const {
     control,
     handleSubmit,
@@ -47,14 +49,14 @@ export function JoinHomeModal({ visible, onClose, onSubmit }: JoinHomeModalProps
     <Modal
       visible={visible}
       onRequestClose={handleClose}
-      title="Unirse a hogar"
+      title={t("title")}
       footer={
         <>
           <Button variant="secondary" onPress={handleClose}>
-            Cancelar
+            {t("cancel")}
           </Button>
           <Button variant="primary" onPress={handleSubmit(submit)}>
-            Unirme
+            {t("join")}
           </Button>
         </>
       }
@@ -64,9 +66,7 @@ export function JoinHomeModal({ visible, onClose, onSubmit }: JoinHomeModalProps
           <Ionicons name="key-outline" size={Theme.typography.size.xl} color={Theme.colors.primary} />
         </View>
 
-        <Text style={styles.description}>
-          Ingresa el código alfanumérico que te compartió el responsable del hogar.
-        </Text>
+        <Text style={styles.description}>{t("description")}</Text>
 
         <Controller
           control={control}
@@ -74,11 +74,11 @@ export function JoinHomeModal({ visible, onClose, onSubmit }: JoinHomeModalProps
           render={({ field: { value, onChange, onBlur } }) => (
             <View style={styles.field}>
               <Input
-                label="Código de acceso"
+                label={t("label")}
                 value={value}
                 onChangeText={(text) => onChange(sanitizeJoinCode(text))}
                 onBlur={onBlur}
-                placeholder="Ej: AB12CD34"
+                placeholder={t("placeholder")}
                 maxLength={JOIN_CODE_LENGTH}
                 autoCapitalize="characters"
               />
@@ -90,9 +90,7 @@ export function JoinHomeModal({ visible, onClose, onSubmit }: JoinHomeModalProps
         />
         {errors.code ? <Text style={styles.error}>{errors.code.message}</Text> : null}
 
-        <Text style={styles.hint}>
-          El código tiene 8 caracteres entre letras mayúsculas y números.
-        </Text>
+        <Text style={styles.hint}>{t("hint")}</Text>
       </View>
     </Modal>
   );

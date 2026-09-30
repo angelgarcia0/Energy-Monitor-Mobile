@@ -1,10 +1,17 @@
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 
 import { Card } from "@/components/Card/Card";
 import { Theme } from "@/constants/theme";
 import { styles } from "./HomeCard.styles";
+
+export type HomeTextField =
+  | "name"
+  | "address"
+  | "description"
+  | "userResponsible";
 
 export interface Home {
   id: number;
@@ -16,6 +23,11 @@ export interface Home {
   favorite: boolean;
   homeTypeId?: string;
   otherHomeType?: string;
+  /**
+   * Campos cuyo texto viene del locale y no del usuario. Se guardan como claves
+   * y se resuelven al renderizar para que sigan el idioma activo.
+   */
+  mockFields?: Partial<Record<HomeTextField, string>>;
 }
 
 export interface HomeCardProps {
@@ -33,6 +45,7 @@ export function HomeCard({
   onPress,
   onToggleFavorite,
 }: HomeCardProps) {
+  const { t } = useTranslation("homeCard");
   const [expanded, setExpanded] = useState(false);
 
   const headerColor =
@@ -47,7 +60,7 @@ export function HomeCard({
   return (
     <Pressable
       onPress={() => onPress?.(home)}
-      accessibilityLabel={`Abrir hogar ${home.name}`}
+      accessibilityLabel={t("openHome", { name: home.name })}
     >
       <View style={[styles.header, { backgroundColor: headerColor }]}>
         <View style={styles.headerText}>
@@ -57,7 +70,7 @@ export function HomeCard({
 
         <Pressable
           onPress={() => onToggleFavorite?.(home.id)}
-          accessibilityLabel={favorite ? "Quitar favorito" : "Añadir a favoritos"}
+          accessibilityLabel={favorite ? t("removeFavorite") : t("addFavorite")}
           style={[styles.favoriteButton, favorite && styles.favorited]}
         >
           <Ionicons
@@ -70,18 +83,20 @@ export function HomeCard({
 
       <Card style={styles.body}>
         <Text style={styles.text}>
-          <Text style={styles.label}>Dirección: </Text>
+          <Text style={styles.label}>{t("address")}: </Text>
           {home.address}
         </Text>
 
         <View style={styles.descriptionWrapper}>
           <Text style={styles.text} numberOfLines={!expanded && isLong ? 2 : undefined}>
-            <Text style={styles.label}>Descripción: </Text>
+            <Text style={styles.label}>{t("description")}: </Text>
             {displayText}
           </Text>
           {isLong ? (
             <Pressable onPress={() => setExpanded((prev) => !prev)}>
-              <Text style={styles.toggle}>{expanded ? "Ver menos" : "Ver más"}</Text>
+              <Text style={styles.toggle}>
+                {expanded ? t("showLess") : t("showMore")}
+              </Text>
             </Pressable>
           ) : null}
         </View>

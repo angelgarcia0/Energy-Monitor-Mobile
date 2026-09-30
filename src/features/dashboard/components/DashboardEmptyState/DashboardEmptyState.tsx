@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Image } from "react-native";
 
 import { Button } from "@/components/Button/Button";
@@ -14,6 +15,8 @@ export function DashboardEmptyState({
   onCreateHome,
   onJoinHome,
 }: DashboardEmptyStateProps) {
+  const { t } = useTranslation("emptyState");
+
   return (
     <EmptyState
       variant="full"
@@ -24,14 +27,14 @@ export function DashboardEmptyState({
           resizeMode="contain"
         />
       }
-      title="Añade un hogar para empezar"
+      title={t("title")}
       actions={
         <>
           <Button variant="secondary" onPress={onCreateHome}>
-            Crear hogar
+            {t("createHome")}
           </Button>
           <Button variant="primary" onPress={onJoinHome}>
-            Unirse a hogar
+            {t("joinHome")}
           </Button>
         </>
       }

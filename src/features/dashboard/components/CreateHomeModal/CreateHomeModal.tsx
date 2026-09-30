@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Picker } from "@react-native-picker/picker";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { ScrollView, Text, useWindowDimensions, View } from "react-native";
 
@@ -10,7 +11,7 @@ import { Modal } from "@/components/Modal/Modal";
 import { Theme } from "@/constants/theme";
 import {
   createHomeSchema,
-  HOME_TYPE_OPTIONS,
+  HOME_TYPE_VALUES,
   sanitizeAddress,
   type CreateHomeFormValues,
 } from "../../validation/createHomeSchema";
@@ -31,6 +32,7 @@ const DEFAULT_VALUES: CreateHomeFormValues = {
 };
 
 export function CreateHomeModal({ visible, onClose, onSubmit }: CreateHomeModalProps) {
+  const { t } = useTranslation("createHomeModal");
   const { height } = useWindowDimensions();
   const {
     control,
@@ -57,14 +59,14 @@ export function CreateHomeModal({ visible, onClose, onSubmit }: CreateHomeModalP
     <Modal
       visible={visible}
       onRequestClose={handleClose}
-      title="Crear hogar"
+      title={t("title")}
       footer={
         <>
           <Button variant="secondary" onPress={handleClose}>
-            Cancelar
+            {t("buttons.cancel")}
           </Button>
           <Button variant="primary" onPress={handleSubmit(submit)}>
-            Crear hogar
+            {t("buttons.create")}
           </Button>
         </>
       }
@@ -79,11 +81,11 @@ export function CreateHomeModal({ visible, onClose, onSubmit }: CreateHomeModalP
           name="name"
           render={({ field: { value, onChange, onBlur } }) => (
             <Input
-              label="Nombre del hogar"
+              label={t("fields.name")}
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
-              placeholder="Ej: Mi hogar, Oficina central..."
+              placeholder={t("placeholders.name")}
               maxLength={50}
               autoCapitalize="sentences"
             />
@@ -92,7 +94,7 @@ export function CreateHomeModal({ visible, onClose, onSubmit }: CreateHomeModalP
         {errors.name ? <Text style={styles.error}>{errors.name.message}</Text> : null}
 
         <View style={styles.field}>
-          <Text style={styles.label}>Tipo de hogar</Text>
+          <Text style={styles.label}>{t("fields.type")}</Text>
           <Controller
             control={control}
             name="homeType"
@@ -105,9 +107,9 @@ export function CreateHomeModal({ visible, onClose, onSubmit }: CreateHomeModalP
                   style={styles.picker}
                   dropdownIconColor={Theme.colors.textSecondary}
                 >
-                  <Picker.Item label="Selecciona un tipo..." value="" color={Theme.colors.textSecondary} />
-                  {HOME_TYPE_OPTIONS.map((option) => (
-                    <Picker.Item key={option.value} label={option.label} value={option.value} color={Theme.colors.textPrimary} />
+                  <Picker.Item label={t("placeholders.type")} value="" color={Theme.colors.textSecondary} />
+                  {HOME_TYPE_VALUES.map((option) => (
+                    <Picker.Item key={option} label={t(`homeTypes.${option}`)} value={option} color={Theme.colors.textPrimary} />
                   ))}
                 </Picker>
               </View>
@@ -123,11 +125,11 @@ export function CreateHomeModal({ visible, onClose, onSubmit }: CreateHomeModalP
               name="otherType"
               render={({ field: { value, onChange, onBlur } }) => (
                 <Input
-                  label="¿Cuál?"
+                  label={t("fields.other")}
                   value={value}
                   onChangeText={onChange}
                   onBlur={onBlur}
-                  placeholder="Describe el tipo de hogar..."
+                  placeholder={t("placeholders.other")}
                   maxLength={50}
                   autoCapitalize="sentences"
                 />
@@ -143,17 +145,17 @@ export function CreateHomeModal({ visible, onClose, onSubmit }: CreateHomeModalP
           render={({ field: { value, onChange, onBlur } }) => (
             <View style={styles.field}>
               <Input
-                label="Dirección"
+                label={t("fields.address")}
                 value={value}
                 onChangeText={(text) => onChange(sanitizeAddress(text))}
                 onBlur={onBlur}
-                placeholder="Ej: Calle 45 # 12-34, Bogotá"
+                placeholder={t("placeholders.address")}
                 maxLength={200}
                 autoCapitalize="words"
               />
               <View style={styles.helperRow}>
                 <Text style={styles.examples}>
-                  Ej: Cra. 15 # 93-47, Calle 100 # 15-20, Vereda El Bosque Finca La Esperanza
+                  {t("fields.addressExamples")}
                 </Text>
                 <Text style={styles.counter}>{value.length}/200</Text>
               </View>
@@ -168,11 +170,11 @@ export function CreateHomeModal({ visible, onClose, onSubmit }: CreateHomeModalP
           render={({ field: { value, onChange, onBlur } }) => (
             <View style={styles.field}>
               <Input
-                label="Descripción (opcional)"
+                label={`${t("fields.description")} ${t("fields.optional")}`}
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
-                placeholder="Describe brevemente el hogar..."
+                placeholder={t("placeholders.description")}
                 maxLength={200}
                 multiline
                 autoCapitalize="sentences"

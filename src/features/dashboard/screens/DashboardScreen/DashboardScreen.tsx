@@ -1,6 +1,7 @@
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -18,6 +19,7 @@ import { styles } from "./DashboardScreen.styles";
 export interface DashboardScreenProps {}
 
 export function DashboardScreen(_props: DashboardScreenProps) {
+  const { t } = useTranslation("dashboard");
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const [showCreate, setShowCreate] = useState(false);
@@ -40,11 +42,12 @@ export function DashboardScreen(_props: DashboardScreenProps) {
     <View style={[styles.container, { paddingTop: Math.max(insets.top, Theme.spacing.md) }]}>
       <StatusBar style="auto" />
 
-      <Header title="Inicio" style={styles.header}>
+      <Header title={t("breadcrumb.home")} style={styles.header}>
         <ActionMenu
+          accessibilityLabel={t("actions.openMenu")}
           options={[
-            { label: "Unirse a hogar", icon: "people-outline", onPress: () => setShowJoin(true) },
-            { label: "Crear hogar", icon: "folder-open-outline", onPress: () => setShowCreate(true) },
+            { label: t("actions.joinHome"), icon: "people-outline", onPress: () => setShowJoin(true) },
+            { label: t("actions.createHome"), icon: "folder-open-outline", onPress: () => setShowCreate(true) },
           ]}
         />
       </Header>

@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Controller, useForm } from "react-hook-form";
 import { Text, View } from "react-native";
 
@@ -18,6 +19,7 @@ export interface RecoverPasswordFormProps {
 }
 
 export function RecoverPasswordForm({ onSuccess }: RecoverPasswordFormProps) {
+  const { t } = useTranslation("recoverPassword");
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
 
@@ -45,23 +47,20 @@ export function RecoverPasswordForm({ onSuccess }: RecoverPasswordFormProps) {
   return (
     <Card padding="lg" style={styles.card}>
       <View style={styles.form}>
-        <Text style={styles.title}>Recuperar contraseña</Text>
+        <Text style={styles.title}>{t("title")}</Text>
 
-        <Text style={styles.description}>
-          Te enviaremos un correo con código de verificación de 6 dígitos para
-          poder recuperar tu cuenta. A continuación digita tu correo
-        </Text>
+        <Text style={styles.description}>{t("description")}</Text>
 
         <Controller
           control={control}
           name="email"
           render={({ field: { value, onChange, onBlur } }) => (
             <Input
-              label="Correo electrónico"
+              label={t("emailLabel")}
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
-              placeholder="tucorreo@ejemplo.com"
+              placeholder={t("emailPlaceholder")}
               keyboardType="email-address"
               autoComplete="email"
             />
@@ -78,13 +77,13 @@ export function RecoverPasswordForm({ onSuccess }: RecoverPasswordFormProps) {
           disabled={submitting}
           onPress={handleSubmit(onSubmit)}
         >
-          {submitting ? "Enviando..." : "Enviar código"}
+          {submitting ? t("sending") : t("sendCode")}
         </Button>
 
         <Text style={styles.footer}>
-          Volver a{" "}
+          {t("comeBack")}{" "}
           <Text style={styles.footerLink} onPress={() => router.push("/")}>
-            Inicio de sesión
+            {t("login")}
           </Text>
         </Text>
       </View>

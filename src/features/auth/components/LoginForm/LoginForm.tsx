@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Image, Pressable, Text, View } from "react-native";
 
 import { Button } from "@/components/Button/Button";
@@ -20,6 +21,7 @@ export interface LoginFormProps {
 }
 
 export function LoginForm({ onSuccess }: LoginFormProps) {
+  const { t } = useTranslation("auth");
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
@@ -43,18 +45,18 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
   return (
     <Card padding="lg" style={styles.card}>
       <View style={styles.form}>
-        <Text style={styles.title}>Iniciar sesión</Text>
+        <Text style={styles.title}>{t("login.title")}</Text>
 
         <Controller
           control={control}
           name="email"
           render={({ field: { value, onChange, onBlur } }) => (
             <Input
-              label="Correo electrónico"
+              label={t("login.email")}
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
-              placeholder="tucorreo@ejemplo.com"
+              placeholder={t("login.emailPlaceholder")}
               keyboardType="email-address"
               autoComplete="email"
             />
@@ -69,7 +71,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           name="password"
           render={({ field: { value, onChange, onBlur } }) => (
             <Input
-              label="Contraseña"
+              label={t("login.password")}
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
@@ -104,11 +106,11 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
                 />
               ) : null}
             </View>
-            <Text style={styles.rememberLabel}>Recordar datos</Text>
+            <Text style={styles.rememberLabel}>{t("login.remember")}</Text>
           </Pressable>
 
           <Pressable onPress={() => router.push("/recover-password")}>
-            <Text style={styles.link}>¿Olvidaste tu contraseña?</Text>
+            <Text style={styles.link}>{t("login.forgotPassword")}</Text>
           </Pressable>
         </View>
 
@@ -119,16 +121,16 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
             style={styles.submitButton}
             onPress={handleSubmit(onSubmit)}
           >
-            Ingresar
+            {t("login.submit")}
           </Button>
 
           <View style={styles.divider}>
             <View style={styles.dividerLine} />
-            <Text style={styles.dividerText}>O</Text>
+            <Text style={styles.dividerText}>{t("login.divider")}</Text>
             <View style={styles.dividerLine} />
           </View>
 
-          <Text style={styles.loginWith}>Iniciar usando:</Text>
+          <Text style={styles.loginWith}>{t("login.loginWith")}</Text>
 
           <Button
             variant="secondary"
@@ -144,17 +146,17 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
               console.log("Iniciar sesión con Google: pendiente de implementar")
             }
           >
-            Google
+            {t("login.google")}
           </Button>
         </View>
 
         <Text style={styles.register}>
-          ¿No tienes una cuenta?{" "}
+          {t("login.noAccount")}{" "}
           <Text
             style={styles.registerLink}
             onPress={() => router.push("/register")}
           >
-            Regístrate
+            {t("login.register")}
           </Text>
         </Text>
       </View>

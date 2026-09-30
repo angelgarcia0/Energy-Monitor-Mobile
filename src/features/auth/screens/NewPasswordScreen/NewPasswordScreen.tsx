@@ -4,6 +4,7 @@ import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Theme } from "@/constants/theme";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher/LanguageSwitcher";
 import { AuthBrandHeader } from "../../components/AuthBrandHeader/AuthBrandHeader";
 import { NewPasswordForm } from "../../components/NewPasswordForm/NewPasswordForm";
 import { styles } from "./NewPasswordScreen.styles";
@@ -30,9 +31,14 @@ export function NewPasswordScreen(_props: NewPasswordScreenProps) {
         ]}
         keyboardShouldPersistTaps="handled"
       >
-        <AuthBrandHeader subtitle="Monitorea tu consumo eléctrico en tiempo real" />
+        <AuthBrandHeader />
 
         <NewPasswordForm />
+
+        <LanguageSwitcher
+          variant="light"
+          style={styles.languageSwitcher}
+        />
       </ScrollView>
     </KeyboardAvoidingView>
   );

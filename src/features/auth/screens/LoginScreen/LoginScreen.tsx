@@ -2,10 +2,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import { useLocalSearchParams } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Alert } from "@/components/Alert/Alert";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher/LanguageSwitcher";
 import { Theme } from "@/constants/theme";
 import { AuthBrandHeader } from "../../components/AuthBrandHeader/AuthBrandHeader";
 import { LoginForm } from "../../components/LoginForm/LoginForm";
@@ -14,6 +16,7 @@ import { styles } from "./LoginScreen.styles";
 export interface LoginScreenProps {}
 
 export function LoginScreen(_props: LoginScreenProps) {
+  const { t } = useTranslation("auth");
   const insets = useSafeAreaInsets();
   const { success } = useLocalSearchParams<{ success?: string }>();
 
@@ -34,13 +37,13 @@ export function LoginScreen(_props: LoginScreenProps) {
         ]}
         keyboardShouldPersistTaps="handled"
       >
-        <AuthBrandHeader subtitle="Monitorea tu consumo eléctrico en tiempo real" />
+        <AuthBrandHeader />
 
         {success === "passwordUpdated" ? (
           <Alert
             variant="success"
-            title="Contraseña actualizada"
-            message="Tu contraseña fue cambiada con éxito. Ahora puedes iniciar sesión."
+            title={t("passwordUpdated.title")}
+            message={t("passwordUpdated.message")}
             icon={
               <Ionicons
                 name="checkmark-circle"
@@ -52,6 +55,11 @@ export function LoginScreen(_props: LoginScreenProps) {
         ) : null}
 
         <LoginForm />
+
+        <LanguageSwitcher
+          variant="light"
+          style={styles.languageSwitcher}
+        />
       </ScrollView>
     </KeyboardAvoidingView>
   );

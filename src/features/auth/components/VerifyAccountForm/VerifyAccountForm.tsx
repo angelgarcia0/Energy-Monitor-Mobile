@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Controller, useForm } from "react-hook-form";
 import { Text, View } from "react-native";
 
@@ -18,6 +19,7 @@ export interface VerifyAccountFormProps {
 }
 
 export function VerifyAccountForm({ onSuccess }: VerifyAccountFormProps) {
+  const { t } = useTranslation("auth");
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
 
@@ -49,12 +51,9 @@ export function VerifyAccountForm({ onSuccess }: VerifyAccountFormProps) {
   return (
     <Card padding="lg" style={styles.card}>
       <View style={styles.form}>
-        <Text style={styles.title}>Verificar correo</Text>
+        <Text style={styles.title}>{t("verify.title")}</Text>
 
-        <Text style={styles.description}>
-          Te enviamos un código de 6 dígitos a tu correo. Ingresa el código para
-          verificar tu cuenta.
-        </Text>
+        <Text style={styles.description}>{t("verify.description")}</Text>
 
         <Controller
           control={control}
@@ -76,11 +75,11 @@ export function VerifyAccountForm({ onSuccess }: VerifyAccountFormProps) {
           disabled={!isComplete || submitting}
           onPress={handleSubmit(onSubmit)}
         >
-          {submitting ? "Confirmando..." : "Confirmar código"}
+          {submitting ? t("verify.confirming") : t("verify.confirm")}
         </Button>
 
         <View style={styles.resendBlock}>
-          <Text style={styles.resendText}>¿No te llegó el código?</Text>
+          <Text style={styles.resendText}>{t("verify.notReceived")}</Text>
           <Button
             variant="secondary"
             size="medium"
@@ -89,14 +88,14 @@ export function VerifyAccountForm({ onSuccess }: VerifyAccountFormProps) {
               console.log("Reenviar código: pendiente de implementar")
             }
           >
-            Reenviar código
+            {t("verify.resend")}
           </Button>
         </View>
 
         <Text style={styles.footer}>
-          ¿Ya tienes una cuenta?{" "}
+          {t("register.haveAccount")}{" "}
           <Text style={styles.footerLink} onPress={() => router.navigate("/")}>
-            Inicia sesión
+            {t("register.login")}
           </Text>
         </Text>
       </View>

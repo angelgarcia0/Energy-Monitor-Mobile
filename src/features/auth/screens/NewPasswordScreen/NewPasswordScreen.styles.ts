@@ -12,4 +12,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: Theme.spacing.md,
     gap: Theme.spacing.lg,
   },
+  languageSwitcher: {
+    alignSelf: "center",
+  },
 });

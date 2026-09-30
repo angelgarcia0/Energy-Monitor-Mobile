@@ -4,6 +4,7 @@ import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Theme } from "@/constants/theme";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher/LanguageSwitcher";
 import { AuthBrandHeader } from "../../components/AuthBrandHeader/AuthBrandHeader";
 import { VerifyRecoverPasswordForm } from "../../components/VerifyRecoverPasswordForm/VerifyRecoverPasswordForm";
 import { styles } from "./VerifyRecoverPasswordScreen.styles";
@@ -32,9 +33,14 @@ export function VerifyRecoverPasswordScreen(
         ]}
         keyboardShouldPersistTaps="handled"
       >
-        <AuthBrandHeader subtitle="Monitorea tu consumo eléctrico en tiempo real" />
+        <AuthBrandHeader />
 
         <VerifyRecoverPasswordForm />
+
+        <LanguageSwitcher
+          variant="light"
+          style={styles.languageSwitcher}
+        />
       </ScrollView>
     </KeyboardAvoidingView>
   );

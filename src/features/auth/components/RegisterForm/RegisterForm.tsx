@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Image, Pressable, Text, View } from "react-native";
 
 import { Button } from "@/components/Button/Button";
@@ -20,6 +21,7 @@ export interface RegisterFormProps {
 }
 
 export function RegisterForm({ onSuccess }: RegisterFormProps) {
+  const { t } = useTranslation("auth");
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
@@ -50,18 +52,18 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
   return (
     <Card padding="lg" style={styles.card}>
       <View style={styles.form}>
-        <Text style={styles.title}>Registro</Text>
+        <Text style={styles.title}>{t("register.title")}</Text>
 
         <Controller
           control={control}
           name="name"
           render={({ field: { value, onChange, onBlur } }) => (
             <Input
-              label="Nombre"
+              label={t("register.name")}
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
-              placeholder="Tu nombre"
+              placeholder={t("register.namePlaceholder")}
               autoComplete="name"
             />
           )}
@@ -75,11 +77,11 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           name="email"
           render={({ field: { value, onChange, onBlur } }) => (
             <Input
-              label="Correo electrónico"
+              label={t("register.email")}
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
-              placeholder="tucorreo@ejemplo.com"
+              placeholder={t("register.emailPlaceholder")}
               keyboardType="email-address"
               autoComplete="email"
             />
@@ -94,7 +96,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           name="password"
           render={({ field: { value, onChange, onBlur } }) => (
             <Input
-              label="Contraseña"
+              label={t("register.password")}
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
@@ -120,7 +122,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           name="repeatPassword"
           render={({ field: { value, onChange, onBlur } }) => (
             <Input
-              label="Repetir contraseña"
+              label={t("register.repeatPassword")}
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
@@ -160,16 +162,16 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
               </Pressable>
 
               <Text style={styles.termsText}>
-                {"Estoy de acuerdo con los "}
+                {t("register.termsPrefix")}{" "}
                 <Text
                   style={styles.termsLink}
                   onPress={() =>
                     console.log("Términos de uso: pendiente de implementar")
                   }
                 >
-                  Términos de uso
+                  {t("register.terms")}
                 </Text>
-                {" y la "}
+                {t("register.termsJoin")}{" "}
                 <Text
                   style={styles.termsLink}
                   onPress={() =>
@@ -178,7 +180,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                     )
                   }
                 >
-                  Política de privacidad
+                  {t("register.privacy")}
                 </Text>
               </Text>
             </View>
@@ -195,16 +197,16 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
             style={styles.submitButton}
             onPress={handleSubmit(onSubmit)}
           >
-            Registrarse
+            {t("register.submit")}
           </Button>
 
           <View style={styles.divider}>
             <View style={styles.dividerLine} />
-            <Text style={styles.dividerText}>O</Text>
+            <Text style={styles.dividerText}>{t("register.divider")}</Text>
             <View style={styles.dividerLine} />
           </View>
 
-          <Text style={styles.loginWith}>Registrarse usando:</Text>
+          <Text style={styles.loginWith}>{t("register.registerWith")}</Text>
 
           <Button
             variant="secondary"
@@ -220,17 +222,17 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
               console.log("Registrarse con Google: pendiente de implementar")
             }
           >
-            Google
+            {t("register.google")}
           </Button>
         </View>
 
         <Text style={styles.register}>
-          ¿Ya tienes una cuenta?{" "}
+          {t("register.haveAccount")}{" "}
           <Text
             style={styles.registerLink}
             onPress={() => router.push("/")}
           >
-            Inicia sesión
+            {t("register.login")}
           </Text>
         </Text>
       </View>

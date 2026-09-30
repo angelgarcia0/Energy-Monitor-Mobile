@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Controller, useForm } from "react-hook-form";
 import { Text, View } from "react-native";
 
@@ -20,6 +21,7 @@ export interface NewPasswordFormProps {
 }
 
 export function NewPasswordForm({ onSuccess }: NewPasswordFormProps) {
+  const { t } = useTranslation("auth");
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
@@ -49,14 +51,14 @@ export function NewPasswordForm({ onSuccess }: NewPasswordFormProps) {
   return (
     <Card padding="lg" style={styles.card}>
       <View style={styles.form}>
-        <Text style={styles.title}>Nueva contraseña</Text>
+        <Text style={styles.title}>{t("newPassword.title")}</Text>
 
         <Controller
           control={control}
           name="password"
           render={({ field: { value, onChange, onBlur } }) => (
             <Input
-              label="Nueva contraseña"
+              label={t("newPassword.password")}
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
@@ -82,7 +84,7 @@ export function NewPasswordForm({ onSuccess }: NewPasswordFormProps) {
           name="repeatPassword"
           render={({ field: { value, onChange, onBlur } }) => (
             <Input
-              label="Repetir contraseña"
+              label={t("newPassword.repeatPassword")}
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
@@ -110,7 +112,7 @@ export function NewPasswordForm({ onSuccess }: NewPasswordFormProps) {
           disabled={submitting}
           onPress={handleSubmit(onSubmit)}
         >
-          {submitting ? "Guardando..." : "Guardar contraseña"}
+          {submitting ? t("newPassword.saving") : t("newPassword.save")}
         </Button>
       </View>
     </Card>

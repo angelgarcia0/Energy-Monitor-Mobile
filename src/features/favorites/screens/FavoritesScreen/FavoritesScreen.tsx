@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter, type Href } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -16,6 +17,7 @@ import {
 import { styles } from "./FavoritesScreen.styles";
 
 export function FavoritesScreen() {
+  const { t } = useTranslation("favorites");
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { homes, toggleFavorite } = useHomes();
@@ -39,8 +41,11 @@ export function FavoritesScreen() {
 
       <Header
         breadcrumbItems={[
-          { label: "Inicio", onPress: () => router.push("/dashboard" as Href) },
-          { label: "Favoritos" },
+          {
+            label: t("favorites.breadcrumb.home"),
+            onPress: () => router.push("/dashboard" as Href),
+          },
+          { label: t("favorites.breadcrumb.current") },
         ]}
         style={styles.header}
       />
@@ -50,11 +55,8 @@ export function FavoritesScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.hero}>
-          <Text style={styles.title}>Favoritos</Text>
-          <Text style={styles.subtitle}>
-            Tus hogares marcados como favoritos aparecen aquí para que los
-            encuentres de forma rápida.
-          </Text>
+          <Text style={styles.title}>{t("favorites.title")}</Text>
+          <Text style={styles.subtitle}>{t("favorites.subtitle")}</Text>
         </View>
 
         <View style={styles.favoritesCard}>
@@ -80,8 +82,8 @@ export function FavoritesScreen() {
                   color={Theme.colors.border}
                 />
               }
-              title="Sin favoritos aún"
-              description="Marca el corazón en cualquier hogar para verlo aquí."
+              title={t("favorites.empty.title")}
+              description={t("favorites.empty.description")}
               style={styles.emptyState}
             />
           )}

@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter, type Href } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -17,29 +18,14 @@ import { styles } from "./NotificationsScreen.styles";
 
 type NotificationsTab = "all" | "alerts" | "recommendations";
 
-const TABS: { id: NotificationsTab; label: string }[] = [
-  { id: "all", label: "Todas" },
-  { id: "alerts", label: "Alertas" },
-  { id: "recommendations", label: "Recomendaciones" },
+const TABS: { id: NotificationsTab }[] = [
+  { id: "all" },
+  { id: "alerts" },
+  { id: "recommendations" },
 ];
 
-const EMPTY_CONTENT: Record<NotificationsTab, { title: string; description: string }> = {
-  all: {
-    title: "Sin notificaciones",
-    description:
-      "Cuando el sistema detecte algo relevante en tus hogares, lo verás aquí.",
-  },
-  alerts: {
-    title: "Sin alertas activas",
-    description: "No hay alertas pendientes por revisar en este momento.",
-  },
-  recommendations: {
-    title: "Sin recomendaciones",
-    description: "Aún no hay recomendaciones generadas para tus hogares.",
-  },
-};
-
 export function NotificationsScreen() {
+  const { t, i18n } = useTranslation("notifications");
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const [alerts] = useState(INITIAL_ALERTS);
@@ -50,7 +36,7 @@ export function NotificationsScreen() {
 
   const formatDate = (isoDate: string) => {
     try {
-      return new Intl.DateTimeFormat("es", {
+      return new Intl.DateTimeFormat(i18n.resolvedLanguage ?? i18n.language, {
         day: "2-digit",
         month: "short",
         hour: "2-digit",
@@ -95,8 +81,6 @@ export function NotificationsScreen() {
           )
         : combinedList;
 
-  const empty = EMPTY_CONTENT[activeTab];
-
   return (
     <View
       style={[
@@ -108,8 +92,11 @@ export function NotificationsScreen() {
 
       <Header
         breadcrumbItems={[
-          { label: "Inicio", onPress: () => router.push("/dashboard" as Href) },
-          { label: "Notificaciones" },
+          {
+            label: t("breadcrumb.home"),
+            onPress: () => router.push("/dashboard" as Href),
+          },
+          { label: t("breadcrumb.current") },
         ]}
         style={styles.header}
       />
@@ -119,11 +106,8 @@ export function NotificationsScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.hero}>
-          <Text style={styles.title}>Notificaciones</Text>
-          <Text style={styles.subtitle}>
-            Alertas y recomendaciones generadas a partir del consumo de tus
-            hogares.
-          </Text>
+          <Text style={styles.title}>{t("title")}</Text>
+          <Text style={styles.subtitle}>{t("subtitle")}</Text>
         </View>
 
         <View style={styles.panel}>
@@ -152,7 +136,7 @@ export function NotificationsScreen() {
                       ]}
                       numberOfLines={1}
                     >
-                      {tab.label}
+                      {t(`tabs.${tab.id}`)}
                     </Text>
                     {count > 0 ? (
                       <View style={styles.tabCount}>
@@ -168,7 +152,7 @@ export function NotificationsScreen() {
               <Pressable
                 onPress={handleMarkAllRead}
                 accessibilityRole="button"
-                accessibilityLabel="Marcar todas como leídas"
+                accessibilityLabel={t("actions.markAllRead")}
                 style={styles.markAllButton}
               >
                 <Ionicons
@@ -177,7 +161,7 @@ export function NotificationsScreen() {
                   color={Theme.colors.primary}
                 />
                 <Text style={styles.markAllLabel}>
-                  Marcar todas como leídas
+                  {t("actions.markAllRead")}
                 </Text>
               </Pressable>
             ) : null}
@@ -192,8 +176,8 @@ export function NotificationsScreen() {
                   color={Theme.colors.border}
                 />
               }
-              title={empty.title}
-              description={empty.description}
+              title={t(`empty.${activeTab}.title`)}
+              description={t(`empty.${activeTab}.description`)}
               style={styles.emptyState}
             />
           ) : (

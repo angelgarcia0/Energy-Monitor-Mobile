@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 
 import { Theme } from "@/constants/theme";
@@ -22,7 +23,10 @@ export interface AlertRowProps {
 }
 
 export function AlertRow({ alert, formatDate }: AlertRowProps) {
+  const { t } = useTranslation("notifications");
   const critical = alert.severity === "critical";
+  const title = t(`${alert.titleKey}`, { home: alert.home });
+  const message = t(`${alert.messageKey}`, { home: alert.home });
 
   return (
     <View style={[styles.row, alert.resolved && styles.rowMuted]}>
@@ -41,18 +45,18 @@ export function AlertRow({ alert, formatDate }: AlertRowProps) {
 
       <View style={styles.body}>
         <View style={styles.top}>
-          <Text style={styles.title}>{alert.title}</Text>
+          <Text style={styles.title}>{title}</Text>
           <Text
             style={[
               styles.badge,
               alert.resolved ? styles.badgeResolved : styles.badgeActive,
             ]}
           >
-            {alert.resolved ? "Resuelta" : "Activa"}
+            {alert.resolved ? t("status.resolved") : t("status.active")}
           </Text>
         </View>
 
-        <Text style={styles.message}>{alert.message}</Text>
+        <Text style={styles.message}>{message}</Text>
 
         <View style={styles.meta}>
           <Text style={styles.metaText}>{alert.home}</Text>
@@ -75,6 +79,10 @@ export function RecommendationRow({
   formatDate,
   onMarkRead,
 }: RecommendationRowProps) {
+  const { t } = useTranslation("notifications");
+  const title = t(recommendation.titleKey, { home: recommendation.home });
+  const message = t(recommendation.messageKey, { home: recommendation.home });
+
   return (
     <View style={[styles.row, recommendation.read && styles.rowMuted]}>
       <View style={[styles.icon, styles.iconInfo]}>
@@ -87,18 +95,18 @@ export function RecommendationRow({
 
       <View style={styles.body}>
         <View style={styles.top}>
-          <Text style={styles.title}>{recommendation.title}</Text>
+          <Text style={styles.title}>{title}</Text>
           <Text
             style={[
               styles.badge,
               recommendation.read ? styles.badgeRead : styles.badgeNew,
             ]}
           >
-            {recommendation.read ? "Leída" : "Nueva"}
+            {recommendation.read ? t("status.read") : t("status.new")}
           </Text>
         </View>
 
-        <Text style={styles.message}>{recommendation.message}</Text>
+        <Text style={styles.message}>{message}</Text>
 
         <View style={styles.meta}>
           <Text style={styles.metaText}>{recommendation.home}</Text>
@@ -110,7 +118,7 @@ export function RecommendationRow({
           <Pressable
             onPress={() => onMarkRead(recommendation.id)}
             accessibilityRole="button"
-            accessibilityLabel={`Marcar leída: ${recommendation.title}`}
+            accessibilityLabel={t("markReadLabel", { title })}
             style={styles.markReadButton}
           >
             <Ionicons
@@ -118,7 +126,7 @@ export function RecommendationRow({
               size={Theme.typography.size.sm}
               color={Theme.colors.primary}
             />
-            <Text style={styles.markReadLabel}>Marcar leída</Text>
+            <Text style={styles.markReadLabel}>{t("actions.markRead")}</Text>
           </Pressable>
         ) : null}
       </View>

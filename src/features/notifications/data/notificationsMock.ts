@@ -6,8 +6,8 @@ export interface AlertItem {
   kind: "alert";
   type: AlertType;
   severity: AlertSeverity;
-  title: string;
-  message: string;
+  titleKey: string;
+  messageKey: string;
   home: string;
   date: string;
   resolved: boolean;
@@ -16,8 +16,8 @@ export interface AlertItem {
 export interface RecommendationItem {
   id: string;
   kind: "recommendation";
-  title: string;
-  message: string;
+  titleKey: string;
+  messageKey: string;
   home: string;
   date: string;
   read: boolean;
@@ -25,15 +25,18 @@ export interface RecommendationItem {
 
 export type NotificationItem = AlertItem | RecommendationItem;
 
+/**
+ * Las alertas y recomendaciones guardan la key del locale en vez del texto ya
+ * escrito, para que el contenido se traduzca junto con la pantalla.
+ */
 export const INITIAL_ALERTS: AlertItem[] = [
   {
     id: "a1",
     kind: "alert",
     type: "threshold",
     severity: "critical",
-    title: "Límite diario superado",
-    message:
-      'El hogar "Casa Principal" superó el límite diario de consumo configurado.',
+    titleKey: "threshold.dailyExceeded.title",
+    messageKey: "threshold.dailyExceeded.message",
     home: "Casa Principal",
     date: "2026-07-07T09:12:00",
     resolved: false,
@@ -43,9 +46,8 @@ export const INITIAL_ALERTS: AlertItem[] = [
     kind: "alert",
     type: "connectivity",
     severity: "warning",
-    title: "Dispositivo desconectado",
-    message:
-      'Un dispositivo de "Casa Principal" dejó de reportar datos de consumo. Verifica su conexión WiFi.',
+    titleKey: "connectivity.deviceOffline.title",
+    messageKey: "connectivity.deviceOffline.message",
     home: "Casa Principal",
     date: "2026-07-06T22:40:00",
     resolved: false,
@@ -55,9 +57,8 @@ export const INITIAL_ALERTS: AlertItem[] = [
     kind: "alert",
     type: "threshold",
     severity: "warning",
-    title: "Cerca del límite mensual",
-    message:
-      'El hogar "Oficina Norte" está cerca de alcanzar el límite mensual de consumo configurado.',
+    titleKey: "threshold.monthlyApproaching.title",
+    messageKey: "threshold.monthlyApproaching.message",
     home: "Oficina Norte",
     date: "2026-07-05T18:05:00",
     resolved: true,
@@ -68,9 +69,8 @@ export const INITIAL_RECOMMENDATIONS: RecommendationItem[] = [
   {
     id: "r1",
     kind: "recommendation",
-    title: "Mueve consumo fuera de horas pico",
-    message:
-      'Traslada el uso de tus equipos en "Casa Principal" a horas de menor demanda para ahorrar energía y reducir tu factura.',
+    titleKey: "recommendation.shiftUsageOffPeak.title",
+    messageKey: "recommendation.shiftUsageOffPeak.message",
     home: "Casa Principal",
     date: "2026-07-07T08:00:00",
     read: false,
@@ -78,9 +78,8 @@ export const INITIAL_RECOMMENDATIONS: RecommendationItem[] = [
   {
     id: "r2",
     kind: "recommendation",
-    title: "Reduce el consumo en standby",
-    message:
-      'Desconecta en "Oficina Norte" los dispositivos que no uses; el consumo en standby se acumula.',
+    titleKey: "recommendation.reduceStandby.title",
+    messageKey: "recommendation.reduceStandby.message",
     home: "Oficina Norte",
     date: "2026-07-04T12:00:00",
     read: false,
@@ -88,9 +87,8 @@ export const INITIAL_RECOMMENDATIONS: RecommendationItem[] = [
   {
     id: "r3",
     kind: "recommendation",
-    title: "Programa un mantenimiento",
-    message:
-      'Algunos equipos de "Casa Principal" muestran un consumo superior al habitual. Un mantenimiento puede mejorar su eficiencia.',
+    titleKey: "recommendation.scheduleMaintenance.title",
+    messageKey: "recommendation.scheduleMaintenance.message",
     home: "Casa Principal",
     date: "2026-07-01T09:00:00",
     read: true,
@@ -98,9 +96,8 @@ export const INITIAL_RECOMMENDATIONS: RecommendationItem[] = [
   {
     id: "r4",
     kind: "recommendation",
-    title: "Considera renovar un electrodoméstico",
-    message:
-      'Un electrodoméstico de "Oficina Norte" consume mucho más que un modelo eficiente actual. Renovarlo podría reducir tu factura.',
+    titleKey: "recommendation.upgradeAppliance.title",
+    messageKey: "recommendation.upgradeAppliance.message",
     home: "Oficina Norte",
     date: "2026-06-28T10:00:00",
     read: true,

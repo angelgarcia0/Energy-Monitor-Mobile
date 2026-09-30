@@ -1,11 +1,15 @@
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
+import { Button } from "@/components/Button/Button";
 import { Theme } from "@/constants/theme";
 import { useHomes } from "@/context/HomeContext";
 import { HomeDetailScreen } from "@/features/homes/screens/HomeDetailScreen/HomeDetailScreen";
 
 export default function HomeDetail() {
+  const { t } = useTranslation("homeNotFound");
+  const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { homes } = useHomes();
 
@@ -13,8 +17,40 @@ export default function HomeDetail() {
 
   if (!home) {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: Theme.colors.background }}>
-        <Text>Hogar no encontrado</Text>
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          gap: Theme.spacing.md,
+          padding: Theme.spacing.lg,
+          backgroundColor: Theme.colors.background,
+        }}
+      >
+        <Text
+          style={{
+            fontFamily: Theme.typography.fontPrimary,
+            fontSize: Theme.typography.size.lg,
+            fontWeight: Theme.typography.weight.bold,
+            color: Theme.colors.textPrimary,
+            textAlign: "center",
+          }}
+        >
+          {t("title")}
+        </Text>
+        <Text
+          style={{
+            fontFamily: Theme.typography.fontPrimary,
+            fontSize: Theme.typography.size.sm,
+            color: Theme.colors.textSecondary,
+            textAlign: "center",
+          }}
+        >
+          {t("description")}
+        </Text>
+        <Button onPress={() => router.replace("/dashboard")}>
+          {t("backToDashboard")}
+        </Button>
       </View>
     );
   }

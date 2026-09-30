@@ -6,8 +6,12 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { useTranslation } from "react-i18next";
 
-import type { Home } from "@/features/dashboard/components/HomeCard/HomeCard";
+import type {
+  Home,
+  HomeTextField,
+} from "@/features/dashboard/components/HomeCard/HomeCard";
 import type { CreateHomeFormValues } from "@/features/dashboard/validation/createHomeSchema";
 
 export interface HomeContextValue {
@@ -26,14 +30,35 @@ export interface HomeProviderProps {
 }
 
 export function HomeProvider({ children }: HomeProviderProps) {
-  const [homes, setHomes] = useState<Home[]>([]);
+  const { t } = useTranslation();
+  const [storedHomes, setStoredHomes] = useState<Home[]>([]);
+
+  /**
+   * Los hogares de ejemplo guardan claves, no textos: al cambiar de idioma se
+   * vuelven a resolver aquí. Los datos que escribe el usuario (nombre, dirección)
+   * se guardan tal cual y nunca se traducen.
+   */
+  const homes = useMemo<Home[]>(
+    () =>
+      storedHomes.map((home) => {
+        if (!home.mockFields) return home;
+
+        const resolved: Home = { ...home };
+        (Object.keys(home.mockFields) as HomeTextField[]).forEach((field) => {
+          const key = home.mockFields?.[field];
+          if (key) resolved[field] = t(key);
+        });
+        return resolved;
+      }),
+    [storedHomes, t],
+  );
 
   const addHome = useCallback((home: Home) => {
-    setHomes((currentHomes) => [...currentHomes, home]);
+    setStoredHomes((currentHomes) => [...currentHomes, home]);
   }, []);
 
   const toggleFavorite = useCallback((id: number) => {
-    setHomes((currentHomes) =>
+    setStoredHomes((currentHomes) =>
       currentHomes.map((home) =>
         home.id === id ? { ...home, favorite: !home.favorite } : home,
       ),
@@ -41,7 +66,7 @@ export function HomeProvider({ children }: HomeProviderProps) {
   }, []);
 
   const addOwnedHome = useCallback((values: CreateHomeFormValues) => {
-    setHomes((prev) => [
+    setStoredHomes((prev) => [
       ...prev,
       {
         id: Date.now(),
@@ -50,24 +75,31 @@ export function HomeProvider({ children }: HomeProviderProps) {
         description: values.description,
         homeTypeId: values.homeType,
         otherHomeType: values.otherType,
-        userResponsible: "Tú",
+        userResponsible: "",
         variant: "owned",
         favorite: false,
+        mockFields: { userResponsible: "dashboard:home.you" },
       },
     ]);
   }, []);
 
   const addJoinedHome = useCallback(() => {
-    setHomes((prev) => [
+    setStoredHomes((prev) => [
       ...prev,
       {
         id: Date.now(),
-        name: "Hogar unido",
-        userResponsible: "Responsable del hogar",
-        address: "Av. Central 45, Oficina 3",
-        description: "Hogar al que te has unido como usuario regular.",
+        name: "",
+        address: "",
+        description: "",
+        userResponsible: "",
         variant: "joined",
         favorite: false,
+        mockFields: {
+          name: "dashboard:home.joinedName",
+          userResponsible: "dashboard:home.responsible",
+          address: "dashboard:homeAddress",
+          description: "dashboard:home.joinedDescription",
+        },
       },
     ]);
   }, []);
@@ -76,7 +108,7 @@ export function HomeProvider({ children }: HomeProviderProps) {
   // (dueño) como para "salirme del hogar" (no dueño): en ambos casos el hogar
   // deja de mostrarse en Dashboard y Sidebar.
   const removeHome = useCallback((id: number) => {
-    setHomes((prev) => prev.filter((home) => home.id !== id));
+    setStoredHomes((prev) => prev.filter((home) => home.id !== id));
   }, []);
 
   const value = useMemo(

@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { usePathname, useRouter } from "expo-router";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 
 import { Theme } from "@/constants/theme";
@@ -12,6 +13,7 @@ export interface NavHomesProps {
 }
 
 export function NavHomes({ onNavigate }: NavHomesProps) {
+  const { t } = useTranslation("sidebar");
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -38,7 +40,7 @@ export function NavHomes({ onNavigate }: NavHomesProps) {
           color={active ? Theme.colors.surface : "rgba(255, 255, 255, 0.8)"}
         />
         <Text style={[styles.navLabel, active && styles.navLabelActive]}>
-          Hogares
+          {t("homes")}
         </Text>
         <View style={styles.homesChevron}>
           <Ionicons
@@ -52,7 +54,7 @@ export function NavHomes({ onNavigate }: NavHomesProps) {
       {open ? (
         <View style={styles.homesList}>
           {homes.length === 0 ? (
-            <Text style={styles.noHomes}>Sin hogares</Text>
+            <Text style={styles.noHomes}>{t("noHomes")}</Text>
           ) : (
             homes.map((home) => {
               const selected = pathname === `/home/${home.id}`;

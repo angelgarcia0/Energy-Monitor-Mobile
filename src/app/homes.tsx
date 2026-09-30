@@ -1,16 +1,17 @@
 import { StatusBar } from "expo-status-bar";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
 
 import { Theme } from "@/constants/theme";
 
 export default function HomesScreen() {
+  const { t } = useTranslation("homes");
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <Text style={styles.title}>Hogares (placeholder)</Text>
-      <Text style={styles.subtitle}>
-        Pantalla temporal de navegación desde el Sidebar.
-      </Text>
+      <Text style={styles.title}>{t("placeholder.title")}</Text>
+      <Text style={styles.subtitle}>{t("placeholder.description")}</Text>
     </View>
   );
 }

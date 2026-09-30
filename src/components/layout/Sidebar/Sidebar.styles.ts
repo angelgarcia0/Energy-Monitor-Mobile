@@ -61,6 +61,7 @@ export const styles = StyleSheet.create({
     height: LOGO_SIZE,
   },
   headerTitle: {
+    flexShrink: 1,
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.sm,
     fontWeight: Theme.typography.weight.bold,

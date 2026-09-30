@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Controller, useForm } from "react-hook-form";
 import {
   KeyboardAvoidingView,
@@ -34,6 +35,7 @@ export function ChangePasswordModal({
   onClose,
   onSubmit,
 }: ChangePasswordModalProps) {
+  const { t } = useTranslation("account");
   const { height } = useWindowDimensions();
   const [showPasswords, setShowPasswords] = useState(false);
 
@@ -72,13 +74,15 @@ export function ChangePasswordModal({
     <Modal
       visible={visible}
       onRequestClose={handleClose}
-      title="Cambiar contraseña"
+      title={t("changePassword.title")}
       footer={
         <>
           <Button variant="secondary" onPress={handleClose}>
-            Cancelar
+            {t("deleteAccount.cancel")}
           </Button>
-          <Button onPress={handleSubmit(submit)}>Guardar</Button>
+          <Button onPress={handleSubmit(submit)}>
+            {t("changePassword.save")}
+          </Button>
         </>
       }
     >
@@ -95,7 +99,7 @@ export function ChangePasswordModal({
             name="currentPassword"
             render={({ field: { value, onChange, onBlur } }) => (
               <Input
-                label="Contraseña actual"
+                label={t("changePassword.currentLabel")}
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
@@ -115,11 +119,11 @@ export function ChangePasswordModal({
             name="newPassword"
             render={({ field: { value, onChange, onBlur } }) => (
               <Input
-                label="Nueva contraseña"
+                label={t("changePassword.newLabel")}
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
-                placeholder="Mínimo 8 caracteres"
+                placeholder={t("changePassword.newPlaceholder")}
                 secureTextEntry={!showPasswords}
               />
             )}
@@ -133,11 +137,11 @@ export function ChangePasswordModal({
             name="confirmPassword"
             render={({ field: { value, onChange, onBlur } }) => (
               <Input
-                label="Confirmar contraseña"
+                label={t("changePassword.confirmLabel")}
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
-                placeholder="Repite la nueva contraseña"
+                placeholder={t("changePassword.confirmPlaceholder")}
                 secureTextEntry={!showPasswords}
               />
             )}

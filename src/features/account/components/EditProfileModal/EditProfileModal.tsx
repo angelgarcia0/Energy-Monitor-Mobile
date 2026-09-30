@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Controller, useForm } from "react-hook-form";
 import {
   KeyboardAvoidingView,
@@ -37,34 +38,34 @@ interface FormValues {
 const FIELD_CONFIG: Record<
   EditableField,
   {
-    title: string;
-    label: string;
-    placeholder: string;
+    titleKey: string;
+    labelKey: string;
+    placeholderKey: string;
     keyboardType: "default" | "email-address" | "phone-pad";
     autoCapitalize: "none" | "sentences" | "words";
     schema: z.ZodObject<{ value: z.ZodString }>;
   }
 > = {
   name: {
-    title: "Editar nombre",
-    label: "Nombre",
-    placeholder: "Ej: Juan Esteban",
+    titleKey: "editField.nameTitle",
+    labelKey: "name",
+    placeholderKey: "editField.placeholderName",
     keyboardType: "default",
     autoCapitalize: "words",
     schema: z.object({ value: accountNameSchema.shape.name }),
   },
   email: {
-    title: "Editar correo",
-    label: "Correo",
-    placeholder: "Ej: tucorreo@ejemplo.com",
+    titleKey: "editField.emailTitle",
+    labelKey: "email",
+    placeholderKey: "editField.placeholderEmail",
     keyboardType: "email-address",
     autoCapitalize: "none",
     schema: z.object({ value: accountEmailSchema.shape.email }),
   },
   phone: {
-    title: "Editar teléfono",
-    label: "Teléfono",
-    placeholder: "Ej: 3001234567",
+    titleKey: "editField.phoneTitle",
+    labelKey: "phone",
+    placeholderKey: "editField.placeholderPhone",
     keyboardType: "phone-pad",
     autoCapitalize: "none",
     schema: z.object({ value: accountPhoneSchema.shape.phone }),
@@ -78,6 +79,7 @@ export function EditProfileModal({
   onClose,
   onSubmit,
 }: EditProfileModalProps) {
+  const { t } = useTranslation("account");
   const { height } = useWindowDimensions();
   const config = FIELD_CONFIG[field];
 
@@ -106,13 +108,15 @@ export function EditProfileModal({
     <Modal
       visible={visible}
       onRequestClose={onClose}
-      title={config.title}
+      title={t(config.titleKey)}
       footer={
         <>
           <Button variant="secondary" onPress={onClose}>
-            Cancelar
+            {t("deleteAccount.cancel")}
           </Button>
-          <Button onPress={handleSubmit(submit)}>Guardar</Button>
+          <Button onPress={handleSubmit(submit)}>
+            {t("editField.save")}
+          </Button>
         </>
       }
     >
@@ -128,11 +132,11 @@ export function EditProfileModal({
             name="value"
             render={({ field: { value, onChange, onBlur } }) => (
               <Input
-                label={config.label}
+                label={t(config.labelKey)}
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
-                placeholder={config.placeholder}
+                placeholder={t(config.placeholderKey)}
                 keyboardType={config.keyboardType}
                 autoCapitalize={config.autoCapitalize}
                 autoComplete={field === "email" ? "email" : "off"}

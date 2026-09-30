@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Image, Modal, Pressable, Text, View } from "react-native";
 
 import { Theme } from "@/constants/theme";
@@ -21,6 +22,7 @@ export function AvatarSection({
   onRemoveAvatar,
   onPermissionDenied,
 }: AvatarSectionProps) {
+  const { t } = useTranslation("account");
   const [optionsOpen, setOptionsOpen] = useState(false);
   const [viewerOpen, setViewerOpen] = useState(false);
 
@@ -62,7 +64,7 @@ export function AvatarSection({
       <Pressable
         onPress={() => setOptionsOpen(true)}
         accessibilityRole="button"
-        accessibilityLabel="Cambiar foto de perfil"
+        accessibilityLabel={t("avatarChangeLabel")}
         style={({ pressed }) => [styles.avatar, pressed && styles.avatarPressed]}
       >
         {avatarUri ? (
@@ -83,7 +85,7 @@ export function AvatarSection({
         </View>
       </Pressable>
 
-      <Text style={styles.hint}>Toca la foto para ver las opciones</Text>
+      <Text style={styles.hint}>{t("avatarHint")}</Text>
 
       <Modal
         visible={optionsOpen}
@@ -97,18 +99,18 @@ export function AvatarSection({
 
             <OptionRow
               icon="image-outline"
-              label="Agregar foto"
+              label={t("addPhoto")}
               onPress={handlePick}
             />
             <OptionRow
               icon="eye-outline"
-              label="Ver foto"
+              label={t("viewPhoto")}
               onPress={handleView}
               disabled={!avatarUri}
             />
             <OptionRow
               icon="trash-outline"
-              label="Eliminar"
+              label={t("delete")}
               onPress={handleRemove}
               disabled={!avatarUri}
               danger
@@ -126,7 +128,7 @@ export function AvatarSection({
           <Pressable
             onPress={() => setViewerOpen(false)}
             accessibilityRole="button"
-            accessibilityLabel="Cerrar foto"
+            accessibilityLabel={t("closePhoto")}
             style={styles.viewerClose}
           >
             <Ionicons

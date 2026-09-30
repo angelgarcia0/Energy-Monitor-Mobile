@@ -1,13 +1,21 @@
 import { z } from "zod";
 
+import { tError, tMessage } from "@/validation/i18nMessage";
 import { passwordField } from "@/features/auth/validation/passwordRules";
+
+/**
+ * Los mensajes se resuelven con un error map función de Zod, no con strings:
+ * así se evalúan en cada validación y reflejan el idioma activo. La lógica de
+ * las reglas queda intacta; solo cambia de dónde sale el texto.
+ */
+const message = tMessage;
 
 export const accountNameSchema = z.object({
   name: z
     .string()
     .trim()
-    .min(1, "El campo es obligatorio")
-    .min(2, "Mínimo 2 caracteres"),
+    .min(1, message("validations:errors.required"))
+    .min(2, message("validations:errors.nameMin")),
 });
 
 export const accountEmailSchema = z.object({
@@ -15,8 +23,8 @@ export const accountEmailSchema = z.object({
   email: z
     .string()
     .trim()
-    .min(1, "El campo es obligatorio")
-    .email("Correo inválido"),
+    .min(1, message("validations:errors.required"))
+    .email(message("validations:errors.invalidEmail")),
 });
 
 export const accountPhoneSchema = z.object({
@@ -24,21 +32,21 @@ export const accountPhoneSchema = z.object({
   phone: z
     .string()
     .trim()
-    .regex(/^\d*$/, "Solo puedes escribir números")
+    .regex(/^\d*$/, message("validations:errors.phoneDigitsOnly"))
     .refine(
       (value) => value === "" || (value.length >= 7 && value.length <= 15),
-      "Entre 7 y 15 dígitos",
+      message("validations:errors.phoneDigitsRange"),
     ),
 });
 
 export const changePasswordSchema = z
   .object({
-    currentPassword: z.string().min(1, "Ingresa tu contraseña actual"),
+    currentPassword: z.string().min(1, message("validations:errors.currentPasswordRequired")),
     newPassword: passwordField,
-    confirmPassword: z.string().min(1, "Confirma tu nueva contraseña"),
+    confirmPassword: z.string().min(1, message("validations:errors.confirmNewPassword")),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Las contraseñas no coinciden",
+    error: tError("validations:errors.passwordMatch"),
     path: ["confirmPassword"],
   });
 

@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter, type Href } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -21,11 +22,11 @@ import {
 import { ProfileField } from "../../components/ProfileField/ProfileField";
 import { styles } from "./AccountScreen.styles";
 
-const NO_PHONE_LABEL = "No tienes en el momento";
 const MASKED_PASSWORD = "••••••••";
 const SUCCESS_TIMEOUT = 2500;
 
 export function AccountScreen() {
+  const { t } = useTranslation("account");
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { user, updateName, updateEmail, updatePhone, updateAvatar, resetUser } =
@@ -47,19 +48,21 @@ export function AccountScreen() {
   const handleEditSubmit = (field: EditableField, value: string) => {
     if (field === "name") {
       updateName(value);
-      showSuccess("Nombre actualizado");
+      showSuccess(t("success.nameUpdated"));
       return;
     }
 
     if (field === "email") {
       updateEmail(value);
-      showSuccess("Correo actualizado");
+      showSuccess(t("success.emailUpdated"));
       return;
     }
 
     // Vacío = quitar el teléfono.
     updatePhone(value === "" ? null : value);
-    showSuccess(value === "" ? "Teléfono eliminado" : "Teléfono actualizado");
+    showSuccess(
+      value === "" ? t("success.phoneRemoved") : t("success.phoneUpdated"),
+    );
   };
 
   const handleDeleteAccount = () => {
@@ -87,8 +90,11 @@ export function AccountScreen() {
 
       <Header
         breadcrumbItems={[
-          { label: "Inicio", onPress: () => router.push("/dashboard" as Href) },
-          { label: "Mi cuenta" },
+          {
+            label: t("breadcrumb.home"),
+            onPress: () => router.push("/dashboard" as Href),
+          },
+          { label: t("breadcrumb.current") },
         ]}
         style={styles.header}
       />
@@ -116,48 +122,50 @@ export function AccountScreen() {
             avatarUri={user.avatarUri}
             onPickAvatar={(uri) => {
               updateAvatar(uri);
-              showSuccess("Foto de perfil actualizada");
+              showSuccess(t("success.avatarUpdated"));
             }}
             onRemoveAvatar={() => {
               updateAvatar(null);
-              showSuccess("Foto de perfil eliminada");
+              showSuccess(t("success.avatarRemoved"));
             }}
             onPermissionDenied={() =>
-              showSuccess(
-                "Necesitamos permiso de la galería para agregar una foto",
-              )
+              showSuccess(t("success.permissionDenied"))
             }
           />
 
           <View style={styles.divider} />
 
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Datos personales</Text>
+            <Text style={styles.sectionTitle}>{t("personalData")}</Text>
 
             <ProfileField
-              label="Nombre"
+              label={t("name")}
               value={user.name}
+              editAccessibilityLabel={t("edit", { label: t("name").toLowerCase() })}
               onEdit={() => setEditingField("name")}
             />
             <View style={styles.divider} />
 
             <ProfileField
-              label="Correo"
+              label={t("email")}
               value={user.email}
+              editAccessibilityLabel={t("edit", { label: t("email").toLowerCase() })}
               onEdit={() => setEditingField("email")}
             />
             <View style={styles.divider} />
 
             <ProfileField
-              label="Teléfono"
-              value={user.phone ?? NO_PHONE_LABEL}
+              label={t("phone")}
+              value={user.phone ?? t("noPhone")}
+              editAccessibilityLabel={t("edit", { label: t("phone").toLowerCase() })}
               onEdit={() => setEditingField("phone")}
             />
             <View style={styles.divider} />
 
             <ProfileField
-              label="Contraseña"
+              label={t("password")}
               value={MASKED_PASSWORD}
+              editAccessibilityLabel={t("edit", { label: t("password").toLowerCase() })}
               onEdit={() => setPasswordModalOpen(true)}
             />
           </View>
@@ -165,14 +173,16 @@ export function AccountScreen() {
           <View style={styles.divider} />
 
           <View style={styles.deleteSection}>
-            <Text style={styles.deleteQuestion}>¿Deseas eliminar tu cuenta?</Text>
+            <Text style={styles.deleteQuestion}>{t("deleteQuestion")}</Text>
             <Button
               variant="secondary"
               onPress={() => setDeleteModalOpen(true)}
             >
               {/* Button no expone color de texto: se pasa un Text propio para
                   poder pintar la etiqueta en danger como en el web. */}
-              <Text style={styles.deleteButtonText}>Eliminar cuenta</Text>
+              <Text style={styles.deleteButtonText}>
+                {t("deleteAccount.confirm")}
+              </Text>
             </Button>
           </View>
         </Card>
@@ -194,7 +204,7 @@ export function AccountScreen() {
           onClose={() => setPasswordModalOpen(false)}
           onSubmit={() => {
             setPasswordModalOpen(false);
-            showSuccess("Contraseña actualizada");
+            showSuccess(t("success.passwordUpdated"));
           }}
         />
       ) : null}

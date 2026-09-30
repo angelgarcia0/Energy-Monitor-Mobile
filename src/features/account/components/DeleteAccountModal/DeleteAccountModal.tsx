@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Text } from "react-native";
 
 import { Button } from "@/components/Button/Button";
@@ -18,12 +19,14 @@ export function DeleteAccountModal({
   onCancel,
   onConfirm,
 }: DeleteAccountModalProps) {
+  const { t } = useTranslation("account");
+
   return (
     <Modal
       visible={visible}
       onRequestClose={onCancel}
       variant="danger"
-      title="¿Eliminar tu cuenta?"
+      title={t("deleteAccount.title")}
       icon={
         <Ionicons
           name="alert-circle-outline"
@@ -34,18 +37,15 @@ export function DeleteAccountModal({
       footer={
         <>
           <Button variant="secondary" onPress={onCancel} style={styles.footerButton}>
-            Cancelar
+            {t("deleteAccount.cancel")}
           </Button>
           <Button variant="danger" onPress={onConfirm} style={styles.footerButton}>
-            Eliminar
+            {t("deleteAccount.confirm")}
           </Button>
         </>
       }
     >
-      <Text style={styles.message}>
-        Esta acción es permanente. Perderás el acceso a tus hogares y a tus
-        datos de consumo.
-      </Text>
+      <Text style={styles.message}>{t("deleteAccount.message")}</Text>
     </Modal>
   );
 }

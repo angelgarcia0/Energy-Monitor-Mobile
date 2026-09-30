@@ -8,10 +8,17 @@ import { styles } from "./ProfileField.styles";
 export interface ProfileFieldProps {
   label: string;
   value: string;
+  /** Texto ya traducido para el accessibilityLabel del botón de edición. */
+  editAccessibilityLabel: string;
   onEdit: () => void;
 }
 
-export function ProfileField({ label, value, onEdit }: ProfileFieldProps) {
+export function ProfileField({
+  label,
+  value,
+  editAccessibilityLabel,
+  onEdit,
+}: ProfileFieldProps) {
   return (
     <View style={styles.row}>
       <View style={styles.textBlock}>
@@ -24,7 +31,7 @@ export function ProfileField({ label, value, onEdit }: ProfileFieldProps) {
       <Pressable
         onPress={onEdit}
         accessibilityRole="button"
-        accessibilityLabel={`Editar ${label.toLowerCase()}`}
+        accessibilityLabel={editAccessibilityLabel}
         style={({ pressed }) => [styles.editButton, pressed && styles.editButtonPressed]}
       >
         <Ionicons

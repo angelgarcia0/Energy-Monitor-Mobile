@@ -37,30 +37,25 @@ export const APPLIANCE_ICON: Record<ApplianceType, MaterialIconName> = {
 
 export const APPLIANCE_TYPE_IDS = Object.keys(APPLIANCE_ICON) as ApplianceType[];
 
-export const APPLIANCE_LABEL: Record<ApplianceType, string> = {
-  fridge: "Nevera",
-  washer: "Lavadora",
-  tv: "Televisor",
-  microwave: "Microondas",
-  ac: "Aire acondicionado",
-  pc: "Computador",
-  waterHeater: "Calentador de agua",
-  lighting: "Iluminación",
-  other: "Otro",
-};
+export const ROOM_KEYS: RoomKey[] = [
+  "livingRoom",
+  "kitchen",
+  "bedroom",
+  "garage",
+  "laundryRoom",
+  "other",
+];
 
-export const ROOM_LABEL: Record<RoomKey, string> = {
-  livingRoom: "Sala",
-  kitchen: "Cocina",
-  bedroom: "Habitación",
-  garage: "Garaje",
-  laundryRoom: "Zona de ropas",
-  other: "Otro",
-};
+/**
+ * Los nombres de electrodomésticos y habitaciones están en el locale
+ * `devices`, así que se resuelven con el `t` del componente que los muestra en
+ * vez de un mapa de strings fijo.
+ */
+export const getApplianceLabel = (t: (key: string) => string, type: ApplianceType) =>
+  t(`devices:applianceTypes.${type}`);
 
-export const ROOM_OPTIONS: { value: RoomKey; label: string }[] = (
-  Object.keys(ROOM_LABEL) as RoomKey[]
-).map((value) => ({ value, label: ROOM_LABEL[value] }));
+export const getRoomLabel = (t: (key: string) => string, room: RoomKey) =>
+  t(`devices:rooms.${room}`);
 
 export const INITIAL_DEVICES: Device[] = [
   { id: 1, applianceType: "fridge", roomKey: "kitchen", status: "online", signal: 82, consumption: 0.42 },

@@ -1,10 +1,6 @@
 import { useCallback, useState } from "react";
 
-import {
-  APPLIANCE_LABEL,
-  INITIAL_DEVICES,
-  type Device,
-} from "../data/deviceMocks";
+import { INITIAL_DEVICES, type Device } from "../data/deviceMocks";
 
 export type NewDeviceInput = Pick<Device, "applianceType"> &
   Partial<Omit<Device, "id" | "applianceType">>;
@@ -17,7 +13,9 @@ export function useDevicesState() {
       ...currentDevices,
       {
         id: Date.now(),
-        name: newDevice.name?.trim() || APPLIANCE_LABEL[newDevice.applianceType],
+        // Sin nombre propio se deja vacío: la etiqueta traducida del
+        // electrodoméstico la resuelve el componente que muestra la fila.
+        name: newDevice.name?.trim() || undefined,
         applianceType: newDevice.applianceType,
         roomKey: newDevice.roomKey ?? "livingRoom",
         status: newDevice.status ?? "online",

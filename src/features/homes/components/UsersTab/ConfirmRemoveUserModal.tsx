@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Text } from "react-native";
 
 import { Button } from "@/components/Button/Button";
@@ -21,12 +22,14 @@ export function ConfirmRemoveUserModal({
   onCancel,
   onConfirm,
 }: ConfirmRemoveUserModalProps) {
+  const { t } = useTranslation("users");
+
   return (
     <Modal
       visible={visible}
       onRequestClose={onCancel}
       variant="danger"
-      title="¿Eliminar miembro?"
+      title={t("confirmRemove.title")}
       icon={
         <Ionicons
           name="alert-circle-outline"
@@ -37,18 +40,16 @@ export function ConfirmRemoveUserModal({
       footer={
         <>
           <Button variant="secondary" onPress={onCancel} style={styles.footerButton}>
-            Cancelar
+            {t("confirmRemove.cancel")}
           </Button>
           <Button variant="danger" onPress={onConfirm} style={styles.footerButton}>
-            Eliminar
+            {t("confirmRemove.confirm")}
           </Button>
         </>
       }
     >
       <Text style={styles.message}>
-        Vas a eliminar a &quot;{user.name}&quot; del proyecto. Dejará de recibir
-        los datos de consumo del hogar y tendrás que volver a invitarlo si
-        quieres que participe.
+        {t("confirmRemove.message", { name: user.name })}
       </Text>
     </Modal>
   );

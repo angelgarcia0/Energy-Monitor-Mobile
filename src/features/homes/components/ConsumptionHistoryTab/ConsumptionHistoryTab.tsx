@@ -1,11 +1,12 @@
 import React, { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, Text, useWindowDimensions, View } from "react-native";
 
 import { Card } from "@/components/Card/Card";
 import { Chart } from "@/components/Chart/Chart";
 import { Theme } from "@/constants/theme";
 import { getDeviceColor, type ApplianceType } from "../../data/deviceChartColors";
-import { APPLIANCE_LABEL, APPLIANCE_TYPE_IDS, type Device } from "../../data/deviceMocks";
+import { APPLIANCE_TYPE_IDS, getApplianceLabel, type Device } from "../../data/deviceMocks";
 import { styles } from "./ConsumptionHistoryTab.styles";
 
 export interface ConsumptionHistoryTabProps {
@@ -19,86 +20,114 @@ interface HistoryRow {
   values: Partial<Record<ApplianceType, number>>;
 }
 
+type MockValues = Record<FilterKey, Partial<Record<ApplianceType, number>>[]>;
+
 interface SubFilter {
   key: string;
-  label: string;
   range: [number, number];
 }
 
-const FILTERS: { key: FilterKey; label: string; date: string }[] = [
-  { key: "day", label: "Día", date: "Últimas 24 horas" },
-  { key: "week", label: "Semana", date: "Últimos 7 días" },
-  { key: "month", label: "Mes", date: "Abril 01, 2026 - Abril 30, 2026" },
-  { key: "year", label: "Año", date: "Enero 2026 - Diciembre 2026" },
+const FILTERS: { key: FilterKey; dateKey: string }[] = [
+  { key: "day", dateKey: "day" },
+  { key: "week", dateKey: "week" },
+  { key: "month", dateKey: "month" },
+  { key: "year", dateKey: "year" },
 ];
 
 const SUBFILTERS: Record<FilterKey, SubFilter[] | null> = {
   day: [
-    { key: "0-6", label: "0h - 6h", range: [0, 6] },
-    { key: "6-12", label: "6h - 12h", range: [6, 12] },
-    { key: "12-18", label: "12h - 18h", range: [12, 18] },
-    { key: "18-24", label: "18h - 24h", range: [18, 24] },
+    { key: "0-6", range: [0, 6] },
+    { key: "6-12", range: [6, 12] },
+    { key: "12-18", range: [12, 18] },
+    { key: "18-24", range: [18, 24] },
   ],
   week: null,
   month: [
-    { key: "sem1", label: "Semana 1", range: [0, 7] },
-    { key: "sem2", label: "Semana 2", range: [7, 14] },
-    { key: "sem3", label: "Semana 3", range: [14, 21] },
-    { key: "sem4", label: "Semana 4", range: [21, 30] },
+    { key: "sem1", range: [0, 7] },
+    { key: "sem2", range: [7, 14] },
+    { key: "sem3", range: [14, 21] },
+    { key: "sem4", range: [21, 30] },
   ],
   year: [
-    { key: "q1", label: "Ene - Mar", range: [0, 3] },
-    { key: "q2", label: "Abr - Jun", range: [3, 6] },
-    { key: "q3", label: "Jul - Sep", range: [6, 9] },
-    { key: "q4", label: "Oct - Dic", range: [9, 12] },
+    { key: "q1", range: [0, 3] },
+    { key: "q2", range: [3, 6] },
+    { key: "q3", range: [6, 9] },
+    { key: "q4", range: [9, 12] },
   ],
 };
 
-const WEEK_DAYS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
-const MONTHS = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+const WEEK_DAY_KEYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"] as const;
+const MONTH_KEYS = [
+  "jan", "feb", "mar", "apr", "may", "jun",
+  "jul", "aug", "sep", "oct", "nov", "dec",
+] as const;
 
 const randomValue = (base: number, range: number) => Math.floor(Math.random() * range) + base;
 
-function generateMockData(types: ApplianceType[]): Record<FilterKey, HistoryRow[]> {
-  const build = (label: string, base: number, range: number): HistoryRow => ({
-    label,
-    values: Object.fromEntries(types.map((type) => [type, randomValue(base, range)])),
-  });
+/**
+ * Solo los valores se generan una vez: las etiquetas se resuelven en cada
+ * render para que un cambio de idioma no deje el histórico en el idioma
+ * anterior ni regenere el consumo de los dispositivos.
+ */
+function generateMockValues(types: ApplianceType[]): MockValues {
+  const build = (length: number, base: number, range: number) =>
+    Array.from({ length }, () =>
+      Object.fromEntries(types.map((type) => [type, randomValue(base, range)])),
+    );
 
   return {
-    day: Array.from({ length: 24 }, (_, i) => build(`${i}:00`, 0, 8)),
-    week: WEEK_DAYS.map((name) => build(name, 5, 20)),
-    month: Array.from({ length: 30 }, (_, i) => build(String(i + 1).padStart(2, "0"), 10, 30)),
-    year: MONTHS.map((name) => build(name, 100, 200)),
+    day: build(24, 0, 8),
+    week: build(WEEK_DAY_KEYS.length, 5, 20),
+    month: build(30, 10, 30),
+    year: build(MONTH_KEYS.length, 100, 200),
   };
 }
 
 const BAR_SLOT_WIDTH = Theme.spacing.xl + Theme.spacing.lg;
 
 export function ConsumptionHistoryTab({ devices }: ConsumptionHistoryTabProps) {
+  const { t } = useTranslation(["history", "devices"]);
   const { width } = useWindowDimensions();
   const [activeFilter, setActiveFilter] = useState<FilterKey>("month");
   const [activeSubFilter, setActiveSubFilter] = useState<string | null>(null);
   const [manualType, setManualType] = useState<ApplianceType | null>(null);
 
-  // Los datos mock se generan una sola vez para todos los tipos posibles; las
+  // Los valores mock se generan una sola vez para todos los tipos posibles; las
   // series de un dispositivo vinculado después ya existen y se recortan según
   // los tipos que hay en `devices`.
-  const [mockData] = useState(() => generateMockData(APPLIANCE_TYPE_IDS));
+  const [mockValues] = useState(() => generateMockValues(APPLIANCE_TYPE_IDS));
   const categoryTypes = useMemo(() => {
     const present = new Set(devices.map((device) => device.applianceType));
     return APPLIANCE_TYPE_IDS.filter((id) => present.has(id));
   }, [devices]);
 
   const subFilters = SUBFILTERS[activeFilter];
-  const fullData = mockData[activeFilter];
+  const fullRows = mockValues[activeFilter];
   const selectedSub = subFilters?.find((sf) => sf.key === activeSubFilter);
-  const rows = selectedSub ? fullData.slice(selectedSub.range[0], selectedSub.range[1]) : fullData;
+  const startIndex = selectedSub?.range[0] ?? 0;
+  const endIndex = selectedSub?.range[1] ?? fullRows.length;
+  const rows = useMemo<HistoryRow[]>(
+    () =>
+      fullRows.slice(startIndex, endIndex).map((values, offset) => {
+        const index = startIndex + offset;
+        const label =
+          activeFilter === "day"
+            ? `${index}:00`
+            : activeFilter === "month"
+              ? String(index + 1).padStart(2, "0")
+              : activeFilter === "week"
+                ? t(`history:weekDays.${WEEK_DAY_KEYS[index]}`)
+                : t(`history:months.${MONTH_KEYS[index]}`);
+
+        return { label, values };
+      }),
+    [fullRows, startIndex, endIndex, activeFilter, t],
+  );
 
   const ranking = categoryTypes
     .map((type) => ({
       type,
-      name: APPLIANCE_LABEL[type],
+      name: getApplianceLabel(t, type),
       total: rows.reduce((sum, row) => sum + (row.values[type] ?? 0), 0),
     }))
     .sort((a, b) => b.total - a.total);
@@ -130,12 +159,16 @@ export function ConsumptionHistoryTab({ devices }: ConsumptionHistoryTabProps) {
             style={[styles.chip, activeFilter === filter.key && styles.chipActive]}
           >
             <Text style={[styles.chipText, activeFilter === filter.key && styles.chipTextActive]}>
-              {filter.label}
+              {t(`history:filters.${filter.key}`)}
             </Text>
           </Pressable>
         ))}
       </ScrollView>
-      <Text style={styles.date}>{FILTERS.find((f) => f.key === activeFilter)?.date}</Text>
+      <Text style={styles.date}>
+        {t(
+          `history:dates.${FILTERS.find((f) => f.key === activeFilter)?.dateKey ?? "day"}`,
+        )}
+      </Text>
 
       {subFilters ? (
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipRow}>
@@ -146,20 +179,22 @@ export function ConsumptionHistoryTab({ devices }: ConsumptionHistoryTabProps) {
               style={[styles.chip, activeSubFilter === sf.key && styles.chipSoftActive]}
             >
               <Text style={[styles.chipText, activeSubFilter === sf.key && styles.chipSoftActiveText]}>
-                {sf.label}
+                {t(`history:subfilters.${activeFilter}.${sf.key}`)}
               </Text>
             </Pressable>
           ))}
           {activeSubFilter ? (
             <Pressable onPress={() => handleSubFilter(null)} style={styles.chip}>
-              <Text style={styles.clearText}>Mostrar todo</Text>
+              <Text style={styles.clearText}>
+                {t("history:subfilters.showAll")}
+              </Text>
             </Pressable>
           ) : null}
         </ScrollView>
       ) : null}
 
       <Card>
-        <Text style={styles.title}>DISTRIBUCIÓN DE CONSUMO POR DISPOSITIVO</Text>
+        <Text style={styles.title}>{t("history:chart.title")}</Text>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipRow}>
           {categoryTypes.map((type) => (
@@ -170,7 +205,7 @@ export function ConsumptionHistoryTab({ devices }: ConsumptionHistoryTabProps) {
             >
               <View style={[styles.dot, { backgroundColor: getDeviceColor(type) }]} />
               <Text style={[styles.chipText, selectedType === type && styles.chipSoftActiveText]}>
-                {APPLIANCE_LABEL[type]}
+                {getApplianceLabel(t, type)}
               </Text>
             </Pressable>
           ))}
@@ -190,19 +225,25 @@ export function ConsumptionHistoryTab({ devices }: ConsumptionHistoryTabProps) {
             />
           </ScrollView>
         ) : (
-          <Text style={styles.empty}>Vincula un dispositivo para ver su historial de consumo</Text>
+          <Text style={styles.empty}>{t("history:chart.empty")}</Text>
         )}
       </Card>
 
       {ranking.length > 0 ? (
         <>
           <Card>
-            <Text style={styles.title}>RANKING DE CONSUMO</Text>
+            <Text style={styles.title}>{t("history:ranking.title")}</Text>
             <View style={styles.tableHeader}>
               <Text style={[styles.headerText, styles.colPosition]}>#</Text>
-              <Text style={[styles.headerText, styles.colName]}>DISPOSITIVO</Text>
-              <Text style={[styles.headerText, styles.colTotal]}>TOTAL</Text>
-              <Text style={[styles.headerText, styles.colPercent]}>%</Text>
+              <Text style={[styles.headerText, styles.colName]}>
+                {t("history:ranking.headers.device")}
+              </Text>
+              <Text style={[styles.headerText, styles.colTotal]}>
+                {t("history:ranking.headers.total")}
+              </Text>
+              <Text style={[styles.headerText, styles.colPercent]}>
+                {t("history:ranking.headers.percentage")}
+              </Text>
             </View>
             {ranking.map((item, index) => {
               const pct = totalPeriod ? (item.total / totalPeriod) * 100 : 0;
@@ -227,17 +268,25 @@ export function ConsumptionHistoryTab({ devices }: ConsumptionHistoryTabProps) {
           </Card>
 
           <Card>
-            <Text style={styles.statLabel}>CONSUMO TOTAL PERIODO</Text>
+            <Text style={styles.statLabel}>
+              {t("history:stats.totalConsumption")}
+            </Text>
             <Text style={styles.statValue}>{totalPeriod.toFixed(1)} kWh</Text>
-            <Text style={styles.statSub}>↑ 10% vs periodo anterior</Text>
+            <Text style={styles.statSub}>
+              {t("history:stats.vsPrevious")}
+            </Text>
           </Card>
           <Card>
-            <Text style={styles.statLabel}>PROMEDIO</Text>
+            <Text style={styles.statLabel}>{t("history:stats.average")}</Text>
             <Text style={styles.statValue}>{(totalPeriod / (ranking.length || 1)).toFixed(1)} kWh</Text>
-            <Text style={styles.statSub}>Promedio del periodo</Text>
+            <Text style={styles.statSub}>
+              {t("history:stats.periodAverage")}
+            </Text>
           </Card>
           <Card>
-            <Text style={styles.statLabel}>MAYOR CONSUMIDOR</Text>
+            <Text style={styles.statLabel}>
+              {t("history:stats.topConsumer")}
+            </Text>
             <Text style={styles.statValue}>{ranking[0].name}</Text>
             <Text style={styles.statSub}>{ranking[0].total.toFixed(1)} kWh</Text>
           </Card>

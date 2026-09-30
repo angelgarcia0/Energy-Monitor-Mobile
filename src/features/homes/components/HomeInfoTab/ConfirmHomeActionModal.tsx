@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Text } from "react-native";
 
 import { Button } from "@/components/Button/Button";
@@ -22,6 +23,7 @@ export function ConfirmHomeActionModal({
   onCancel,
   onConfirm,
 }: ConfirmHomeActionModalProps) {
+  const { t } = useTranslation("home");
   const isDelete = mode === "delete";
 
   return (
@@ -29,7 +31,7 @@ export function ConfirmHomeActionModal({
       visible={visible}
       onRequestClose={onCancel}
       variant="danger"
-      title={isDelete ? "¿Eliminar hogar?" : "¿Salirte del hogar?"}
+      title={isDelete ? t("confirm.deleteTitle") : t("confirm.leaveTitle")}
       icon={
         <Ionicons
           name="alert-circle-outline"
@@ -40,18 +42,16 @@ export function ConfirmHomeActionModal({
       footer={
         <>
           <Button variant="secondary" onPress={onCancel} style={styles.footerButton}>
-            Cancelar
+            {t("confirm.cancel")}
           </Button>
           <Button variant="danger" onPress={onConfirm} style={styles.footerButton}>
-            {isDelete ? "Eliminar hogar" : "Salirse del hogar"}
+            {isDelete ? t("buttons.deleteHome") : t("buttons.leaveHome")}
           </Button>
         </>
       }
     >
       <Text style={styles.message}>
-        {isDelete
-          ? "¿Eliminar este hogar? Esta acción no se puede deshacer."
-          : "¿Seguro que deseas salirte de este hogar?"}
+        {isDelete ? t("confirm.delete") : t("confirm.leave")}
       </Text>
     </Modal>
   );

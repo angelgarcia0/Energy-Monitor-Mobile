@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -73,6 +74,7 @@ export function ThresholdsTab({
   saveThresholds,
   isOwner,
 }: ThresholdsTabProps) {
+  const { t } = useTranslation("thresholds");
   const [useDefaults, setUseDefaults] = useState(thresholds.useDefaults);
   const [period, setPeriod] = useState<Period>("daily");
   const [daily, setDaily] = useState(() => String(thresholds.daily));
@@ -194,11 +196,8 @@ export function ThresholdsTab({
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.header}>
-          <Text style={styles.title}>Umbrales de consumo</Text>
-          <Text style={styles.subtitle}>
-            Estos límites aplican únicamente a este hogar y se usan para generar
-            alertas y recomendaciones personalizadas.
-          </Text>
+          <Text style={styles.title}>{t("title")}</Text>
+          <Text style={styles.subtitle}>{t("subtitle")}</Text>
         </View>
 
         {!isOwner ? (
@@ -208,9 +207,7 @@ export function ThresholdsTab({
               size={Theme.typography.size.size13}
               color={Theme.colors.textSecondary}
             />
-            <Text style={styles.readOnlyText}>
-              Solo el responsable del hogar puede modificar estos umbrales.
-            </Text>
+            <Text style={styles.readOnlyText}>{t("readOnly.notice")}</Text>
           </View>
         ) : null}
 
@@ -225,27 +222,21 @@ export function ThresholdsTab({
                 />
               </View>
               <View style={styles.rowText}>
-                <Text style={styles.rowTitle}>
-                  Usar los umbrales por defecto del sistema
-                </Text>
-                <Text style={styles.rowHint}>
-                  Los umbrales por defecto están pensados para un consumo
-                  residencial promedio. Desactívalos para definir tus propios
-                  límites en este hogar.
-                </Text>
+                <Text style={styles.rowTitle}>{t("defaults.label")}</Text>
+                <Text style={styles.rowHint}>{t("defaults.hint")}</Text>
               </View>
             </View>
 
             <View style={styles.rowRight}>
               <Badge
-                label={useDefaults ? "Activado" : "Desactivado"}
+                label={useDefaults ? t("defaults.on") : t("defaults.off")}
                 tone={useDefaults ? "success" : "neutral"}
               />
               <Switch
                 value={useDefaults}
                 onValueChange={handleToggleDefaults}
                 disabled={!isOwner}
-                accessibilityLabel="Usar los umbrales por defecto del sistema"
+                accessibilityLabel={t("defaults.label")}
               />
             </View>
           </View>
@@ -263,9 +254,9 @@ export function ThresholdsTab({
                     />
                   </View>
                   <View style={styles.rowText}>
-                    <Text style={styles.rowTitle}>Configurar por</Text>
+                    <Text style={styles.rowTitle}>{t("periodicity.label")}</Text>
                     <Text style={styles.periodicityLabel}>
-                      {isDaily ? "Diario" : "Mensual"}
+                      {isDaily ? t("periodicity.daily") : t("periodicity.monthly")}
                     </Text>
                   </View>
                 </View>
@@ -274,7 +265,7 @@ export function ThresholdsTab({
                   value={!isDaily}
                   onValueChange={handleTogglePeriod}
                   disabled={!isOwner || useDefaults}
-                  accessibilityLabel="Configurar por periodicidad mensual"
+                  accessibilityLabel={t("accessibility.monthlyPeriodicity")}
                 />
               </View>
             </>
@@ -285,9 +276,9 @@ export function ThresholdsTab({
           <View style={styles.fieldsRow}>
             <View style={styles.field}>
               <View style={styles.fieldHeader}>
-                <Text style={styles.fieldLabel}>Límite diario</Text>
+                <Text style={styles.fieldLabel}>{t("fields.daily")}</Text>
                 {!useDefaults && !isDaily && calculatedDaily ? (
-                  <Badge label="Calculado" tone="info" />
+                  <Badge label={t("calculated")} tone="info" />
                 ) : null}
               </View>
               <View style={styles.inputRow}>
@@ -298,19 +289,19 @@ export function ThresholdsTab({
                     editable={dailyEditable}
                     keyboardType="decimal-pad"
                     placeholder="0"
-                    accessibilityLabel="Límite diario en kWh"
+                    accessibilityLabel={t("accessibility.daily")}
                     style={dailyEditable ? undefined : styles.inputDisabled}
                   />
                 </View>
-                <Text style={styles.unit}>kWh</Text>
+                <Text style={styles.unit}>{t("unit")}</Text>
               </View>
             </View>
 
             <View style={styles.field}>
               <View style={styles.fieldHeader}>
-                <Text style={styles.fieldLabel}>Límite mensual</Text>
+                <Text style={styles.fieldLabel}>{t("fields.monthly")}</Text>
                 {!useDefaults && isDaily && calculatedMonthly ? (
-                  <Badge label="Calculado" tone="info" />
+                  <Badge label={t("calculated")} tone="info" />
                 ) : null}
               </View>
               <View style={styles.inputRow}>
@@ -321,11 +312,11 @@ export function ThresholdsTab({
                     editable={monthlyEditable}
                     keyboardType="decimal-pad"
                     placeholder="0"
-                    accessibilityLabel="Límite mensual en kWh"
+                    accessibilityLabel={t("accessibility.monthly")}
                     style={monthlyEditable ? undefined : styles.inputDisabled}
                   />
                 </View>
-                <Text style={styles.unit}>kWh</Text>
+                <Text style={styles.unit}>{t("unit")}</Text>
               </View>
             </View>
           </View>
@@ -348,7 +339,7 @@ export function ThresholdsTab({
               }
               style={styles.saveButton}
             >
-              {saved ? "Guardado" : "Guardar cambios"}
+              {saved ? t("buttons.saved") : t("buttons.save")}
             </Button>
           ) : null}
         </Card>
@@ -359,10 +350,7 @@ export function ThresholdsTab({
             size={Theme.typography.size.size13}
             color={Theme.colors.textSecondary}
           />
-          <Text style={styles.infoNoteText}>
-            Cada hogar guarda sus propios umbrales; cambiarlos aquí no afecta a
-            tus otros hogares.
-          </Text>
+          <Text style={styles.infoNoteText}>{t("scopeNote")}</Text>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

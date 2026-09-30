@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, Text, View } from "react-native";
 
 import { Button } from "@/components/Button/Button";
@@ -8,7 +9,7 @@ import { Card } from "@/components/Card/Card";
 import { Theme } from "@/constants/theme";
 import { useHomes } from "@/context/HomeContext";
 import type { Home } from "@/features/dashboard/components/HomeCard/HomeCard";
-import { HOME_TYPE_OPTIONS } from "@/features/dashboard/validation/createHomeSchema";
+import { getHomeTypeLabel } from "@/features/dashboard/validation/createHomeSchema";
 import { ROLE_BADGE_COLORS } from "../../data/userAvatarColors";
 import { getInitials } from "../../data/usersMock";
 import { ConfirmHomeActionModal, type ConfirmHomeAction } from "./ConfirmHomeActionModal";
@@ -33,19 +34,15 @@ function Field({ label, children }: FieldProps) {
   );
 }
 
-function getHomeTypeLabel(home: Home) {
-  const option = HOME_TYPE_OPTIONS.find((item) => item.value === home.homeTypeId);
-  if (!option) return "";
-  if (option.value === "other" && home.otherHomeType) return home.otherHomeType;
-  return option.label;
-}
-
 export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
+  const { t } = useTranslation("home");
   const router = useRouter();
   const { removeHome } = useHomes();
   const [confirmAction, setConfirmAction] = useState<ConfirmHomeAction | null>(null);
 
-  const typeLabel = getHomeTypeLabel(home);
+  const typeLabel =
+    (home.homeTypeId === "other" && home.otherHomeType) ||
+    getHomeTypeLabel(t, home.homeTypeId);
   const typeIcon: "home-outline" | "business-outline" =
     home.homeTypeId === "house" ? "home-outline" : "business-outline";
   const ownerColor = ROLE_BADGE_COLORS.owner;
@@ -69,14 +66,14 @@ export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
               size={Theme.typography.size.md}
               color={Theme.colors.textPrimary}
             />
-            <Text style={styles.cardTitle}>Información del hogar</Text>
+            <Text style={styles.cardTitle}>{t("title.homeInfo")}</Text>
           </View>
 
-          <Field label="Nombre">
-            <Text style={styles.value}>{home.name || "—"}</Text>
+          <Field label={t("fields.name")}>
+            <Text style={styles.value}>{home.name || t("placeholders.empty")}</Text>
           </Field>
 
-          <Field label="Tipo de hogar">
+          <Field label={t("fields.homeType")}>
             {typeLabel ? (
               <View style={styles.typeBadge}>
                 <Ionicons
@@ -87,20 +84,24 @@ export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
                 <Text style={styles.typeBadgeText}>{typeLabel}</Text>
               </View>
             ) : (
-              <Text style={styles.value}>—</Text>
+              <Text style={styles.value}>{t("placeholders.empty")}</Text>
             )}
           </Field>
 
-          <Field label="Dirección">
-            <Text style={styles.value}>{home.address || "—"}</Text>
+          <Field label={t("fields.address")}>
+            <Text style={styles.value}>
+              {home.address || t("placeholders.empty")}
+            </Text>
           </Field>
 
-          <Field label="Descripción">
-            <Text style={styles.muted}>{home.description || "—"}</Text>
+          <Field label={t("fields.description")}>
+            <Text style={styles.muted}>
+              {home.description || t("placeholders.empty")}
+            </Text>
           </Field>
 
-          <Field label="Fecha de creación">
-            <Text style={styles.muted}>—</Text>
+          <Field label={t("fields.creationDate")}>
+            <Text style={styles.muted}>{t("placeholders.empty")}</Text>
           </Field>
 
           {isOwner ? (
@@ -113,18 +114,18 @@ export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
                   size={Theme.typography.size.sm}
                   color={Theme.colors.textPrimary}
                 />
-                <Text style={styles.sectionSubtitle}>Código de acceso</Text>
+                <Text style={styles.sectionSubtitle}>
+                  {t("title.accessCode")}
+                </Text>
               </View>
-              <Text style={styles.hint}>
-                Comparte este código para que otros usuarios puedan unirse.
-              </Text>
+              <Text style={styles.hint}>{t("hints.accessCode")}</Text>
 
               <View style={styles.codeBox}>
-                <Text style={styles.codeText}>——————</Text>
+                <Text style={styles.codeText}>{t("placeholders.noCode")}</Text>
                 <Pressable
                   disabled
                   accessibilityRole="button"
-                  accessibilityLabel="Copiar código de acceso"
+                  accessibilityLabel={t("buttons.copy")}
                   style={styles.copyButton}
                 >
                   <Ionicons
@@ -149,7 +150,7 @@ export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
                 />
               }
             >
-              {isOwner ? "Eliminar hogar" : "Salirse del hogar"}
+              {isOwner ? t("buttons.deleteHome") : t("buttons.leaveHome")}
             </Button>
           </View>
         </Card>
@@ -161,7 +162,7 @@ export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
               size={Theme.typography.size.md}
               color={Theme.colors.textPrimary}
             />
-            <Text style={styles.cardTitle}>Usuario responsable</Text>
+            <Text style={styles.cardTitle}>{t("title.owner")}</Text>
           </View>
 
           <View style={styles.ownerRow}>
@@ -174,13 +175,13 @@ export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
             </View>
             <View style={styles.ownerMeta}>
               <Text style={styles.ownerName} numberOfLines={1}>
-                {home.userResponsible || "—"}
+                {home.userResponsible || t("placeholders.empty")}
               </Text>
               <View
                 style={[styles.ownerBadge, { backgroundColor: ownerColor.background }]}
               >
                 <Text style={[styles.ownerBadgeText, { color: ownerColor.text }]}>
-                  Responsable
+                  {t("status.responsible")}
                 </Text>
               </View>
             </View>
@@ -188,25 +189,25 @@ export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
 
           <View style={styles.divider} />
 
-          <Field label="Correo">
+          <Field label={t("fields.email")}>
             <View style={styles.valueWithIcon}>
               <Ionicons
                 name="mail-outline"
                 size={Theme.typography.size.xs}
                 color={Theme.colors.textSecondary}
               />
-              <Text style={styles.muted}>—</Text>
+              <Text style={styles.muted}>{t("placeholders.empty")}</Text>
             </View>
           </Field>
 
-          <Field label="Teléfono">
+          <Field label={t("fields.phone")}>
             <View style={styles.valueWithIcon}>
               <Ionicons
                 name="call-outline"
                 size={Theme.typography.size.xs}
                 color={Theme.colors.textSecondary}
               />
-              <Text style={styles.muted}>—</Text>
+              <Text style={styles.muted}>{t("placeholders.empty")}</Text>
             </View>
           </Field>
         </Card>

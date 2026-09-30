@@ -1,5 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { ScrollView, Text, useWindowDimensions, View } from "react-native";
 
 import { Card } from "@/components/Card/Card";
@@ -7,7 +8,7 @@ import { Chart } from "@/components/Chart/Chart";
 import { Theme } from "@/constants/theme";
 import { getDeviceColor } from "../../data/deviceChartColors";
 import { mockConsumptionData } from "../../data/consumptionMock";
-import { APPLIANCE_ICON, APPLIANCE_LABEL, type Device } from "../../data/deviceMocks";
+import { APPLIANCE_ICON, getApplianceLabel, type Device } from "../../data/deviceMocks";
 import type { Thresholds } from "../../data/thresholds";
 import { styles } from "./ConsumptionTab.styles";
 
@@ -22,7 +23,12 @@ interface LimitBarProps {
   limit: number;
 }
 
-function LimitBar({ label, used, limit }: LimitBarProps) {
+function LimitBar({
+  label,
+  used,
+  limit,
+  noData,
+}: LimitBarProps & { noData: string }) {
   const pct = limit ? Math.min(Math.round((used / limit) * 100), 100) : 0;
 
   return (
@@ -35,13 +41,14 @@ function LimitBar({ label, used, limit }: LimitBarProps) {
         <View style={[styles.limitFill, { width: `${pct}%` }]} />
       </View>
       <Text style={styles.limitValues}>
-        {limit ? `${used} / ${limit} kWh` : "Sin datos"}
+        {limit ? `${used} / ${limit} kWh` : noData}
       </Text>
     </View>
   );
 }
 
 export function ConsumptionTab({ devices, thresholds }: ConsumptionTabProps) {
+  const { t } = useTranslation(["consumption", "devices"]);
   const { width } = useWindowDimensions();
   const chartWidth = width - Theme.spacing.md * 4;
   const data = mockConsumptionData;
@@ -55,7 +62,7 @@ export function ConsumptionTab({ devices, thresholds }: ConsumptionTabProps) {
   const totalAll = [...totals.values()].reduce((a, b) => a + b, 0);
   const distribution = [...totals.entries()].map(([type, consumption]) => ({
     type,
-    name: APPLIANCE_LABEL[type],
+    name: getApplianceLabel(t, type),
     consumption: Number(consumption.toFixed(2)),
     percentage: totalAll ? Number(((consumption / totalAll) * 100).toFixed(1)) : 0,
   }));
@@ -68,39 +75,47 @@ export function ConsumptionTab({ devices, thresholds }: ConsumptionTabProps) {
   return (
     <ScrollView contentContainerStyle={styles.content}>
       <Card style={[styles.kpiCard, { borderColor: Theme.colors.warning }]}>
-        <Text style={styles.kpiLabel}>POTENCIA ACTUAL ⚡</Text>
+        <Text style={styles.kpiLabel}>{t("consumption:kpi.currentPower")}</Text>
         <Text style={styles.kpiValue}>
           {data.potencia}
           <Text style={styles.kpiUnit}> kW</Text>
         </Text>
-        <Text style={styles.kpiSub}>Nivel {data.nivelPotencia}</Text>
+        <Text style={styles.kpiSub}>
+          {t("consumption:kpi.level")} {t(`consumption:kpi.levels.${data.nivelPotencia}`)}
+        </Text>
       </Card>
 
       <Card style={[styles.kpiCard, { borderColor: Theme.colors.primary }]}>
-        <Text style={styles.kpiLabel}>CONSUMO HOY 📊</Text>
+        <Text style={styles.kpiLabel}>{t("consumption:kpi.todayConsumption")}</Text>
         <Text style={styles.kpiValue}>
           {data.consumoHoy}
           <Text style={styles.kpiUnit}> kWh</Text>
         </Text>
         <Text style={styles.kpiSub}>
-          Límite actual: {thresholds.daily} kWh
+          {t("consumption:kpi.currentLimit")}
+          {thresholds.daily} kWh
         </Text>
       </Card>
 
       <Card style={[styles.kpiCard, { borderColor: Theme.colors.secondary }]}>
-        <Text style={styles.kpiLabel}>DISPOSITIVOS 🔌</Text>
+        <Text style={styles.kpiLabel}>{t("consumption:kpi.devices")}</Text>
         <Text style={styles.kpiValue}>
           {activeDevices}
           <Text style={styles.kpiUnit}> / {devices.length}</Text>
         </Text>
-        <Text style={styles.kpiSub}>Todos operativos</Text>
+        <Text style={styles.kpiSub}>{t("consumption:kpi.allOperational")}</Text>
       </Card>
 
       <Card>
         <Text style={styles.chartTitle}>
-          Consumo Global — <Text style={styles.chartTitleMuted}>Últimas 24 horas</Text>
+          {t("consumption:charts.globalConsumption")}{" "}
+          <Text style={styles.chartTitleMuted}>
+            {t("consumption:charts.last24h")}
+          </Text>
         </Text>
-        <Text style={styles.chartSubtitle}>Potencia activa en kW</Text>
+        <Text style={styles.chartSubtitle}>
+          {t("consumption:charts.activePower")}
+        </Text>
         <Chart
           type="area"
           width={chartWidth}
@@ -121,7 +136,9 @@ export function ConsumptionTab({ devices, thresholds }: ConsumptionTabProps) {
       </Card>
 
       <Card>
-        <Text style={styles.sectionTitle}>Distribución actual</Text>
+        <Text style={styles.sectionTitle}>
+          {t("consumption:charts.currentDistribution")}
+        </Text>
         <Chart
           type="pie"
           width={chartWidth}
@@ -136,8 +153,12 @@ export function ConsumptionTab({ devices, thresholds }: ConsumptionTabProps) {
       </Card>
 
       <Card>
-        <Text style={styles.sectionTitle}>Consumo por dispositivo (ahora)</Text>
-        <Text style={styles.chartSubtitle}>Valores en W</Text>
+        <Text style={styles.sectionTitle}>
+          {t("consumption:charts.deviceConsumption")}
+        </Text>
+        <Text style={styles.chartSubtitle}>
+          {t("consumption:deviceChartValues")}
+        </Text>
         <Chart
           type="bar"
           width={chartWidth}
@@ -164,8 +185,18 @@ export function ConsumptionTab({ devices, thresholds }: ConsumptionTabProps) {
         </View>
       </Card>
 
-      <LimitBar label="Límite diario" used={data.limitesDiario.usado} limit={thresholds.daily} />
-      <LimitBar label="Límite mensual" used={data.limiteMensual.usado} limit={thresholds.monthly} />
+      <LimitBar
+        label={t("consumption:limits.daily")}
+        used={data.limitesDiario.usado}
+        limit={thresholds.daily}
+        noData={t("consumption:kpi.noData")}
+      />
+      <LimitBar
+        label={t("consumption:limits.monthly")}
+        used={data.limiteMensual.usado}
+        limit={thresholds.monthly}
+        noData={t("consumption:kpi.noData")}
+      />
     </ScrollView>
   );
 }

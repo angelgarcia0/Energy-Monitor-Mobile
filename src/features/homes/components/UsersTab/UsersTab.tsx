@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, Text, View } from "react-native";
 
 import { Button } from "@/components/Button/Button";
@@ -45,6 +46,7 @@ interface UserRowProps {
 }
 
 function UserRow({ user, index, isOwner, onRequestRemove }: UserRowProps) {
+  const { t } = useTranslation("users");
   const badge = ROLE_BADGE_COLORS[user.role];
 
   return (
@@ -62,7 +64,7 @@ function UserRow({ user, index, isOwner, onRequestRemove }: UserRowProps) {
 
       <View style={[styles.badge, { backgroundColor: badge.background }]}>
         <Text style={[styles.badgeText, { color: badge.text }]}>
-          {user.role === "owner" ? "Responsable" : "Miembro"}
+          {user.role === "owner" ? t("roles.owner") : t("roles.member")}
         </Text>
       </View>
 
@@ -70,7 +72,7 @@ function UserRow({ user, index, isOwner, onRequestRemove }: UserRowProps) {
         <Pressable
           onPress={() => onRequestRemove(user)}
           accessibilityRole="button"
-          accessibilityLabel={`Eliminar a ${user.name}`}
+          accessibilityLabel={t("actions.removeUser", { name: user.name })}
           style={({ pressed }) => [
             styles.removeButton,
             pressed && styles.removeButtonPressed,
@@ -93,6 +95,8 @@ interface PendingRowProps {
 }
 
 function PendingRow({ pending, onCancel }: PendingRowProps) {
+  const { t } = useTranslation("users");
+
   return (
     <View style={styles.userRow}>
       <View style={styles.pendingIcon}>
@@ -107,38 +111,35 @@ function PendingRow({ pending, onCancel }: PendingRowProps) {
         <Text style={styles.userEmail} numberOfLines={1}>
           {pending.email}
         </Text>
-        <Text style={styles.pendingLabel}>Invitación enviada</Text>
+        <Text style={styles.pendingLabel}>{t("pending.sent")}</Text>
       </View>
 
       <Button variant="ghost" size="small" onPress={() => onCancel(pending.id)}>
-        Cancelar
+        {t("pending.cancel")}
       </Button>
     </View>
   );
 }
 
 export function UsersTab({ isOwner }: UsersTabProps) {
+  const { t } = useTranslation("users");
   const [users, setUsers] = useState<ProjectUser[]>(INITIAL_USERS);
   const [pending, setPending] = useState<PendingInvite[]>([]);
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteError, setInviteError] = useState("");
   const [userToRemove, setUserToRemove] = useState<ProjectUser | null>(null);
 
-  const membersCount =
-    users.length === 1
-      ? `1 miembro en este proyecto`
-      : `${users.length} miembros en este proyecto`;
+  const membersCount = t("header.membersCount", { count: users.length });
 
   const handleInvite = () => {
     const email = inviteEmail.trim().toLowerCase();
 
-    if (!email) return setInviteError("Ingresa un correo electrónico.");
-    if (!EMAIL_REGEX.test(email))
-      return setInviteError("Correo electrónico inválido.");
+    if (!email) return setInviteError(t("invite.errors.empty"));
+    if (!EMAIL_REGEX.test(email)) return setInviteError(t("invite.errors.invalid"));
     if (users.some((user) => user.email === email))
-      return setInviteError("Este usuario ya es miembro.");
+      return setInviteError(t("invite.errors.alreadyMember"));
     if (pending.some((invite) => invite.email === email))
-      return setInviteError("Ya se envió una invitación a este correo.");
+      return setInviteError(t("invite.errors.alreadyInvited"));
 
     setPending((prev) => [...prev, { id: Date.now(), email }]);
     setInviteEmail("");
@@ -163,13 +164,13 @@ export function UsersTab({ isOwner }: UsersTabProps) {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.header}>
-          <Text style={styles.title}>Usuarios</Text>
+          <Text style={styles.title}>{t("header.title")}</Text>
           <Text style={styles.subtitle}>{membersCount}</Text>
         </View>
 
         <Card padding="none" style={styles.card}>
           <View style={styles.cardHeader}>
-            <Text style={styles.blockTitle}>Miembros del proyecto</Text>
+            <Text style={styles.blockTitle}>{t("members.title")}</Text>
           </View>
           {users.map((user, index) => (
             <View key={user.id}>
@@ -186,7 +187,7 @@ export function UsersTab({ isOwner }: UsersTabProps) {
 
         {isOwner ? (
           <Card style={styles.card}>
-            <Text style={styles.blockTitle}>Invitar usuario por correo</Text>
+            <Text style={styles.blockTitle}>{t("invite.title")}</Text>
             <View style={styles.inviteRow}>
               <View style={styles.inviteInputWrap}>
                 <Input
@@ -195,11 +196,11 @@ export function UsersTab({ isOwner }: UsersTabProps) {
                     setInviteEmail(text);
                     setInviteError("");
                   }}
-                  placeholder="correo@ejemplo.com"
+                  placeholder={t("invite.placeholder")}
                   keyboardType="email-address"
                 />
               </View>
-              <Button onPress={handleInvite}>Invitar</Button>
+              <Button onPress={handleInvite}>{t("invite.button")}</Button>
             </View>
             {inviteError ? (
               <Text style={styles.inviteError}>{inviteError}</Text>
@@ -210,10 +211,10 @@ export function UsersTab({ isOwner }: UsersTabProps) {
         {isOwner ? (
           <Card padding="none" style={styles.card}>
             <View style={styles.cardHeader}>
-              <Text style={styles.blockTitle}>Invitaciones pendientes</Text>
+              <Text style={styles.blockTitle}>{t("pending.title")}</Text>
             </View>
             {pending.length === 0 ? (
-              <Text style={styles.emptyPending}>Sin invitaciones pendientes</Text>
+              <Text style={styles.emptyPending}>{t("pending.empty")}</Text>
             ) : (
               pending.map((invite, index) => (
                 <View key={invite.id}>

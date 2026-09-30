@@ -1,7 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -22,29 +23,36 @@ export interface HomeDetailScreenProps {
   home: Home;
 }
 
-const TABS: BottomTabItem[] = [
-  { id: "Consumo", label: "Consumo", icon: "pulse-outline" },
-  { id: "Historial", label: "Historial", icon: "time-outline" },
-  { id: "Usuarios", label: "Usuarios", icon: "people-outline" },
-  { id: "Dispositivos", label: "Dispositivos", icon: "wifi-outline" },
-  { id: "Umbrales", label: "Umbrales", icon: "options-outline" },
-  { id: "Hogar", label: "Hogar", icon: "home-outline" },
+type HomeTab = "consumption" | "history" | "users" | "devices" | "thresholds" | "home";
+
+const TABS: { id: HomeTab; icon: BottomTabItem["icon"] }[] = [
+  { id: "consumption", icon: "pulse-outline" },
+  { id: "history", icon: "time-outline" },
+  { id: "users", icon: "people-outline" },
+  { id: "devices", icon: "wifi-outline" },
+  { id: "thresholds", icon: "options-outline" },
+  { id: "home", icon: "home-outline" },
 ];
 
 export function HomeDetailScreen({ home }: HomeDetailScreenProps) {
+  const { t } = useTranslation("consumption");
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const [activeTab, setActiveTab] = useState(TABS[0].id);
+  const [activeTab, setActiveTab] = useState<HomeTab>(TABS[0].id);
   const { devices, addDevice, removeDevice } = useDevicesState();
   const { thresholds, saveThresholds } = useThresholdsState();
   const isOwner = home.variant === "owned";
+  const tabs = useMemo<BottomTabItem[]>(
+    () => TABS.map((tab) => ({ ...tab, label: t(`tabs.${tab.id}`) })),
+    [t],
+  );
 
   return (
     <View style={[styles.container, { paddingTop: Math.max(insets.top, Theme.spacing.md) }]}>
       <StatusBar style="auto" />
 
       <View style={styles.header}>
-        <Pressable onPress={() => router.back()} accessibilityLabel="Volver" style={styles.backButton}>
+        <Pressable onPress={() => router.back()} accessibilityLabel={t("breadcrumb.home")} style={styles.backButton}>
           <Ionicons name="arrow-back" size={Theme.typography.size.lg} color={Theme.colors.textPrimary} />
         </Pressable>
         <Text style={styles.title} numberOfLines={1}>
@@ -53,31 +61,35 @@ export function HomeDetailScreen({ home }: HomeDetailScreenProps) {
       </View>
 
       <View style={styles.body}>
-        {activeTab === "Consumo" ? (
+        {activeTab === "consumption" ? (
           <ConsumptionTab devices={devices} thresholds={thresholds} />
-        ) : activeTab === "Historial" ? (
+        ) : activeTab === "history" ? (
           <ConsumptionHistoryTab devices={devices} />
-        ) : activeTab === "Dispositivos" ? (
+        ) : activeTab === "devices" ? (
           <DevicesTab
             devices={devices}
             onAddDevice={addDevice}
             onRemoveDevice={removeDevice}
             isOwner={isOwner}
           />
-        ) : activeTab === "Umbrales" ? (
+        ) : activeTab === "thresholds" ? (
           <ThresholdsTab
             thresholds={thresholds}
             saveThresholds={saveThresholds}
             isOwner={isOwner}
           />
-        ) : activeTab === "Usuarios" ? (
+        ) : activeTab === "users" ? (
           <UsersTab isOwner={isOwner} />
         ) : (
           <HomeInfoTab home={home} isOwner={isOwner} />
         )}
       </View>
 
-      <BottomTabBar tabs={TABS} activeTabId={activeTab} onTabPress={setActiveTab} />
+      <BottomTabBar
+        tabs={tabs}
+        activeTabId={activeTab}
+        onTabPress={(id) => setActiveTab(id as HomeTab)}
+      />
     </View>
   );
 }

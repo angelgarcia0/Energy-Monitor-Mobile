@@ -1,11 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Text } from "react-native";
 
 import { Button } from "@/components/Button/Button";
 import { Modal } from "@/components/Modal/Modal";
 import { Theme } from "@/constants/theme";
-import { APPLIANCE_LABEL, type Device } from "../../data/deviceMocks";
+import { getApplianceLabel, type Device } from "../../data/deviceMocks";
 import { styles } from "./ConfirmDeleteModal.styles";
 
 export interface ConfirmDeleteModalProps {
@@ -21,14 +22,16 @@ export function ConfirmDeleteModal({
   onCancel,
   onConfirm,
 }: ConfirmDeleteModalProps) {
-  const deviceName = device.name?.trim() || APPLIANCE_LABEL[device.applianceType];
+  const { t } = useTranslation("devices");
+  const deviceName =
+    device.name?.trim() || getApplianceLabel(t, device.applianceType);
 
   return (
     <Modal
       visible={visible}
       onRequestClose={onCancel}
       variant="danger"
-      title="¿Eliminar dispositivo?"
+      title={t("confirmDelete.title")}
       icon={
         <Ionicons
           name="alert-circle-outline"
@@ -39,17 +42,16 @@ export function ConfirmDeleteModal({
       footer={
         <>
           <Button variant="secondary" onPress={onCancel} style={styles.footerButton}>
-            Cancelar
+            {t("confirmDelete.cancel")}
           </Button>
           <Button variant="danger" onPress={onConfirm} style={styles.footerButton}>
-            Eliminar
+            {t("confirmDelete.confirm")}
           </Button>
         </>
       }
     >
       <Text style={styles.message}>
-        Vas a eliminar &quot;{deviceName}&quot;. Dejarás de recibir sus datos de
-        consumo y tendrás que vincularlo de nuevo si quieres volver a usarlo.
+        {t("confirmDelete.message", { name: deviceName })}
       </Text>
     </Modal>
   );

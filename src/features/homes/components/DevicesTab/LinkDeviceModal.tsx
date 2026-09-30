@@ -1,6 +1,7 @@
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
   Pressable,
@@ -15,12 +16,14 @@ import { Button } from "@/components/Button/Button";
 import { Input } from "@/components/Input/Input";
 import { Modal } from "@/components/Modal/Modal";
 import { Theme } from "@/constants/theme";
+import { tMessage } from "@/validation/i18nMessage";
 import type { ApplianceType } from "../../data/deviceChartColors";
 import {
   APPLIANCE_ICON,
-  APPLIANCE_LABEL,
   APPLIANCE_TYPE_IDS,
-  ROOM_OPTIONS,
+  getApplianceLabel,
+  getRoomLabel,
+  ROOM_KEYS,
   type RoomKey,
 } from "../../data/deviceMocks";
 import type { NewDeviceInput } from "../../hooks/useDevicesState";
@@ -72,7 +75,10 @@ const MOCK_NETWORKS: MockNetwork[] = [
 ];
 
 const networkPasswordSchema = z.object({
-  password: z.string().trim().min(1, "Ingresa la contraseña de la red"),
+  password: z
+    .string()
+    .trim()
+    .min(1, tMessage("linkDeviceModal:errors.passwordRequired")),
 });
 
 interface StepDotsProps {
@@ -80,10 +86,17 @@ interface StepDotsProps {
 }
 
 function StepDots({ currentStep }: StepDotsProps) {
+  const { t } = useTranslation("linkDeviceModal");
   const currentIndex = STEPS.indexOf(currentStep);
 
   return (
-    <View style={styles.stepDots} accessibilityLabel={`Paso ${currentIndex + 1} de ${STEPS.length}`}>
+    <View
+      style={styles.stepDots}
+      accessibilityLabel={t("step", {
+        current: currentIndex + 1,
+        total: STEPS.length,
+      })}
+    >
       {STEPS.map((step, index) => (
         <View
           key={step}
@@ -123,6 +136,7 @@ export function LinkDeviceModal({
   onClose,
   onAddDevice,
 }: LinkDeviceModalProps) {
+  const { t } = useTranslation("linkDeviceModal");
   const { height } = useWindowDimensions();
   const scrollRef = useRef<ScrollView>(null);
   const [step, setStep] = useState<WizardStep>("discover");
@@ -156,18 +170,11 @@ export function LinkDeviceModal({
       setTimeout(() => setCompletedSteps(1), 700),
       setTimeout(() => setCompletedSteps(2), 1500),
       setTimeout(() => setCompletedSteps(3), 2100),
-      setTimeout(() => {
-        setDeviceName((currentName) =>
-          currentName.trim()
-            ? currentName
-            : APPLIANCE_LABEL[selectedAppliance ?? "other"],
-        );
-        setStep("done");
-      }, 2500),
+      setTimeout(() => setStep("done"), 2500),
     ];
 
     return () => timers.forEach((timer) => clearTimeout(timer));
-  }, [selectedAppliance, step]);
+  }, [step]);
 
   const handleRescan = () => {
     setSelectedModuleId(null);
@@ -188,7 +195,8 @@ export function LinkDeviceModal({
       const result = networkPasswordSchema.safeParse({ password });
       if (!result.success) {
         setPasswordError(
-          result.error.issues[0]?.message ?? "Ingresa la contraseña de la red",
+          result.error.issues[0]?.message ??
+            t("errors.passwordRequired"),
         );
         // El campo de contraseña queda al final del área scrolleable; sin este
         // scroll el error queda oculto detrás del footer.
@@ -208,7 +216,7 @@ export function LinkDeviceModal({
     const applianceType = selectedAppliance ?? "other";
 
     onAddDevice({
-      name: deviceName.trim() || APPLIANCE_LABEL[applianceType],
+      name: deviceName.trim() || getApplianceLabel(t, applianceType),
       applianceType,
       roomKey,
     });
@@ -217,11 +225,8 @@ export function LinkDeviceModal({
 
   const renderDiscoverStep = () => (
     <>
-      <Text style={styles.stepTitle}>Buscando módulos cercanos</Text>
-      <Text style={styles.stepHint}>
-        Asegúrate de que el módulo esté conectado al tomacorriente y en modo de
-        emparejamiento
-      </Text>
+      <Text style={styles.stepTitle}>{t("discover.title")}</Text>
+      <Text style={styles.stepHint}>{t("discover.hint")}</Text>
 
       {scanning ? (
         <View style={styles.scanningBox}>
@@ -231,11 +236,11 @@ export function LinkDeviceModal({
               color={Theme.colors.primary}
             />
           </View>
-          <Text style={styles.scanningText}>Escaneando...</Text>
+          <Text style={styles.scanningText}>{t("discover.scanning")}</Text>
         </View>
       ) : (
         <>
-          <Text style={styles.blockLabel}>Módulos encontrados</Text>
+          <Text style={styles.blockLabel}>{t("discover.foundTitle")}</Text>
           <View style={styles.optionList}>
             {MOCK_MODULES.map((module) => {
               const selected = module.id === selectedModuleId;
@@ -246,7 +251,9 @@ export function LinkDeviceModal({
                   onPress={() => setSelectedModuleId(module.id)}
                   accessibilityRole="button"
                   accessibilityState={{ selected }}
-                  accessibilityLabel={`Módulo ${module.code}`}
+                  accessibilityLabel={t("moduleLabel", {
+                    code: module.code,
+                  })}
                   style={({ pressed }) => [
                     styles.optionRow,
                     selected && styles.optionRowSelected,
@@ -274,7 +281,7 @@ export function LinkDeviceModal({
           </View>
 
           <Button variant="ghost" size="small" onPress={handleRescan} style={styles.rescanButton}>
-            Buscar de nuevo
+            {t("discover.rescan")}
           </Button>
         </>
       )}
@@ -283,11 +290,8 @@ export function LinkDeviceModal({
 
   const renderApplianceStep = () => (
     <>
-      <Text style={styles.stepTitle}>¿Qué electrodoméstico vas a monitorear?</Text>
-      <Text style={styles.stepHint}>
-        Selecciona el tipo de electrodoméstico que quedará conectado a este
-        módulo
-      </Text>
+      <Text style={styles.stepTitle}>{t("appliance.title")}</Text>
+      <Text style={styles.stepHint}>{t("appliance.hint")}</Text>
 
       <View style={styles.applianceGrid}>
         {APPLIANCE_TYPE_IDS.map((applianceType) => {
@@ -299,7 +303,7 @@ export function LinkDeviceModal({
               onPress={() => setSelectedAppliance(applianceType)}
               accessibilityRole="button"
               accessibilityState={{ selected }}
-              accessibilityLabel={APPLIANCE_LABEL[applianceType]}
+              accessibilityLabel={getApplianceLabel(t, applianceType)}
               style={({ pressed }) => [
                 styles.applianceOption,
                 selected && styles.applianceOptionSelected,
@@ -314,7 +318,7 @@ export function LinkDeviceModal({
                 />
               </View>
               <Text style={styles.applianceLabel} numberOfLines={2}>
-                {APPLIANCE_LABEL[applianceType]}
+                {getApplianceLabel(t, applianceType)}
               </Text>
               {selected ? (
                 <Ionicons
@@ -333,10 +337,8 @@ export function LinkDeviceModal({
 
   const renderNetworkStep = () => (
     <>
-      <Text style={styles.stepTitle}>Conecta a tu red WiFi</Text>
-      <Text style={styles.stepHint}>
-        Selecciona la red a la que se conectará el módulo
-      </Text>
+      <Text style={styles.stepTitle}>{t("network.title")}</Text>
+      <Text style={styles.stepHint}>{t("network.subtitle")}</Text>
 
       <View style={styles.optionList}>
         {MOCK_NETWORKS.map((network) => {
@@ -366,7 +368,7 @@ export function LinkDeviceModal({
                       color={Theme.colors.textSecondary}
                     />
                   ) : (
-                    <Text style={styles.openTag}>Abierta</Text>
+                    <Text style={styles.openTag}>{t("network.open")}</Text>
                   )}
                 </View>
               </View>
@@ -385,13 +387,13 @@ export function LinkDeviceModal({
       {selectedNetwork?.secured ? (
         <View style={styles.field}>
           <Input
-            label="Contraseña"
+            label={t("network.passwordLabel")}
             value={password}
             onChangeText={(text) => {
               setPassword(text);
               setPasswordError("");
             }}
-            placeholder="Ingresa la contraseña de la red"
+            placeholder={t("network.passwordPlaceholder")}
             secureTextEntry={!showPassword}
             icon={
               <Ionicons
@@ -415,14 +417,14 @@ export function LinkDeviceModal({
 
   const renderConnectingStep = () => {
     const connectionSteps = [
-      `Buscando la red "${selectedNetwork?.ssid ?? ""}"`,
-      "Verificando contraseña",
-      "Sincronizando dispositivo",
+      t("connecting.step1", { ssid: selectedNetwork?.ssid ?? "" }),
+      t("connecting.step2"),
+      t("connecting.step3"),
     ];
 
     return (
       <>
-        <Text style={styles.stepTitle}>Conectando dispositivo</Text>
+        <Text style={styles.stepTitle}>{t("connecting.title")}</Text>
         <View style={styles.connectingBox}>
           <ActivityIndicator size="large" color={Theme.colors.primary} />
           <View style={styles.connectingList}>
@@ -470,25 +472,23 @@ export function LinkDeviceModal({
           size={Theme.typography.size.xxxl}
           color={Theme.colors.success}
         />
-        <Text style={styles.doneTitle}>¡Dispositivo vinculado!</Text>
-        <Text style={styles.stepHint}>
-          Tu dispositivo ya está conectado y enviando datos
-        </Text>
+        <Text style={styles.doneTitle}>{t("done.title")}</Text>
+        <Text style={styles.stepHint}>{t("done.subtitle")}</Text>
       </View>
 
       <View style={styles.field}>
         <Input
-          label="Nombre del dispositivo"
+          label={t("done.nameLabel")}
           value={deviceName}
           onChangeText={setDeviceName}
-          placeholder={APPLIANCE_LABEL[selectedAppliance ?? "other"]}
+          placeholder={getApplianceLabel(t, selectedAppliance ?? "other")}
           maxLength={40}
           autoCapitalize="sentences"
         />
       </View>
 
       <View style={styles.field}>
-        <Text style={styles.label}>Ubicación</Text>
+        <Text style={styles.label}>{t("done.roomLabel")}</Text>
         <View style={styles.pickerWrapper}>
           <Picker
             selectedValue={roomKey}
@@ -497,11 +497,11 @@ export function LinkDeviceModal({
             style={styles.picker}
             dropdownIconColor={Theme.colors.textSecondary}
           >
-            {ROOM_OPTIONS.map((option) => (
+            {ROOM_KEYS.map((room) => (
               <Picker.Item
-                key={option.value}
-                label={option.label}
-                value={option.value}
+                key={room}
+                label={getRoomLabel(t, room)}
+                value={room}
                 color={Theme.colors.textPrimary}
               />
             ))}
@@ -531,14 +531,14 @@ export function LinkDeviceModal({
       return (
         <>
           <Button variant="secondary" onPress={onClose} style={styles.footerButton}>
-            Cancelar
+            {t("buttons.cancel")}
           </Button>
           <Button
             onPress={() => setStep("appliance")}
             disabled={!selectedModuleId}
             style={styles.footerButton}
           >
-            Continuar
+            {t("buttons.continue")}
           </Button>
         </>
       );
@@ -552,14 +552,14 @@ export function LinkDeviceModal({
             onPress={() => setStep("discover")}
             style={styles.footerButton}
           >
-            Atrás
+            {t("buttons.back")}
           </Button>
           <Button
             onPress={() => setStep("network")}
             disabled={!selectedAppliance}
             style={styles.footerButton}
           >
-            Continuar
+            {t("buttons.continue")}
           </Button>
         </>
       );
@@ -573,14 +573,14 @@ export function LinkDeviceModal({
             onPress={() => setStep("appliance")}
             style={styles.footerButton}
           >
-            Atrás
+            {t("buttons.back")}
           </Button>
           <Button
             onPress={handleConnect}
             disabled={!selectedNetwork}
             style={styles.footerButton}
           >
-            Conectar
+            {t("buttons.connect")}
           </Button>
         </>
       );
@@ -589,14 +589,14 @@ export function LinkDeviceModal({
     if (step === "connecting") {
       return (
         <Button variant="secondary" onPress={onClose} style={styles.footerButton}>
-          Cancelar
+          {t("buttons.cancel")}
         </Button>
       );
     }
 
     return (
       <Button onPress={handleFinish} style={styles.footerButton}>
-        Finalizar
+        {t("buttons.finish")}
       </Button>
     );
   };
@@ -605,7 +605,7 @@ export function LinkDeviceModal({
     <Modal
       visible={visible}
       onRequestClose={onClose}
-      title="Vincular dispositivo"
+      title={t("title")}
       footer={renderFooter()}
     >
       <ScrollView

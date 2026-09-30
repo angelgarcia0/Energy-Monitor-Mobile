@@ -1,5 +1,6 @@
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, Text, View } from "react-native";
 
 import { Button } from "@/components/Button/Button";
@@ -8,8 +9,8 @@ import { EmptyState } from "@/components/EmptyState/EmptyState";
 import { Theme } from "@/constants/theme";
 import {
   APPLIANCE_ICON,
-  APPLIANCE_LABEL,
-  ROOM_LABEL,
+  getApplianceLabel,
+  getRoomLabel,
   type Device,
 } from "../../data/deviceMocks";
 import type { NewDeviceInput } from "../../hooks/useDevicesState";
@@ -37,8 +38,10 @@ function getSignalColor(signal: number) {
 }
 
 function DeviceRow({ device, isOwner, onRequestRemove }: DeviceRowProps) {
+  const { t } = useTranslation("devices");
   const isOnline = device.status === "online";
-  const deviceName = device.name?.trim() || APPLIANCE_LABEL[device.applianceType];
+  const deviceName =
+    device.name?.trim() || getApplianceLabel(t, device.applianceType);
   const signalColor = isOnline ? getSignalColor(device.signal) : Theme.colors.textSecondary;
 
   return (
@@ -55,7 +58,7 @@ function DeviceRow({ device, isOwner, onRequestRemove }: DeviceRowProps) {
         <Text style={styles.deviceName} numberOfLines={1}>
           {deviceName}
         </Text>
-        <Text style={styles.deviceRoom}>{ROOM_LABEL[device.roomKey]}</Text>
+        <Text style={styles.deviceRoom}>{getRoomLabel(t, device.roomKey)}</Text>
       </View>
 
       <View style={styles.deviceMeta}>
@@ -76,7 +79,7 @@ function DeviceRow({ device, isOwner, onRequestRemove }: DeviceRowProps) {
               isOnline ? styles.statusTextOnline : styles.statusTextOffline,
             ]}
           >
-            {isOnline ? "En línea" : "Desconectado"}
+            {isOnline ? t("status.online") : t("status.offline")}
           </Text>
         </View>
 
@@ -101,11 +104,13 @@ interface PressableDeleteProps {
 }
 
 function PressableDelete({ deviceName, onPress }: PressableDeleteProps) {
+  const { t } = useTranslation("devices");
+
   return (
     <Pressable
       onPress={onPress}
       accessibilityRole="button"
-      accessibilityLabel={`Eliminar ${deviceName}`}
+      accessibilityLabel={t("deleteLabel", { name: deviceName })}
       style={({ pressed }) => [
         styles.deleteButton,
         pressed && styles.deleteButtonPressed,
@@ -126,6 +131,7 @@ export function DevicesTab({
   onRemoveDevice,
   isOwner,
 }: DevicesTabProps) {
+  const { t } = useTranslation("devices");
   const [linkModalOpen, setLinkModalOpen] = useState(false);
   const [deviceToDelete, setDeviceToDelete] = useState<Device | null>(null);
 
@@ -146,9 +152,9 @@ export function DevicesTab({
       >
         <View style={styles.header}>
           <View style={styles.headerText}>
-            <Text style={styles.title}>Dispositivos vinculados</Text>
+            <Text style={styles.title}>{t("header.title")}</Text>
             <Text style={styles.subtitle}>
-              {onlineCount} de {devices.length} dispositivos en línea
+              {t("header.subtitle", { online: onlineCount, total: devices.length })}
             </Text>
           </View>
 
@@ -164,7 +170,7 @@ export function DevicesTab({
                 />
               }
             >
-              Vincular dispositivo
+              {t("actions.link")}
             </Button>
           ) : null}
         </View>
@@ -179,16 +185,14 @@ export function DevicesTab({
                   color={Theme.colors.border}
                 />
               }
-              title="Aún no tienes dispositivos vinculados"
+              title={t("empty.title")}
               description={
-                isOwner
-                  ? "Instala tu primer módulo dentro del tomacorriente de un electrodoméstico para empezar a monitorear su consumo"
-                  : "El responsable del proyecto aún no ha vinculado dispositivos."
+                isOwner ? t("empty.subtitle") : t("empty.subtitleReadOnly")
               }
               actions={
                 isOwner ? (
                   <Button size="small" onPress={openLinkModal}>
-                    Vincular dispositivo
+                    {t("empty.cta")}
                   </Button>
                 ) : undefined
               }

@@ -1,46 +1,21 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
-import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 import CountryFlag from "react-native-country-flag";
+
 import { Theme } from "@/constants/theme";
+import { changeLanguage, LANGUAGES } from "@/i18n";
 import { SettingsSectionCard } from "../../components/SettingsSectionCard/SettingsSectionCard";
 import { styles } from "./LanguageSettings.styles";
 
-export interface LanguageOption {
-  id: string;
-  name: string;
-  locale: string;
-  code: string;
-}
-
-export const LANGUAGES: LanguageOption[] = [
-  { id: "es", name: "Español", locale: "es-CO", code: "CO" },
-  { id: "en", name: "English", locale: "en-US", code: "US" },
-  { id: "pt", name: "Português", locale: "pt-BR", code: "BR" },
-  { id: "fr", name: "Français", locale: "fr-FR", code: "FR" },
-];
-
-const STORAGE_KEY = "lang";
-
 export function LanguageSettings() {
-  const [currentId, setCurrentId] = useState("es");
-
-  useEffect(() => {
-    AsyncStorage.getItem(STORAGE_KEY)
-      .then((stored) => {
-        if (stored && LANGUAGES.some((lang) => lang.id === stored)) {
-          setCurrentId(stored);
-        }
-      })
-      .catch(() => {});
-  }, []);
-
-  const current = LANGUAGES.find((lang) => lang.id === currentId) ?? LANGUAGES[0];
+  const { t, i18n } = useTranslation("settings");
+  const currentId = i18n.resolvedLanguage ?? i18n.language;
+  const current =
+    LANGUAGES.find((lang) => lang.id === currentId) ?? LANGUAGES[0];
 
   const handleSelect = (id: string) => {
-    setCurrentId(id);
-    AsyncStorage.setItem(STORAGE_KEY, id).catch(() => {});
+    void changeLanguage(id);
   };
 
   return (
@@ -48,8 +23,8 @@ export function LanguageSettings() {
       icon={
         <Ionicons name="language-outline" size={20} color={Theme.colors.primary} />
       }
-      title="Idioma del sistema"
-      description="Define el idioma de la interfaz y los reportes generados"
+      title={t("language.title")}
+      description={t("language.description")}
       trailing={
         <View style={styles.badge}>
           <Text style={styles.badgeText}>{current.name}</Text>
@@ -63,6 +38,8 @@ export function LanguageSettings() {
             <Pressable
               key={lang.id}
               onPress={() => handleSelect(lang.id)}
+              accessibilityRole="button"
+              accessibilityState={{ selected: isActive }}
               style={({ pressed }) => [
                 styles.languageCard,
                 isActive && styles.languageCardActive,

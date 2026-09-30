@@ -1,12 +1,14 @@
 import { Switch } from "@/components/Switch/Switch";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 import { Theme } from "@/constants/theme";
 import { SettingsSectionCard } from "../../components/SettingsSectionCard/SettingsSectionCard";
 import { styles } from "./NotificationSettings.styles";
 
 export function NotificationSettings() {
+  const { t } = useTranslation("settings");
   const [settings, setSettings] = useState({
     email: true,
     push: true,
@@ -47,35 +49,37 @@ export function NotificationSettings() {
           color={Theme.colors.warningText}
         />
       }
-      title="Notificaciones"
-      description="Configura cómo deseas recibir alertas y eventos del sistema"
+      title={t("notifications.title")}
+      description={t("notifications.description")}
       trailing={
         <View style={styles.counter}>
-          <Text style={styles.counterText}>{activeCount} activas</Text>
+          <Text style={styles.counterText}>
+            {activeCount} {t("notifications.active")}
+          </Text>
         </View>
       }
     >
       <View style={styles.options}>
         <NotificationRow
           icon="mail-outline"
-          title="Correo electrónico"
-          description="Alertas enviadas al correo registrado"
+          title={t("notifications.email.title")}
+          description={t("notifications.email.description")}
           enabled={settings.email}
           onToggle={() => toggleSetting("email")}
         />
 
         <NotificationRow
           icon="phone-portrait-outline"
-          title="Notificaciones push"
-          description="Alertas dentro de la plataforma"
+          title={t("notifications.push.title")}
+          description={t("notifications.push.description")}
           enabled={settings.push}
           onToggle={() => toggleSetting("push")}
         />
 
         <NotificationRow
           icon="checkmark-done-outline"
-          title="Modo combinado"
-          description="Activa ambos canales simultáneamente"
+          title={t("notifications.combined.title")}
+          description={t("notifications.combined.description")}
           enabled={settings.combined}
           onToggle={() => toggleSetting("combined")}
         />
@@ -99,6 +103,8 @@ function NotificationRow({
   enabled,
   onToggle,
 }: NotificationRowProps) {
+  const { t } = useTranslation("settings");
+
   return (
     <View style={styles.row}>
       <View style={styles.rowLeft}>
@@ -120,7 +126,9 @@ function NotificationRow({
               { color: enabled ? Theme.colors.successText : Theme.colors.dangerText },
             ]}
           >
-            {enabled ? "Activo" : "Inactivo"}
+            {enabled
+              ? t("notifications.status.active")
+              : t("notifications.status.inactive")}
           </Text>
         </View>
 

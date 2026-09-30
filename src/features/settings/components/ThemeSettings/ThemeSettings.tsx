@@ -1,5 +1,6 @@
 import { useTheme } from "@/context/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 import { View, Text, Pressable } from "react-native";
 import { SettingsSectionCard } from "../../components/SettingsSectionCard/SettingsSectionCard";
 import { Theme } from "@/constants/theme";
@@ -13,13 +14,14 @@ const darkThemes = (themes: ThemePalette[]) =>
   themes.filter((theme) => theme.mode === "dark");
 
 export function ThemeSettings() {
+  const { t } = useTranslation("settings");
   const { themeId, setThemeId, currentTheme, themes } = useTheme();
 
   return (
     <SettingsSectionCard
       icon={<Ionicons name="color-palette-outline" size={20} color={Theme.colors.primary} />}
-      title="Temas del sistema"
-      description="Apariencia visual del sistema para todos los usuarios"
+      title={t("theme.title")}
+      description={t("theme.description")}
       trailing={
         <View style={styles.badge}>
           <Text style={styles.badgeText}>{currentTheme.name}</Text>
@@ -27,7 +29,7 @@ export function ThemeSettings() {
       }
     >
       <View style={styles.section}>
-        <Text style={styles.sectionLabel}>Temas claros</Text>
+        <Text style={styles.sectionLabel}>{t("theme.light")}</Text>
         <View style={styles.grid}>
           {lightThemes(themes).map((theme) => (
             <ThemeCard
@@ -42,9 +44,9 @@ export function ThemeSettings() {
 
       <View style={styles.section}>
         <View style={styles.sectionLabelRow}>
-          <Text style={styles.sectionLabel}>Temas oscuros</Text>
+          <Text style={styles.sectionLabel}>{t("theme.dark")}</Text>
           <View style={styles.newBadge}>
-            <Text style={styles.newBadgeText}>Nuevo</Text>
+            <Text style={styles.newBadgeText}>{t("theme.new")}</Text>
           </View>
         </View>
         <View style={styles.grid}>

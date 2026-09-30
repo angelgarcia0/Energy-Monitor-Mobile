@@ -1,31 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 import { Theme } from "@/constants/theme";
 import { SettingsSectionCard } from "../../components/SettingsSectionCard/SettingsSectionCard";
 import { styles } from "./HelpCenter.styles";
 
 const HELP_ITEMS = [
-  {
-    title: "Documentación",
-    description: "Guías de uso, referencia de funciones y tutoriales paso a paso",
-    action: "Abrir documentación",
-    icon: "book-outline",
-    type: "docs",
-  },
-  {
-    title: "Soporte técnico",
-    description: "Comunícate con el equipo de soporte para resolver incidencias",
-    action: "Crear ticket",
-    icon: "headset-outline",
-    type: "support",
-  },
-  {
-    title: "Novedades",
-    description: "Últimas actualizaciones, mejoras y correcciones del sistema",
-    action: "Ver registro de cambios",
-    icon: "sparkles-outline",
-    type: "updates",
-  },
+  { key: "docs", icon: "book-outline", type: "docs" },
+  { key: "support", icon: "headset-outline", type: "support" },
+  { key: "updates", icon: "sparkles-outline", type: "updates" },
 ] as const;
 
 type HelpIconName = (typeof HELP_ITEMS)[number]["icon"];
@@ -42,28 +25,32 @@ const TYPE_STYLES: Record<string, HelpTypeStyle> = {
 };
 
 export function HelpCenter() {
+  const { t } = useTranslation("settings");
+
   return (
     <SettingsSectionCard
       icon={<Ionicons name="help-circle-outline" size={20} color="#0078D7" />}
-      title="Centro de ayuda"
-      description="Recursos y soporte para sacar el máximo provecho al sistema"
+      title={t("helpCenter.title")}
+      description={t("helpCenter.description")}
       style={styles.lastCard}
     >
       <View style={styles.container}>
         {HELP_ITEMS.map((item) => {
           const typeStyle = TYPE_STYLES[item.type];
           return (
-            <View key={item.title} style={styles.helpCard}>
+            <View key={item.key} style={styles.helpCard}>
               <View style={[styles.icon, typeStyle]}>
                 <Ionicons name={item.icon as HelpIconName} size={20} color={typeStyle.color} />
               </View>
 
-              <Text style={styles.title}>{item.title}</Text>
+              <Text style={styles.title}>{t(`help.${item.key}.title`)}</Text>
 
-              <Text style={styles.description}>{item.description}</Text>
+              <Text style={styles.description}>
+                {t(`help.${item.key}.description`)}
+              </Text>
 
               <View style={styles.linkRow} pointerEvents="none">
-                <Text style={styles.link}>{item.action}</Text>
+                <Text style={styles.link}>{t(`help.${item.key}.action`)}</Text>
                 <Ionicons name="open-outline" size={14} color={Theme.colors.primary} />
               </View>
             </View>

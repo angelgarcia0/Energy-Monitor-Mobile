@@ -1,5 +1,6 @@
 import { useRouter, type Href } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { useTranslation } from "react-i18next";
 import { ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -12,6 +13,7 @@ import { ThemeSettings } from "../../components/ThemeSettings/ThemeSettings";
 import { styles } from "./SettingsScreen.styles";
 
 export function SettingsScreen() {
+  const { t } = useTranslation("settings");
   const insets = useSafeAreaInsets();
   const router = useRouter();
 
@@ -28,8 +30,11 @@ export function SettingsScreen() {
 
       <Header
         breadcrumbItems={[
-          { label: "Inicio", onPress: () => router.push("/dashboard" as Href) },
-          { label: "Ajustes" },
+          {
+            label: t("header.home"),
+            onPress: () => router.push("/dashboard" as Href),
+          },
+          { label: t("header.settings") },
         ]}
         style={styles.header}
       />

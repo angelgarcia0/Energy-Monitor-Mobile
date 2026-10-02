@@ -29,8 +29,14 @@ export function AccountScreen() {
   const { t } = useTranslation("account");
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { user, updateName, updateEmail, updatePhone, updateAvatar, resetUser } =
-    useUser();
+  const {
+    user,
+    updateName,
+    updateLastName,
+    updateEmail,
+    updateAvatar,
+    resetUser,
+  } = useUser();
 
   const [editingField, setEditingField] = useState<EditableField | null>(null);
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
@@ -52,17 +58,14 @@ export function AccountScreen() {
       return;
     }
 
-    if (field === "email") {
-      updateEmail(value);
-      showSuccess(t("success.emailUpdated"));
+    if (field === "lastName") {
+      updateLastName(value);
+      showSuccess(t("success.lastNameUpdated"));
       return;
     }
 
-    // Vacío = quitar el teléfono.
-    updatePhone(value === "" ? null : value);
-    showSuccess(
-      value === "" ? t("success.phoneRemoved") : t("success.phoneUpdated"),
-    );
+    updateEmail(value);
+    showSuccess(t("success.emailUpdated"));
   };
 
   const handleDeleteAccount = () => {
@@ -75,9 +78,9 @@ export function AccountScreen() {
   const editingInitialValue =
     editingField === "name"
       ? user.name
-      : editingField === "email"
-        ? user.email
-        : (user.phone ?? "");
+      : editingField === "lastName"
+        ? user.lastName
+        : user.email;
 
   return (
     <View
@@ -147,18 +150,19 @@ export function AccountScreen() {
             <View style={styles.divider} />
 
             <ProfileField
+              label={t("lastName")}
+              value={user.lastName}
+              editAccessibilityLabel={t("edit", {
+                label: t("lastName").toLowerCase(),
+              })}
+              onEdit={() => setEditingField("lastName")}
+            />
+
+            <ProfileField
               label={t("email")}
               value={user.email}
               editAccessibilityLabel={t("edit", { label: t("email").toLowerCase() })}
               onEdit={() => setEditingField("email")}
-            />
-            <View style={styles.divider} />
-
-            <ProfileField
-              label={t("phone")}
-              value={user.phone ?? t("noPhone")}
-              editAccessibilityLabel={t("edit", { label: t("phone").toLowerCase() })}
-              onEdit={() => setEditingField("phone")}
             />
             <View style={styles.divider} />
 

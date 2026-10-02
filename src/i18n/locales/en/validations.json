@@ -15,8 +15,8 @@
     "currentPasswordRequired": "Enter your current password",
     "confirmNewPassword": "Confirm your new password",
     "nameMin": "Minimum 2 characters",
-    "phoneDigitsOnly": "You can only type numbers",
-    "phoneDigitsRange": "Between 7 and 15 digits",
-    "networkPassword": "Enter the network password"
+    "networkPassword": "Enter the network password",
+    "nameMax": "Maximum 100 characters",
+    "passwordMax": "Maximum 64 characters"
   }
 }

@@ -10,12 +10,20 @@ import { passwordField } from "@/features/auth/validation/passwordRules";
  */
 const message = tMessage;
 
+// El backend limita nombre y apellido a 100 caracteres (`RegisterRequest`).
+const accountNameField = z
+  .string()
+  .trim()
+  .min(1, message("validations:errors.required"))
+  .min(2, message("validations:errors.nameMin"))
+  .max(100, message("validations:errors.nameMax"));
+
 export const accountNameSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(1, message("validations:errors.required"))
-    .min(2, message("validations:errors.nameMin")),
+  name: accountNameField,
+});
+
+export const accountLastNameSchema = z.object({
+  lastName: accountNameField,
 });
 
 export const accountEmailSchema = z.object({
@@ -25,18 +33,6 @@ export const accountEmailSchema = z.object({
     .trim()
     .min(1, message("validations:errors.required"))
     .email(message("validations:errors.invalidEmail")),
-});
-
-export const accountPhoneSchema = z.object({
-  // Vacío = quitar el teléfono; si se ingresa, solo dígitos de 7 a 15.
-  phone: z
-    .string()
-    .trim()
-    .regex(/^\d*$/, message("validations:errors.phoneDigitsOnly"))
-    .refine(
-      (value) => value === "" || (value.length >= 7 && value.length <= 15),
-      message("validations:errors.phoneDigitsRange"),
-    ),
 });
 
 export const changePasswordSchema = z
@@ -51,6 +47,6 @@ export const changePasswordSchema = z
   });
 
 export type AccountNameValues = z.infer<typeof accountNameSchema>;
+export type AccountLastNameValues = z.infer<typeof accountLastNameSchema>;
 export type AccountEmailValues = z.infer<typeof accountEmailSchema>;
-export type AccountPhoneValues = z.infer<typeof accountPhoneSchema>;
 export type ChangePasswordValues = z.infer<typeof changePasswordSchema>;

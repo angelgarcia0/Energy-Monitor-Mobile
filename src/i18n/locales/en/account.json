@@ -5,9 +5,8 @@
   "viewPhoto": "View photo",
   "delete": "Delete",
   "name": "Name",
+  "lastName": "Last name",
   "email": "Email",
-  "phone": "Phone",
-  "noPhone": "You don't have one at the moment",
   "password": "Password",
   "deleteQuestion": "Do you want to delete your account?",
   "deleteAccount": {
@@ -28,12 +27,12 @@
   "maskedPassword": "••••••••",
   "editField": {
     "nameTitle": "Edit name",
+    "lastNameTitle": "Edit last name",
+    "placeholderLastName": "E.g. Smith",
     "emailTitle": "Edit email",
-    "phoneTitle": "Edit phone",
     "save": "Save",
     "placeholderName": "E.g. John Smith",
-    "placeholderEmail": "E.g. you@example.com",
-    "placeholderPhone": "E.g. 3001234567"
+    "placeholderEmail": "E.g. you@example.com"
   },
   "changePassword": {
     "title": "Change password",
@@ -46,9 +45,8 @@
   },
   "success": {
     "nameUpdated": "Name updated",
+    "lastNameUpdated": "Last name updated",
     "emailUpdated": "Email updated",
-    "phoneUpdated": "Phone updated",
-    "phoneRemoved": "Phone removed",
     "avatarUpdated": "Profile photo updated",
     "avatarRemoved": "Profile photo removed",
     "permissionDenied": "We need gallery permission to add a photo",

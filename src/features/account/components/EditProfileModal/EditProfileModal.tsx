@@ -16,12 +16,12 @@ import { Input } from "@/components/Input/Input";
 import { Modal } from "@/components/Modal/Modal";
 import {
   accountEmailSchema,
+  accountLastNameSchema,
   accountNameSchema,
-  accountPhoneSchema,
 } from "../../validation/accountSchemas";
 import { styles } from "./EditProfileModal.styles";
 
-export type EditableField = "name" | "email" | "phone";
+export type EditableField = "name" | "lastName" | "email";
 
 export interface EditProfileModalProps {
   visible: boolean;
@@ -41,7 +41,7 @@ const FIELD_CONFIG: Record<
     titleKey: string;
     labelKey: string;
     placeholderKey: string;
-    keyboardType: "default" | "email-address" | "phone-pad";
+    keyboardType: "default" | "email-address";
     autoCapitalize: "none" | "sentences" | "words";
     schema: z.ZodObject<{ value: z.ZodString }>;
   }
@@ -54,6 +54,14 @@ const FIELD_CONFIG: Record<
     autoCapitalize: "words",
     schema: z.object({ value: accountNameSchema.shape.name }),
   },
+  lastName: {
+    titleKey: "editField.lastNameTitle",
+    labelKey: "lastName",
+    placeholderKey: "editField.placeholderLastName",
+    keyboardType: "default",
+    autoCapitalize: "words",
+    schema: z.object({ value: accountLastNameSchema.shape.lastName }),
+  },
   email: {
     titleKey: "editField.emailTitle",
     labelKey: "email",
@@ -61,14 +69,6 @@ const FIELD_CONFIG: Record<
     keyboardType: "email-address",
     autoCapitalize: "none",
     schema: z.object({ value: accountEmailSchema.shape.email }),
-  },
-  phone: {
-    titleKey: "editField.phoneTitle",
-    labelKey: "phone",
-    placeholderKey: "editField.placeholderPhone",
-    keyboardType: "phone-pad",
-    autoCapitalize: "none",
-    schema: z.object({ value: accountPhoneSchema.shape.phone }),
   },
 };
 

@@ -5,9 +5,8 @@
   "viewPhoto": "Ver foto",
   "delete": "Excluir",
   "name": "Nome",
+  "lastName": "Sobrenome",
   "email": "Email",
-  "phone": "Telefone",
-  "noPhone": "Você não tem no momento",
   "password": "Senha",
   "deleteQuestion": "Deseja excluir sua conta?",
   "deleteAccount": {
@@ -28,12 +27,12 @@
   "maskedPassword": "••••••••",
   "editField": {
     "nameTitle": "Editar nome",
+    "lastNameTitle": "Editar sobrenome",
+    "placeholderLastName": "Ex: Silva",
     "emailTitle": "Editar e-mail",
-    "phoneTitle": "Editar telefone",
     "save": "Salvar",
     "placeholderName": "Ex: João Silva",
-    "placeholderEmail": "Ex: seu@email.com",
-    "placeholderPhone": "Ex: 3001234567"
+    "placeholderEmail": "Ex: seu@email.com"
   },
   "changePassword": {
     "title": "Alterar senha",
@@ -46,9 +45,8 @@
   },
   "success": {
     "nameUpdated": "Nome atualizado",
+    "lastNameUpdated": "Sobrenome atualizado",
     "emailUpdated": "E-mail atualizado",
-    "phoneUpdated": "Telefone atualizado",
-    "phoneRemoved": "Telefone removido",
     "avatarUpdated": "Foto de perfil atualizada",
     "avatarRemoved": "Foto de perfil removida",
     "permissionDenied": "Precisamos de permissão da galeria para adicionar uma foto",

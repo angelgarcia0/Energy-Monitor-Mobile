@@ -15,8 +15,8 @@
     "currentPasswordRequired": "Ingresa tu contraseña actual",
     "confirmNewPassword": "Confirma tu nueva contraseña",
     "nameMin": "Mínimo 2 caracteres",
-    "phoneDigitsOnly": "Solo puedes escribir números",
-    "phoneDigitsRange": "Entre 7 y 15 dígitos",
-    "networkPassword": "Ingresa la contraseña de la red"
+    "networkPassword": "Ingresa la contraseña de la red",
+    "nameMax": "Máximo 100 caracteres",
+    "passwordMax": "Máximo 64 caracteres"
   }
 }

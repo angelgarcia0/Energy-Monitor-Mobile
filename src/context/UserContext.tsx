@@ -9,8 +9,8 @@ import {
 
 export interface User {
   name: string;
+  lastName: string;
   email: string;
-  phone: string | null;
   avatarUri: string | null;
 }
 
@@ -18,16 +18,16 @@ export interface User {
 // al recargar; aquí se engancha el backend (o AsyncStorage) más adelante.
 const INITIAL_USER: User = {
   name: "Usuario001",
+  lastName: "Apellido001",
   email: "Usuario001@email.com",
-  phone: null,
   avatarUri: null,
 };
 
 export interface UserContextValue {
   user: User;
   updateName: (name: string) => void;
+  updateLastName: (lastName: string) => void;
   updateEmail: (email: string) => void;
-  updatePhone: (phone: string | null) => void;
   updateAvatar: (avatarUri: string | null) => void;
   resetUser: () => void;
 }
@@ -47,12 +47,12 @@ export function UserProvider({ children }: UserProviderProps) {
     setUser((current) => ({ ...current, name }));
   }, []);
 
-  const updateEmail = useCallback((email: string) => {
-    setUser((current) => ({ ...current, email }));
+  const updateLastName = useCallback((lastName: string) => {
+    setUser((current) => ({ ...current, lastName }));
   }, []);
 
-  const updatePhone = useCallback((phone: string | null) => {
-    setUser((current) => ({ ...current, phone }));
+  const updateEmail = useCallback((email: string) => {
+    setUser((current) => ({ ...current, email }));
   }, []);
 
   const updateAvatar = useCallback((avatarUri: string | null) => {
@@ -67,12 +67,19 @@ export function UserProvider({ children }: UserProviderProps) {
     () => ({
       user,
       updateName,
+      updateLastName,
       updateEmail,
-      updatePhone,
       updateAvatar,
       resetUser,
     }),
-    [user, updateName, updateEmail, updatePhone, updateAvatar, resetUser],
+    [
+      user,
+      updateName,
+      updateLastName,
+      updateEmail,
+      updateAvatar,
+      resetUser,
+    ],
   );
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

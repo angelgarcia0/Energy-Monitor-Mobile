@@ -199,17 +199,6 @@ export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
               <Text style={styles.muted}>{t("placeholders.empty")}</Text>
             </View>
           </Field>
-
-          <Field label={t("fields.phone")}>
-            <View style={styles.valueWithIcon}>
-              <Ionicons
-                name="call-outline"
-                size={Theme.typography.size.xs}
-                color={Theme.colors.textSecondary}
-              />
-              <Text style={styles.muted}>{t("placeholders.empty")}</Text>
-            </View>
-          </Field>
         </Card>
       </ScrollView>
 

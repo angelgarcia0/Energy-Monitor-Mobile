@@ -11,9 +11,22 @@ import { passwordField } from "./passwordRules";
  */
 const message = tMessage;
 
+/**
+ * `name` y `lastName` replican los límites del backend (`@Size(max = 100)` en
+ * `RegisterRequest`).
+ */
+const personNameField = z
+  .string()
+  .trim()
+  .min(1, message("validations:errors.required"))
+  .min(2, message("validations:errors.nameMin"))
+  .max(100, message("validations:errors.nameMax"));
+
 export const registerSchema = z
   .object({
-    name: z.string().min(1, message("validations:errors.required")),
+    name: personNameField,
+
+    lastName: personNameField,
 
     email: z.string().min(1, message("validations:errors.required")),
 

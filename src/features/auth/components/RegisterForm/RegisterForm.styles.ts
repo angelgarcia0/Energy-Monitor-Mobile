@@ -17,6 +17,15 @@ export const styles = StyleSheet.create({
     color: Theme.colors.textPrimary,
     textAlign: "center",
   },
+  nameRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: Theme.spacing.sm,
+  },
+  fieldHalf: {
+    flex: 1,
+    gap: Theme.spacing.xs,
+  },
   error: {
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.size13,

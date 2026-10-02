@@ -12,6 +12,7 @@ const message = tMessage;
 export const passwordField = z
   .string()
   .min(8, message("validations:errors.passwordMin"))
+  .max(64, message("validations:errors.passwordMax"))
   .regex(/[A-Z]/, message("validations:errors.passwordUpper"))
   .regex(/(.*[a-z]){3,}/, message("validations:errors.passwordLower"))
   .regex(/(.*[0-9]){3,}/, message("validations:errors.passwordNumber"))

@@ -10,6 +10,7 @@ import { Button } from "@/components/Button/Button";
 import { Card } from "@/components/Card/Card";
 import { Input } from "@/components/Input/Input";
 import { Theme } from "@/constants/theme";
+import { toRegisterPayload } from "../../service/registerPayload";
 import {
   registerSchema,
   type RegisterFormValues,
@@ -35,6 +36,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
     mode: "onChange",
     defaultValues: {
       name: "",
+      lastName: "",
       email: "",
       password: "",
       repeatPassword: "",
@@ -42,9 +44,13 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
     },
   });
 
-  const onSubmit = (_data: RegisterFormValues) => {
-    // TEMPORAL: la navegación a verify-account es un placeholder que se
-    // reemplaza cuando se conecte el backend real (registro pendiente).
+  const onSubmit = (data: RegisterFormValues) => {
+    // El payload ya tiene la forma que espera `POST /api/v1/auth/register`;
+    // solo falta la llamada. TEMPORAL: la navegación a verify-account es un
+    // placeholder que se reemplaza al conectar el backend real.
+    const payload = toRegisterPayload(data);
+    if (__DEV__) console.log("register payload:", payload);
+
     router.push("/verify-account");
     onSuccess?.();
   };
@@ -54,23 +60,47 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
       <View style={styles.form}>
         <Text style={styles.title}>{t("register.title")}</Text>
 
-        <Controller
-          control={control}
-          name="name"
-          render={({ field: { value, onChange, onBlur } }) => (
-            <Input
-              label={t("register.name")}
-              value={value}
-              onChangeText={onChange}
-              onBlur={onBlur}
-              placeholder={t("register.namePlaceholder")}
-              autoComplete="name"
+        <View style={styles.nameRow}>
+          <View style={styles.fieldHalf}>
+            <Controller
+              control={control}
+              name="name"
+              render={({ field: { value, onChange, onBlur } }) => (
+                <Input
+                  label={t("register.name")}
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  placeholder={t("register.namePlaceholder")}
+                  autoComplete="name"
+                />
+              )}
             />
-          )}
-        />
-        {errors.name ? (
-          <Text style={styles.error}>{errors.name.message}</Text>
-        ) : null}
+            {errors.name ? (
+              <Text style={styles.error}>{errors.name.message}</Text>
+            ) : null}
+          </View>
+
+          <View style={styles.fieldHalf}>
+            <Controller
+              control={control}
+              name="lastName"
+              render={({ field: { value, onChange, onBlur } }) => (
+                <Input
+                  label={t("register.lastName")}
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  placeholder={t("register.lastNamePlaceholder")}
+                  autoComplete="family-name"
+                />
+              )}
+            />
+            {errors.lastName ? (
+              <Text style={styles.error}>{errors.lastName.message}</Text>
+            ) : null}
+          </View>
+        </View>
 
         <Controller
           control={control}

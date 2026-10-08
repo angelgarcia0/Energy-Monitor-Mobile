@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { View, Text, Pressable } from "react-native";
 import { SettingsSectionCard } from "../../components/SettingsSectionCard/SettingsSectionCard";
 import { Theme } from "@/constants/theme";
-import type { ThemePalette } from "@/context/ThemeContext";
+import type { ThemePalette } from "@/theme/palettes";
 import { styles } from "./ThemeSettings.styles";
 
 const lightThemes = (themes: ThemePalette[]) =>

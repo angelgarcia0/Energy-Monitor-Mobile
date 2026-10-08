@@ -1,9 +1,13 @@
-import { Colors } from "./colors";
+import { createColorsProxy, createThemeStyles } from "@/theme/createThemeStyles";
 import { Spacing } from "./spacing";
 import { Typography } from "./typography";
 
+export { createThemeStyles };
+
 export const Theme = {
-  colors: Colors,
+  // Lectura dinámica de la paleta activa (ver `theme/createThemeStyles`): los tokens
+  // resuelven contra la paleta elegida en Ajustes → Temas, no contra una constante.
+  colors: createColorsProxy(),
   spacing: Spacing,
   typography: Typography,
 

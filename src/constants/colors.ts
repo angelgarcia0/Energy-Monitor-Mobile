@@ -1,4 +1,48 @@
-export const Colors = {
+// Tokens de color de la UI. La forma de `ThemeColors` es el contrato de todas las
+// paletas: si se agrega un token aquí, hay que agregarlo también en
+// `src/theme/palettes.ts`.
+
+export type ThemeColors = {
+  primary: string;
+  primaryHover: string;
+  primaryDark: string;
+  primarySoft: string;
+  secondary: string;
+  success: string;
+  warning: string;
+  danger: string;
+  info: string;
+  background: string;
+  backgroundLeft: string;
+  surface: string;
+  gradient: string;
+  textPrimary: string;
+  textSecondary: string;
+  border: string;
+  cardSoft: string;
+  cardSelected: string;
+  dangerSoft: string;
+  dangerSoftHover: string;
+  dangerText: string;
+  successSoft: string;
+  successText: string;
+  warningSoft: string;
+  warningText: string;
+  infoSoft: string;
+  infoText: string;
+
+  // Contenido (texto e iconos) dibujado sobre superficies de marca: el sidebar
+  // (`backgroundLeft`), el gradiente del brand, y botones o badges `primary`.
+  // `surface` es el fondo de las tarjetas, así que en los temas oscuros se volvía negro
+  // sobre fondo negro; la Web usa blanco fijo en estos casos (Sidebar.module.css,
+  // AuthLayout.module.css, Button.module.css, HomeCard.module.css).
+  onBrand: string;
+  onBrandMuted: string;
+};
+
+// Paleta clara de EnergyMonitor. Es también la paleta por defecto de la app:
+// `Theme.colors` la expone hasta que el usuario elija otra en Ajustes.
+export const Colors: ThemeColors = {
   primary: "#0078d7",
   primaryHover: "#3399ff",
   primaryDark: "#0a2540",
@@ -32,6 +76,9 @@ export const Colors = {
   warningText: "#854F0B",
   infoSoft: "#D1ECF1",
   infoText: "#0C5460",
+
+  onBrand: "#FFFFFF",
+  onBrandMuted: "rgba(255, 255, 255, 0.8)",
 };
 
 export default Colors;

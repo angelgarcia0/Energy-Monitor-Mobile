@@ -14,6 +14,8 @@ export const HOME_TYPE_VALUES = [
   "house",
   "apartment",
   "studio",
+  "country_house",
+  "cabin",
   "other",
 ] as const;
 

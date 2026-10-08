@@ -38,6 +38,8 @@
     "house": "Maison",
     "apartment": "Appartement",
     "studio": "Studio",
+    "country_house": "Maison de campagne",
+    "cabin": "Chalet",
     "other": "Autre"
   }
 }

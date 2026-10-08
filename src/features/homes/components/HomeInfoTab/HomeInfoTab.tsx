@@ -44,7 +44,9 @@ export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
     (home.homeTypeId === "other" && home.otherHomeType) ||
     getHomeTypeLabel(t, home.homeTypeId);
   const typeIcon: "home-outline" | "business-outline" =
-    home.homeTypeId === "house" ? "home-outline" : "business-outline";
+    ["house", "country_house", "cabin"].includes(home.homeTypeId ?? "")
+      ? "home-outline"
+      : "business-outline";
   const ownerColor = getRoleBadgeColor("owner");
 
   const handleConfirm = () => {

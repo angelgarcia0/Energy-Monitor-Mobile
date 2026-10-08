@@ -1,11 +1,17 @@
 import { View } from "react-native";
 
 import { Sidebar } from "@/components/layout/Sidebar/Sidebar";
+import { useTheme } from "@/context/ThemeContext";
 import { NotificationsScreen } from "@/features/notifications/screens/NotificationsScreen/NotificationsScreen";
 
 export default function Notifications() {
+  const { currentTheme } = useTheme();
+
+  // La key remonta la pantalla al cambiar de paleta para que los estilos
+  // reconstruidos se apliquen (ver useTheme).
+
   return (
-    <View style={{ flex: 1 }}>
+    <View key={currentTheme.id} style={{ flex: 1 }}>
       <NotificationsScreen />
       <Sidebar />
     </View>

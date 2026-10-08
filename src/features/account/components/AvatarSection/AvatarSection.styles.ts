@@ -1,11 +1,11 @@
 import { StyleSheet } from "react-native";
 
-import { Theme } from "@/constants/theme";
+import { createThemeStyles, Theme } from "@/constants/theme";
 
 const AVATAR_SIZE = Theme.spacing.xl * 4;
 const BADGE_SIZE = Theme.spacing.xl;
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   container: {
     alignItems: "center",
     gap: Theme.spacing.sm,
@@ -114,4 +114,4 @@ export const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-});
+}));

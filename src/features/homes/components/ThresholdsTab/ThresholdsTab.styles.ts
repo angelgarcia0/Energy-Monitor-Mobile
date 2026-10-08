@@ -1,10 +1,10 @@
 import { StyleSheet } from "react-native";
 
-import { Theme } from "@/constants/theme";
+import { createThemeStyles, Theme } from "@/constants/theme";
 
 const ROW_ICON_SIZE = Theme.spacing.xl + Theme.spacing.sm;
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   flex: {
     flex: 1,
   },
@@ -185,4 +185,4 @@ export const styles = StyleSheet.create({
     lineHeight: Theme.typography.size.size18,
     color: Theme.colors.textSecondary,
   },
-});
+}));

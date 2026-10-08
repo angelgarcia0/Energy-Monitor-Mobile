@@ -1,8 +1,8 @@
 import { StyleSheet } from "react-native";
 
-import { Theme } from "@/constants/theme";
+import { createThemeStyles, Theme } from "@/constants/theme";
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   form: {
     gap: Theme.spacing.xs,
     paddingBottom: Theme.spacing.xs,
@@ -12,4 +12,4 @@ export const styles = StyleSheet.create({
     fontSize: Theme.typography.size.size13,
     color: Theme.colors.danger,
   },
-});
+}));

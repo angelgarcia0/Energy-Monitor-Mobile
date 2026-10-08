@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "../../constants/theme";
+import { createThemeStyles, Theme } from "../../constants/theme";
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   base: {
     borderRadius: Theme.radius.md,
     backgroundColor: Theme.colors.surface,
@@ -33,4 +33,4 @@ export const styles = StyleSheet.create({
   pressed: {
     opacity: 0.85,
   },
-});
+}));

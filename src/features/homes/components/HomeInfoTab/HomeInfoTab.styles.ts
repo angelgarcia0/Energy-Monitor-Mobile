@@ -1,11 +1,11 @@
 import { StyleSheet } from "react-native";
 
-import { Theme } from "@/constants/theme";
+import { createThemeStyles, Theme } from "@/constants/theme";
 
 const AVATAR_SIZE = Theme.spacing.xl + Theme.spacing.sm;
 const BADGE_RADIUS = Theme.spacing.xl;
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   content: {
     gap: Theme.spacing.md,
     paddingHorizontal: Theme.spacing.md,
@@ -156,4 +156,4 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     gap: Theme.spacing.xs,
   },
-});
+}));

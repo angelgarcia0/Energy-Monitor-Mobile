@@ -1,11 +1,11 @@
 import { StyleSheet } from "react-native";
 
-import { Theme } from "../../constants/theme";
+import { createThemeStyles, Theme } from "../../constants/theme";
 
 const TRIGGER_SIZE = Theme.spacing.xl + Theme.spacing.sm;
 const MENU_MIN_WIDTH = Theme.spacing.xl * 6;
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   trigger: {
     width: TRIGGER_SIZE,
     height: TRIGGER_SIZE,
@@ -46,4 +46,4 @@ export const styles = StyleSheet.create({
     fontSize: Theme.typography.size.sm,
     color: Theme.colors.textPrimary,
   },
-});
+}));

@@ -1,8 +1,8 @@
 import { StyleSheet } from "react-native";
 
-import { Theme } from "@/constants/theme";
+import { createThemeStyles, Theme } from "@/constants/theme";
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   flex: {
     flex: 1,
     backgroundColor: Theme.colors.background,
@@ -15,4 +15,4 @@ export const styles = StyleSheet.create({
   languageSwitcher: {
     alignSelf: "center",
   },
-});
+}));

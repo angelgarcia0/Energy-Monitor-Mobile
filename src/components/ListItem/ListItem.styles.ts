@@ -1,10 +1,10 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "../../constants/theme";
+import { createThemeStyles, Theme } from "../../constants/theme";
 
 const LEADING_SIZE = Theme.spacing.xl + Theme.spacing.xs;
 const ACTION_SIZE = Theme.spacing.xl - Theme.spacing.xs;
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
@@ -80,4 +80,4 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     flexShrink: 0,
   },
-});
+}));

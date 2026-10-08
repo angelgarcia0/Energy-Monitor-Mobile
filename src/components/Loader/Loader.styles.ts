@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "../../constants/theme";
+import { createThemeStyles, Theme } from "../../constants/theme";
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center",
@@ -12,4 +12,4 @@ export const styles = StyleSheet.create({
     fontSize: Theme.typography.size.sm,
     color: Theme.colors.textSecondary,
   },
-});
+}));

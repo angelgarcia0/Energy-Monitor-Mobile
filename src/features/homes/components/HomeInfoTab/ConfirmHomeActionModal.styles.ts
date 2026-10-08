@@ -1,8 +1,8 @@
 import { StyleSheet } from "react-native";
 
-import { Theme } from "@/constants/theme";
+import { createThemeStyles, Theme } from "@/constants/theme";
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   message: {
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.sm,
@@ -13,4 +13,4 @@ export const styles = StyleSheet.create({
   footerButton: {
     flex: 1,
   },
-});
+}));

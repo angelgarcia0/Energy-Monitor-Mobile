@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-import { Theme } from "../../../constants/theme";
+import { createThemeStyles, Theme } from "../../../constants/theme";
 
 export const TRIGGER_SIZE = Theme.spacing.xl + Theme.spacing.sm + Theme.spacing.xs;
 
@@ -16,9 +16,8 @@ const OVERLAY_COLOR = "rgba(0, 0, 0, 0.4)";
 const TINT_SUBTLE = "rgba(255, 255, 255, 0.08)";
 const TINT_AVATAR = "rgba(255, 255, 255, 0.15)";
 const TINT_ACTIVE = "rgba(255, 255, 255, 0.16)";
-const TEXT_INACTIVE = "rgba(255, 255, 255, 0.8)";
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   trigger: {
     position: "absolute",
     left: Theme.spacing.md,
@@ -65,7 +64,7 @@ export const styles = StyleSheet.create({
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.sm,
     fontWeight: Theme.typography.weight.bold,
-    color: Theme.colors.surface,
+    color: Theme.colors.onBrand,
   },
   nav: {
     flexGrow: 1,
@@ -87,10 +86,10 @@ export const styles = StyleSheet.create({
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.md,
     fontWeight: Theme.typography.weight.medium,
-    color: TEXT_INACTIVE,
+    color: Theme.colors.onBrandMuted,
   },
   navLabelActive: {
-    color: Theme.colors.surface,
+    color: Theme.colors.onBrand,
   },
   homesChevron: {
     marginLeft: "auto",
@@ -134,7 +133,7 @@ export const styles = StyleSheet.create({
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.sm,
     fontWeight: Theme.typography.weight.medium,
-    color: Theme.colors.surface,
+    color: Theme.colors.onBrand,
   },
   menuButton: {
     padding: Theme.spacing.xs,
@@ -198,19 +197,19 @@ export const styles = StyleSheet.create({
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.sm,
     fontWeight: Theme.typography.weight.bold,
-    color: Theme.colors.surface,
+    color: Theme.colors.onBrand,
   },
   homeName: {
     flex: 1,
     minWidth: 0,
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.sm,
-    color: TEXT_INACTIVE,
+    color: Theme.colors.onBrandMuted,
   },
   noHomes: {
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.sm,
-    color: TEXT_INACTIVE,
+    color: Theme.colors.onBrandMuted,
     paddingVertical: Theme.spacing.sm,
     paddingHorizontal: Theme.spacing.sm,
   },
@@ -222,4 +221,4 @@ export const styles = StyleSheet.create({
   logoutButton: {
     width: "100%",
   },
-});
+}));

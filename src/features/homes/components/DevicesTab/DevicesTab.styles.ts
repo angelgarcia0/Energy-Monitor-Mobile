@@ -1,11 +1,11 @@
 import { StyleSheet } from "react-native";
 
-import { Theme } from "@/constants/theme";
+import { createThemeStyles, Theme } from "@/constants/theme";
 
 const DEVICE_ICON_SIZE = Theme.spacing.xl + Theme.spacing.md;
 const STATUS_RADIUS = Theme.spacing.xl;
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   content: {
     gap: Theme.spacing.md,
     paddingHorizontal: Theme.spacing.md,
@@ -127,4 +127,4 @@ export const styles = StyleSheet.create({
     marginLeft: Theme.spacing.md + DEVICE_ICON_SIZE + Theme.spacing.sm,
     backgroundColor: Theme.colors.border,
   },
-});
+}));

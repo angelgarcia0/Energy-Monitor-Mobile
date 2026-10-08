@@ -1,9 +1,9 @@
 import { StyleSheet } from "react-native";
 
 import { TRIGGER_SIZE as SIDEBAR_TRIGGER_SIZE } from "@/components/layout/Sidebar/Sidebar.styles";
-import { Theme } from "@/constants/theme";
+import { createThemeStyles, Theme } from "@/constants/theme";
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Theme.colors.background,
@@ -95,7 +95,7 @@ export const styles = StyleSheet.create({
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.xs,
     fontWeight: Theme.typography.weight.bold,
-    color: Theme.colors.surface,
+    color: Theme.colors.onBrand,
   },
   markAllButton: {
     flexDirection: "row",
@@ -118,4 +118,4 @@ export const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: Theme.spacing.xl,
   },
-});
+}));

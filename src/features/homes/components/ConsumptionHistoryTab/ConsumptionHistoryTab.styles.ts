@@ -1,11 +1,11 @@
 import { StyleSheet } from "react-native";
 
-import { Theme } from "@/constants/theme";
+import { createThemeStyles, Theme } from "@/constants/theme";
 
 const DOT_SIZE = Theme.spacing.sm;
 const TRACK_HEIGHT = Theme.spacing.sm - Theme.spacing.xs;
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   content: {
     gap: Theme.spacing.md,
     paddingHorizontal: Theme.spacing.md,
@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
     color: Theme.colors.textSecondary,
   },
   chipTextActive: {
-    color: Theme.colors.surface,
+    color: Theme.colors.onBrand,
   },
   chipSoftActiveText: {
     color: Theme.colors.primary,
@@ -151,4 +151,4 @@ export const styles = StyleSheet.create({
     fontSize: Theme.typography.size.xs,
     color: Theme.colors.textSecondary,
   },
-});
+}));

@@ -1,11 +1,11 @@
 import { StyleSheet } from "react-native";
 
-import { Theme } from "@/constants/theme";
+import { createThemeStyles, Theme } from "@/constants/theme";
 
 const TEXTAREA_MIN_HEIGHT = Theme.spacing.xl * 3;
 const PICKER_HEIGHT = Theme.spacing.xl + Theme.spacing.lg;
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   form: {
     gap: Theme.spacing.md,
   },
@@ -56,4 +56,4 @@ export const styles = StyleSheet.create({
     fontSize: Theme.typography.size.size13,
     color: Theme.colors.danger,
   },
-});
+}));

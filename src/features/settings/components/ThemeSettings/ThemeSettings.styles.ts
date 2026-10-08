@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "@/constants/theme";
+import { createThemeStyles, Theme } from "@/constants/theme";
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   badge: {
     paddingVertical: 6,
     paddingHorizontal: 12,
@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.size11,
     fontWeight: Theme.typography.weight.bold,
-    color: Theme.colors.surface,
+    color: Theme.colors.onBrand,
   },
   grid: {
     flexDirection: "row",
@@ -153,4 +153,4 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(0,0,0,0.06)",
   },
-});
+}));

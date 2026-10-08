@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "@/constants/theme";
+import { createThemeStyles, Theme } from "@/constants/theme";
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   card: {
     marginHorizontal: Theme.spacing.md,
     marginBottom: Theme.spacing.lg,
@@ -52,4 +52,4 @@ export const styles = StyleSheet.create({
   body: {
     paddingTop: Theme.spacing.lg,
   },
-});
+}));

@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-import { Theme } from "@/constants/theme";
+import { createThemeStyles, Theme } from "@/constants/theme";
 
 const FAVORITE_SIZE = Theme.spacing.xl + Theme.spacing.xs;
 const HEADER_MIN_HEIGHT = Theme.spacing.xl * 3;
@@ -8,7 +8,7 @@ const HEADER_MIN_HEIGHT = Theme.spacing.xl * 3;
 const FAVORITE_TINT = "rgba(255, 255, 255, 0.18)";
 const RESPONSIBLE_TINT = "rgba(255, 255, 255, 0.9)";
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "flex-start",
@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.md,
     fontWeight: Theme.typography.weight.bold,
-    color: Theme.colors.surface,
+    color: Theme.colors.onBrand,
   },
   responsible: {
     fontFamily: Theme.typography.fontPrimary,
@@ -72,4 +72,4 @@ export const styles = StyleSheet.create({
     color: Theme.colors.primary,
     textDecorationLine: "underline",
   },
-});
+}));

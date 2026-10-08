@@ -1,13 +1,13 @@
 import { StyleSheet } from "react-native";
 
-import { Theme } from "@/constants/theme";
+import { createThemeStyles, Theme } from "@/constants/theme";
 
 const ICON_SIZE = Theme.spacing.xl + Theme.spacing.md;
 const APPLIANCE_ICON_SIZE = Theme.spacing.xl + Theme.spacing.md + Theme.spacing.xs;
 const PICKER_HEIGHT = Theme.spacing.xl + Theme.spacing.lg;
 const BAR_WIDTH = 3;
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   scroll: {
     flexShrink: 1,
     // En RN Web el contenido del ScrollView no se recorta solo y termina
@@ -270,4 +270,4 @@ export const styles = StyleSheet.create({
   footerButton: {
     flex: 1,
   },
-});
+}));

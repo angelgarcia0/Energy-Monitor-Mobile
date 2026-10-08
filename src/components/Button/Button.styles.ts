@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "../../constants/theme";
+import { createThemeStyles, Theme } from "../../constants/theme";
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   base: {
     flexDirection: "row",
     alignItems: "center",
@@ -52,7 +52,7 @@ export const styles = StyleSheet.create({
     borderWidth: 0,
   },
   text_primary: {
-    color: Theme.colors.surface,
+    color: Theme.colors.onBrand,
   },
 
   variant_secondary: {
@@ -90,4 +90,4 @@ export const styles = StyleSheet.create({
   disabled: {
     opacity: 0.6,
   },
-});
+}));

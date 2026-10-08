@@ -1,8 +1,8 @@
 import { StyleSheet } from "react-native";
 
-import { Theme } from "../../../constants/theme";
+import { createThemeStyles, Theme } from "../../../constants/theme";
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   bar: {
     flexDirection: "row",
     justifyContent: "space-around",
@@ -23,4 +23,4 @@ export const styles = StyleSheet.create({
   tabActive: {
     borderTopColor: Theme.colors.primary,
   },
-});
+}));

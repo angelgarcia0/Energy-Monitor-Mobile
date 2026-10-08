@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "../../constants/theme";
+import { createThemeStyles, Theme } from "../../constants/theme";
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.45)",
@@ -88,4 +88,4 @@ export const styles = StyleSheet.create({
     borderTopWidth: 0,
     paddingTop: 0,
   },
-});
+}));

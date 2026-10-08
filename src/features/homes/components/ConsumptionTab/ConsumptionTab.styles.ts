@@ -1,13 +1,13 @@
 import { StyleSheet } from "react-native";
 
-import { Theme } from "@/constants/theme";
+import { createThemeStyles, Theme } from "@/constants/theme";
 
 const TRACK_HEIGHT = Theme.spacing.sm;
 // Sin token para tintes translúcidos; mismo criterio que Sidebar.styles.ts.
 const TRACK_TINT = "rgba(255, 255, 255, 0.15)";
 const LIMIT_VALUES_TINT = "rgba(255, 255, 255, 0.7)";
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   content: {
     gap: Theme.spacing.md,
     paddingHorizontal: Theme.spacing.md,
@@ -98,7 +98,7 @@ export const styles = StyleSheet.create({
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.sm,
     fontWeight: Theme.typography.weight.bold,
-    color: Theme.colors.surface,
+    color: Theme.colors.onBrand,
   },
   limitPct: {
     fontFamily: Theme.typography.fontPrimary,
@@ -123,4 +123,4 @@ export const styles = StyleSheet.create({
     color: LIMIT_VALUES_TINT,
     textAlign: "right",
   },
-});
+}));

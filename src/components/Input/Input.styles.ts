@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "../../constants/theme";
+import { createThemeStyles, Theme } from "../../constants/theme";
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   container: {
     width: "100%",
     gap: 6,
@@ -58,4 +58,4 @@ export const styles = StyleSheet.create({
   placeholder: {
     color: Theme.colors.textSecondary,
   },
-});
+}));

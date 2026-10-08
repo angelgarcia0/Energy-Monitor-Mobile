@@ -1,11 +1,11 @@
 import { StyleSheet } from "react-native";
 
-import { Theme } from "@/constants/theme";
+import { createThemeStyles, Theme } from "@/constants/theme";
 
 const ICON_SIZE = Theme.spacing.xl + Theme.spacing.md;
 const DOT_SIZE = Theme.spacing.xs / 2;
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   row: {
     flexDirection: "row",
     gap: Theme.spacing.sm,
@@ -114,4 +114,4 @@ export const styles = StyleSheet.create({
     fontWeight: Theme.typography.weight.bold,
     color: Theme.colors.primary,
   },
-});
+}));

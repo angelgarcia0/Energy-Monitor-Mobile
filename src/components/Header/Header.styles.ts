@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "../../constants/theme";
+import { createThemeStyles, Theme } from "../../constants/theme";
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -43,4 +43,4 @@ export const styles = StyleSheet.create({
   actionButtonPressed: {
     backgroundColor: Theme.colors.primaryHover,
   },
-});
+}));

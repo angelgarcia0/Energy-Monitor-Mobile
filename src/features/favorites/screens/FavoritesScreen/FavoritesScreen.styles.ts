@@ -1,9 +1,9 @@
 import { StyleSheet } from "react-native";
 
 import { TRIGGER_SIZE as SIDEBAR_TRIGGER_SIZE } from "@/components/layout/Sidebar/Sidebar.styles";
-import { Theme } from "@/constants/theme";
+import { createThemeStyles, Theme } from "@/constants/theme";
 
-export const styles = StyleSheet.create({
+export const styles = createThemeStyles(() => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Theme.colors.background,
@@ -58,4 +58,4 @@ export const styles = StyleSheet.create({
   emptyState: {
     flex: 1,
   },
-});
+}));

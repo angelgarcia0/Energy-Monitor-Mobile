@@ -62,7 +62,7 @@ export function ActionMenu({
         accessibilityLabel={accessibilityLabel}
         style={({ pressed }) => [styles.trigger, pressed && styles.triggerPressed]}
       >
-        <Ionicons name={triggerIcon} size={Theme.typography.size.lg} color={Theme.colors.surface} />
+        <Ionicons name={triggerIcon} size={Theme.typography.size.lg} color={Theme.colors.onBrand} />
       </Pressable>
 
       <Modal visible={anchor !== null} transparent animationType="fade" onRequestClose={close}>

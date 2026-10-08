@@ -10,7 +10,7 @@ import { Theme } from "@/constants/theme";
 import { useHomes } from "@/context/HomeContext";
 import type { Home } from "@/features/dashboard/components/HomeCard/HomeCard";
 import { getHomeTypeLabel } from "@/features/dashboard/validation/createHomeSchema";
-import { ROLE_BADGE_COLORS } from "../../data/userAvatarColors";
+import { getRoleBadgeColor } from "../../data/userAvatarColors";
 import { getInitials } from "../../data/usersMock";
 import { ConfirmHomeActionModal, type ConfirmHomeAction } from "./ConfirmHomeActionModal";
 import { styles } from "./HomeInfoTab.styles";
@@ -45,7 +45,7 @@ export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
     getHomeTypeLabel(t, home.homeTypeId);
   const typeIcon: "home-outline" | "business-outline" =
     home.homeTypeId === "house" ? "home-outline" : "business-outline";
-  const ownerColor = ROLE_BADGE_COLORS.owner;
+  const ownerColor = getRoleBadgeColor("owner");
 
   const handleConfirm = () => {
     if (confirmAction) removeHome(home.id);

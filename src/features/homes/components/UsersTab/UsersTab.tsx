@@ -9,7 +9,7 @@ import { Input } from "@/components/Input/Input";
 import { Theme } from "@/constants/theme";
 import {
   getAvatarColor,
-  ROLE_BADGE_COLORS,
+  getRoleBadgeColor,
 } from "../../data/userAvatarColors";
 import { getInitials, INITIAL_USERS, type ProjectUser } from "../../data/usersMock";
 import { ConfirmRemoveUserModal } from "./ConfirmRemoveUserModal";
@@ -47,7 +47,7 @@ interface UserRowProps {
 
 function UserRow({ user, index, isOwner, onRequestRemove }: UserRowProps) {
   const { t } = useTranslation("users");
-  const badge = ROLE_BADGE_COLORS[user.role];
+  const badge = getRoleBadgeColor(user.role);
 
   return (
     <View style={styles.userRow}>

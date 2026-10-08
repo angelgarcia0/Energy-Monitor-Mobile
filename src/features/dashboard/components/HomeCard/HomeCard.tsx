@@ -76,7 +76,7 @@ export function HomeCard({
           <Ionicons
             name={favorite ? "heart" : "heart-outline"}
             size={Theme.typography.size.size18}
-            color={favorite ? Theme.colors.primary : Theme.colors.surface}
+            color={favorite ? Theme.colors.primary : Theme.colors.onBrand}
           />
         </Pressable>
       </View>

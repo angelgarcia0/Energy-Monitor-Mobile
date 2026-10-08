@@ -333,7 +333,7 @@ export function ThresholdsTab({
                   <Ionicons
                     name="checkmark"
                     size={Theme.typography.size.md}
-                    color={Theme.colors.surface}
+                    color={Theme.colors.onBrand}
                   />
                 ) : undefined
               }

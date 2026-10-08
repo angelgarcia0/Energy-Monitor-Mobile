@@ -166,7 +166,7 @@ export function DevicesTab({
                 <Ionicons
                   name="add"
                   size={Theme.typography.size.md}
-                  color={Theme.colors.surface}
+                  color={Theme.colors.onBrand}
                 />
               }
             >

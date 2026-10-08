@@ -186,7 +186,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                   <Ionicons
                     name="checkmark"
                     size={Theme.typography.size.xs}
-                    color={Theme.colors.surface}
+                    color={Theme.colors.onBrand}
                   />
                 ) : null}
               </Pressable>

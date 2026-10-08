@@ -443,7 +443,7 @@ export function LinkDeviceModal({
                       <Ionicons
                         name="checkmark"
                         size={Theme.typography.size.xs}
-                        color={Theme.colors.surface}
+                        color={Theme.colors.onBrand}
                       />
                     ) : null}
                   </View>

@@ -59,7 +59,7 @@ function NavItem({ icon, label, active, onPress }: NavItemProps) {
       <Ionicons
         name={icon}
         size={Theme.typography.size.lg}
-        color={active ? Theme.colors.surface : "rgba(255, 255, 255, 0.8)"}
+        color={active ? Theme.colors.onBrand : Theme.colors.onBrandMuted}
       />
       <Text style={[styles.navLabel, active && styles.navLabelActive]}>
         {label}
@@ -118,7 +118,7 @@ export function Sidebar(_props: SidebarProps) {
           accessibilityRole="button"
           accessibilityLabel={t("openNav")}
         >
-          <Ionicons name="menu-outline" size={Theme.typography.size.lg} color={Theme.colors.surface} />
+          <Ionicons name="menu-outline" size={Theme.typography.size.lg} color={Theme.colors.onBrand} />
         </Pressable>
       ) : null}
 
@@ -181,14 +181,14 @@ export function Sidebar(_props: SidebarProps) {
               {user.avatarUri ? (
                 <Image source={{ uri: user.avatarUri }} style={styles.avatarImage} />
               ) : (
-                <Ionicons name="person-outline" size={Theme.typography.size.md} color={Theme.colors.surface} />
+                <Ionicons name="person-outline" size={Theme.typography.size.md} color={Theme.colors.onBrand} />
               )}
             </View>
             <Text style={styles.profileName} numberOfLines={1}>
               {user.name}
             </Text>
             <View style={styles.menuButton}>
-              <Ionicons name="ellipsis-horizontal" size={Theme.typography.size.md} color={Theme.colors.surface} />
+              <Ionicons name="ellipsis-horizontal" size={Theme.typography.size.md} color={Theme.colors.onBrand} />
             </View>
           </Pressable>
 

@@ -37,7 +37,7 @@ export function NavHomes({ onNavigate }: NavHomesProps) {
         <Ionicons
           name="flash-outline"
           size={Theme.typography.size.lg}
-          color={active ? Theme.colors.surface : "rgba(255, 255, 255, 0.8)"}
+          color={active ? Theme.colors.onBrand : Theme.colors.onBrandMuted}
         />
         <Text style={[styles.navLabel, active && styles.navLabelActive]}>
           {t("homes")}
@@ -46,7 +46,7 @@ export function NavHomes({ onNavigate }: NavHomesProps) {
           <Ionicons
             name={open ? "chevron-up-outline" : "chevron-down-outline"}
             size={Theme.typography.size.md}
-            color={active ? Theme.colors.surface : "rgba(255, 255, 255, 0.8)"}
+            color={active ? Theme.colors.onBrand : Theme.colors.onBrandMuted}
           />
         </View>
       </Pressable>

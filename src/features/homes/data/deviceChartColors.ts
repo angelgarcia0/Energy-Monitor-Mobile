@@ -1,3 +1,5 @@
+import type { ThemeMode } from "@/theme/palettes";
+
 export type ApplianceType =
   | "fridge"
   | "washer"
@@ -9,19 +11,38 @@ export type ApplianceType =
   | "lighting"
   | "other";
 
-// Paleta fija por tipo de electrodoméstico (dato de dominio, no token de UI).
-// Solo la variante "light": mobile no tiene theming dinámico todavía.
-export const DEVICE_CHART_COLORS: Record<ApplianceType, string> = {
-  fridge: "#2563EB",
-  washer: "#7C3AED",
-  tv: "#DB2777",
-  microwave: "#EA580C",
-  ac: "#0D9488",
-  pc: "#CA8A04",
-  waterHeater: "#DC2626",
-  lighting: "#65A30D",
-  other: "#64748B",
+// Paleta fija por tipo de electrodoméstico (dato de dominio, no token de UI) con
+// variante clara y oscura, igual que en la Web
+// (src/features/DetailHome/shared/deviceChartConfig.js).
+const DEVICE_CHART_COLORS: Record<ThemeMode, Record<ApplianceType, string>> = {
+  light: {
+    fridge: "#2563EB",
+    washer: "#7C3AED",
+    tv: "#DB2777",
+    microwave: "#EA580C",
+    ac: "#0D9488",
+    pc: "#CA8A04",
+    waterHeater: "#DC2626",
+    lighting: "#65A30D",
+    other: "#64748B",
+  },
+  dark: {
+    fridge: "#60A5FA",
+    washer: "#A78BFA",
+    tv: "#F472B6",
+    microwave: "#FB923C",
+    ac: "#2DD4BF",
+    pc: "#FACC15",
+    waterHeater: "#F87171",
+    lighting: "#A3E635",
+    other: "#94A3B8",
+  },
 };
 
-export const getDeviceColor = (applianceType: ApplianceType) =>
-  DEVICE_CHART_COLORS[applianceType] ?? DEVICE_CHART_COLORS.other;
+export const getDeviceColor = (
+  applianceType: ApplianceType,
+  mode: ThemeMode = "light",
+) => {
+  const palette = DEVICE_CHART_COLORS[mode] ?? DEVICE_CHART_COLORS.light;
+  return palette[applianceType] ?? palette.other;
+};

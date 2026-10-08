@@ -5,6 +5,7 @@ import { Pressable, ScrollView, Text, useWindowDimensions, View } from "react-na
 import { Card } from "@/components/Card/Card";
 import { Chart } from "@/components/Chart/Chart";
 import { Theme } from "@/constants/theme";
+import { useTheme } from "@/context/ThemeContext";
 import { getDeviceColor, type ApplianceType } from "../../data/deviceChartColors";
 import { APPLIANCE_TYPE_IDS, getApplianceLabel, type Device } from "../../data/deviceMocks";
 import { styles } from "./ConsumptionHistoryTab.styles";
@@ -88,6 +89,9 @@ const BAR_SLOT_WIDTH = Theme.spacing.xl + Theme.spacing.lg;
 export function ConsumptionHistoryTab({ devices }: ConsumptionHistoryTabProps) {
   const { t } = useTranslation(["history", "devices"]);
   const { width } = useWindowDimensions();
+  const { currentTheme } = useTheme();
+  // Los gráficos usan la variante de la paleta activa para los colores por electrodoméstico.
+  const mode = currentTheme.mode;
   const [activeFilter, setActiveFilter] = useState<FilterKey>("month");
   const [activeSubFilter, setActiveSubFilter] = useState<string | null>(null);
   const [manualType, setManualType] = useState<ApplianceType | null>(null);
@@ -203,7 +207,7 @@ export function ConsumptionHistoryTab({ devices }: ConsumptionHistoryTabProps) {
               onPress={() => setManualType(type)}
               style={[styles.chip, selectedType === type && styles.chipSoftActive]}
             >
-              <View style={[styles.dot, { backgroundColor: getDeviceColor(type) }]} />
+              <View style={[styles.dot, { backgroundColor: getDeviceColor(type, mode) }]} />
               <Text style={[styles.chipText, selectedType === type && styles.chipSoftActiveText]}>
                 {getApplianceLabel(t, type)}
               </Text>
@@ -258,7 +262,7 @@ export function ConsumptionHistoryTab({ devices }: ConsumptionHistoryTabProps) {
                     <Text style={styles.cellText}>{pct.toFixed(1)}%</Text>
                     <View style={styles.track}>
                       <View
-                        style={[styles.fill, { width: `${pct}%`, backgroundColor: getDeviceColor(item.type) }]}
+                        style={[styles.fill, { width: `${pct}%`, backgroundColor: getDeviceColor(item.type, mode) }]}
                       />
                     </View>
                   </View>

@@ -6,6 +6,7 @@ import { ScrollView, Text, useWindowDimensions, View } from "react-native";
 import { Card } from "@/components/Card/Card";
 import { Chart } from "@/components/Chart/Chart";
 import { Theme } from "@/constants/theme";
+import { useTheme } from "@/context/ThemeContext";
 import { getDeviceColor } from "../../data/deviceChartColors";
 import { mockConsumptionData } from "../../data/consumptionMock";
 import { APPLIANCE_ICON, getApplianceLabel, type Device } from "../../data/deviceMocks";
@@ -50,6 +51,9 @@ function LimitBar({
 export function ConsumptionTab({ devices, thresholds }: ConsumptionTabProps) {
   const { t } = useTranslation(["consumption", "devices"]);
   const { width } = useWindowDimensions();
+  const { currentTheme } = useTheme();
+  // Los gráficos usan la variante de la paleta activa para los colores por electrodoméstico.
+  const mode = currentTheme.mode;
   const chartWidth = width - Theme.spacing.md * 4;
   const data = mockConsumptionData;
 
@@ -147,7 +151,7 @@ export function ConsumptionTab({ devices, thresholds }: ConsumptionTabProps) {
           data={distribution.map((d) => ({
             name: `${d.name} ${d.percentage}%`,
             value: d.percentage,
-            color: getDeviceColor(d.type),
+            color: getDeviceColor(d.type, mode),
           }))}
         />
       </Card>
@@ -175,7 +179,7 @@ export function ConsumptionTab({ devices, thresholds }: ConsumptionTabProps) {
               <MaterialCommunityIcons
                 name={APPLIANCE_ICON[d.type]}
                 size={Theme.typography.size.md}
-                color={getDeviceColor(d.type)}
+                color={getDeviceColor(d.type, mode)}
               />
               <Text style={styles.deviceLegendText}>
                 {d.name}: {d.consumption} kW

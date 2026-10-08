@@ -51,26 +51,28 @@ function hexToRgba(hex: string, opacity: number) {
 const screenWidth = Dimensions.get("window").width;
 const defaultWidth = screenWidth - Theme.spacing.md * 2;
 
-const baseChartConfig = {
-  backgroundColor: Theme.colors.surface,
-  backgroundGradientFrom: Theme.colors.surface,
-  backgroundGradientTo: Theme.colors.surface,
-  decimalPlaces: 0,
-  color: (opacity = 1) => hexToRgba(Theme.colors.primary, opacity),
-  labelColor: (opacity = 1) => hexToRgba(Theme.colors.textSecondary, opacity),
-  propsForBackgroundLines: {
-    stroke: Theme.colors.border,
-    strokeDasharray: "3 3",
-  },
-  propsForLabels: {
-    fontSize: Theme.typography.size.size11,
-    fontFamily: Theme.typography.fontPrimary,
-  },
-};
-
 export function Chart(props: ChartProps) {
   const height = props.height ?? 220;
   const width = props.width ?? defaultWidth;
+
+  // Se construye en cada render (y no a nivel de módulo) para leer los tokens de la
+  // paleta activa: los gráficos se repintan al cambiar el tema.
+  const baseChartConfig = {
+    backgroundColor: Theme.colors.surface,
+    backgroundGradientFrom: Theme.colors.surface,
+    backgroundGradientTo: Theme.colors.surface,
+    decimalPlaces: 0,
+    color: (opacity = 1) => hexToRgba(Theme.colors.primary, opacity),
+    labelColor: (opacity = 1) => hexToRgba(Theme.colors.textSecondary, opacity),
+    propsForBackgroundLines: {
+      stroke: Theme.colors.border,
+      strokeDasharray: "3 3",
+    },
+    propsForLabels: {
+      fontSize: Theme.typography.size.size11,
+      fontFamily: Theme.typography.fontPrimary,
+    },
+  };
 
   return (
     <View style={[styles.container, props.style]}>

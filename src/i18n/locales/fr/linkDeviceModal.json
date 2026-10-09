@@ -29,18 +29,33 @@
     "title": "Appareil connecté !",
     "subtitle": "Votre appareil est maintenant connecté et envoie des données",
     "nameLabel": "Nom de l'appareil",
-    "roomLabel": "Emplacement"
+    "roomLabel": "Emplacement",
+    "optional": "(facultatif)"
   },
   "buttons": {
     "cancel": "Annuler",
     "back": "Retour",
     "continue": "Continuer",
     "connect": "Connecter",
-    "finish": "Terminer"
+    "finish": "Terminer",
+    "linking": "Connexion...",
+    "link": "Lier"
   },
   "errors": {
-    "passwordRequired": "Entrez le mot de passe du réseau"
+    "passwordRequired": "Entrez le mot de passe du réseau",
+    "codeRequired": "Saisissez le code du module.",
+    "codeMax": "6 caractères maximum.",
+    "codeInvalid": "Lettres et chiffres uniquement, sans espaces.",
+    "applianceRequired": "Choisissez un appareil."
   },
   "step": "Étape {{current}} sur {{total}}",
-  "moduleLabel": "Module {{code}}"
+  "moduleLabel": "Module {{code}}",
+  "code": {
+    "label": "Code du module",
+    "placeholder": "EM-204",
+    "hint": "Le code est imprimé sur le module. Vous pouvez aussi le copier depuis le portail de configuration."
+  },
+  "bluetooth": {
+    "unavailable": "Sans Bluetooth, le réseau ne peut pas être écrit sur le module : il est enregistré ici, mais vous devez encore lui remettre ses identifiants depuis le portail de configuration."
+  }
 }

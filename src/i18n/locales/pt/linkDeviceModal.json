@@ -29,18 +29,33 @@
     "title": "Dispositivo vinculado!",
     "subtitle": "Seu dispositivo já está conectado e enviando dados",
     "nameLabel": "Nome do dispositivo",
-    "roomLabel": "Localização"
+    "roomLabel": "Localização",
+    "optional": "(opcional)"
   },
   "buttons": {
     "cancel": "Cancelar",
     "back": "Voltar",
     "continue": "Continuar",
     "connect": "Conectar",
-    "finish": "Finalizar"
+    "finish": "Finalizar",
+    "linking": "Vinculando...",
+    "link": "Vincular"
   },
   "errors": {
-    "passwordRequired": "Digite a senha da rede"
+    "passwordRequired": "Digite a senha da rede",
+    "codeRequired": "Informe o código do módulo.",
+    "codeMax": "Máximo de 6 caracteres.",
+    "codeInvalid": "Apenas letras e números, sem espaços.",
+    "applianceRequired": "Escolha um eletrodoméstico."
   },
   "step": "Etapa {{current}} de {{total}}",
-  "moduleLabel": "Módulo {{code}}"
+  "moduleLabel": "Módulo {{code}}",
+  "code": {
+    "label": "Código do módulo",
+    "placeholder": "EM-204",
+    "hint": "O código está impresso no módulo. Você também pode copiá-lo do portal de configuração."
+  },
+  "bluetooth": {
+    "unavailable": "Sem Bluetooth não é possível gravar a rede no módulo: ele fica registrado aqui, mas ainda será preciso passar a ele as credenciais pelo portal de configuração."
+  }
 }

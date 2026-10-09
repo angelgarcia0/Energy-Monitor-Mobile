@@ -6,12 +6,14 @@ import { Text } from "react-native";
 import { Button } from "@/components/Button/Button";
 import { Modal } from "@/components/Modal/Modal";
 import { Theme } from "@/constants/theme";
-import { getApplianceLabel, type Device } from "../../data/deviceMocks";
+import { getApplianceLabel, type Device } from "../../data/deviceTypes";
 import { styles } from "./ConfirmDeleteModal.styles";
 
 export interface ConfirmDeleteModalProps {
   visible: boolean;
   device: Device;
+  /** `true` mientras corre `DELETE`: el botón queda bloqueado. */
+  removing?: boolean;
   onCancel: () => void;
   onConfirm: () => void;
 }
@@ -19,12 +21,12 @@ export interface ConfirmDeleteModalProps {
 export function ConfirmDeleteModal({
   visible,
   device,
+  removing = false,
   onCancel,
   onConfirm,
 }: ConfirmDeleteModalProps) {
   const { t } = useTranslation("devices");
-  const deviceName =
-    device.name?.trim() || getApplianceLabel(t, device.applianceType);
+  const deviceName = device.name.trim() || getApplianceLabel(t, device.applianceType);
 
   return (
     <Modal
@@ -41,18 +43,26 @@ export function ConfirmDeleteModal({
       }
       footer={
         <>
-          <Button variant="secondary" onPress={onCancel} style={styles.footerButton}>
+          <Button
+            variant="secondary"
+            onPress={onCancel}
+            disabled={removing}
+            style={styles.footerButton}
+          >
             {t("confirmDelete.cancel")}
           </Button>
-          <Button variant="danger" onPress={onConfirm} style={styles.footerButton}>
-            {t("confirmDelete.confirm")}
+          <Button
+            variant="danger"
+            onPress={onConfirm}
+            disabled={removing}
+            style={styles.footerButton}
+          >
+            {removing ? t("confirmDelete.removing") : t("confirmDelete.confirm")}
           </Button>
         </>
       }
     >
-      <Text style={styles.message}>
-        {t("confirmDelete.message", { name: deviceName })}
-      </Text>
+      <Text style={styles.message}>{t("confirmDelete.message", { name: deviceName })}</Text>
     </Modal>
   );
 }

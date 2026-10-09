@@ -29,18 +29,33 @@
     "title": "Device linked!",
     "subtitle": "Your device is now connected and sending data",
     "nameLabel": "Device name",
-    "roomLabel": "Location"
+    "roomLabel": "Location",
+    "optional": "(optional)"
   },
   "buttons": {
     "cancel": "Cancel",
     "back": "Back",
     "continue": "Continue",
     "connect": "Connect",
-    "finish": "Finish"
+    "finish": "Finish",
+    "linking": "Linking...",
+    "link": "Link"
   },
   "errors": {
-    "passwordRequired": "Enter the network password"
+    "passwordRequired": "Enter the network password",
+    "codeRequired": "Enter the module code.",
+    "codeMax": "Maximum 6 characters.",
+    "codeInvalid": "Letters and numbers only, no spaces.",
+    "applianceRequired": "Choose an appliance."
   },
   "step": "Step {{current}} of {{total}}",
-  "moduleLabel": "Module {{code}}"
+  "moduleLabel": "Module {{code}}",
+  "code": {
+    "label": "Module code",
+    "placeholder": "EM-204",
+    "hint": "The code is printed on the module. You can also copy it from the setup portal."
+  },
+  "bluetooth": {
+    "unavailable": "Without Bluetooth the network cannot be written to the module: it is registered here, but you still need to hand it its credentials from the setup portal."
+  }
 }

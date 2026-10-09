@@ -9,7 +9,8 @@
   },
   "status": {
     "online": "On-line",
-    "offline": "Off-line"
+    "offline": "Off-line",
+    "checking": "Verificando…"
   },
   "applianceTypes": {
     "fridge": "Geladeira",
@@ -40,7 +41,12 @@
     "title": "Excluir dispositivo?",
     "message": "Você está prestes a excluir \"{{name}}\". Você deixará de receber os dados de consumo dele e precisará vinculá-lo novamente para voltar a usá-lo.",
     "cancel": "Cancelar",
-    "confirm": "Excluir"
+    "confirm": "Excluir",
+    "removing": "Desvinculando..."
   },
-  "deleteLabel": "Excluir {{name}}"
+  "deleteLabel": "Excluir {{name}}",
+  "state": {
+    "loading": "Carregando dispositivos...",
+    "retry": "Tentar novamente"
+  }
 }

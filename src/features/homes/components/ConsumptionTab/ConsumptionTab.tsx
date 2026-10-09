@@ -11,7 +11,7 @@ import { useTheme } from "@/context/ThemeContext";
 import { errorMessage } from "@/services/http";
 import type { HomeConsumptionSummary } from "@/services/measurement";
 import { getDeviceColor } from "../../data/deviceChartColors";
-import { APPLIANCE_ICON, getApplianceLabel, type Device } from "../../data/deviceMocks";
+import { APPLIANCE_ICON, getApplianceLabel, type Device } from "../../data/deviceTypes";
 import { Button } from "@/components/Button/Button";
 import { useConsumptionSummary } from "../../hooks/useConsumption";
 import { styles } from "./ConsumptionTab.styles";

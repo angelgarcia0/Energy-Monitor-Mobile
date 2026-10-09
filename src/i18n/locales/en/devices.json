@@ -9,7 +9,8 @@
   },
   "status": {
     "online": "Online",
-    "offline": "Offline"
+    "offline": "Offline",
+    "checking": "Checking…"
   },
   "applianceTypes": {
     "fridge": "Refrigerator",
@@ -40,7 +41,12 @@
     "title": "Delete device?",
     "message": "You're about to delete \"{{name}}\". You'll stop receiving its consumption data and will need to link it again to use it.",
     "cancel": "Cancel",
-    "confirm": "Delete"
+    "confirm": "Delete",
+    "removing": "Unlinking..."
   },
-  "deleteLabel": "Delete {{name}}"
+  "deleteLabel": "Delete {{name}}",
+  "state": {
+    "loading": "Loading devices...",
+    "retry": "Retry"
+  }
 }

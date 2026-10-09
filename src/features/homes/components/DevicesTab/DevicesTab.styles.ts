@@ -64,6 +64,12 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     minWidth: 0,
     gap: Theme.spacing.xs,
   },
+  removeError: {
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.sm,
+    color: Theme.colors.dangerText,
+    marginTop: Theme.spacing.sm,
+  },
   deviceName: {
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.sm,

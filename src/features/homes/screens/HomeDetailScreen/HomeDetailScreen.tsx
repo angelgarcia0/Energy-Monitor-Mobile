@@ -15,6 +15,7 @@ import { DevicesTab } from "../../components/DevicesTab/DevicesTab";
 import { HomeInfoTab } from "../../components/HomeInfoTab/HomeInfoTab";
 import { ThresholdsTab } from "../../components/ThresholdsTab/ThresholdsTab";
 import { UsersTab } from "../../components/UsersTab/UsersTab";
+import { useConsumptionSummary } from "../../hooks/useConsumption";
 import { useDevicesState } from "../../hooks/useDevicesState";
 import { useThresholdsState } from "../../hooks/useThresholdsState";
 import { styles } from "./HomeDetailScreen.styles";
@@ -39,8 +40,11 @@ export function HomeDetailScreen({ home }: HomeDetailScreenProps) {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState<HomeTab>(TABS[0].id);
-  const { devices, addDevice, removeDevice } = useDevicesState();
+  const { summary } = useConsumptionSummary(home.idHome);
   const thresholds = useThresholdsState(home.idHome);
+  // El resumen lo aporta la pantalla: el endpoint de dispositivos no trae
+  // potencia y el de consumo no trae nombre ni estado de conexión.
+  const deviceState = useDevicesState(home.idHome, summary);
 
   const isOwner = home.role === "OWNER";
 
@@ -75,16 +79,11 @@ export function HomeDetailScreen({ home }: HomeDetailScreenProps) {
 
       <View style={styles.body}>
         {activeTab === "consumption" ? (
-          <ConsumptionTab homeId={home.idHome} devices={devices} />
+          <ConsumptionTab homeId={home.idHome} devices={deviceState.devices} />
         ) : activeTab === "history" ? (
           <ConsumptionHistoryTab homeId={home.idHome} />
         ) : activeTab === "devices" ? (
-          <DevicesTab
-            devices={devices}
-            onAddDevice={addDevice}
-            onRemoveDevice={removeDevice}
-            isOwner={isOwner}
-          />
+          <DevicesTab state={deviceState} isOwner={isOwner} />
         ) : activeTab === "thresholds" ? (
           <ThresholdsTab state={thresholds} isOwner={isOwner} />
         ) : activeTab === "users" ? (

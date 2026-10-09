@@ -9,7 +9,8 @@
   },
   "status": {
     "online": "En línea",
-    "offline": "Desconectado"
+    "offline": "Desconectado",
+    "checking": "Comprobando…"
   },
   "applianceTypes": {
     "fridge": "Nevera",
@@ -40,7 +41,12 @@
     "title": "¿Eliminar dispositivo?",
     "message": "Vas a eliminar \"{{name}}\". Dejarás de recibir sus datos de consumo y tendrás que vincularlo de nuevo si quieres volver a usarlo.",
     "cancel": "Cancelar",
-    "confirm": "Eliminar"
+    "confirm": "Eliminar",
+    "removing": "Desvinculando..."
   },
-  "deleteLabel": "Eliminar {{name}}"
+  "deleteLabel": "Eliminar {{name}}",
+  "state": {
+    "loading": "Cargando dispositivos...",
+    "retry": "Reintentar"
+  }
 }

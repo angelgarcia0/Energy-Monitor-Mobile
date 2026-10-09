@@ -7,11 +7,17 @@ import {
   type HomeConsumptionHistory,
   type HomeConsumptionSummary,
 } from "@/services/measurement";
+import { useIsAppActive } from "./useIsAppActive";
 
 /**
  * Resumen de consumo del hogar. No depende del periodo, así que se carga una vez
  * por hogar y se reutiliza al cambiar de pestaña.
+ *
+ * El módulo publica cada 60 s; se consulta cada 30 para no llegar tarde al dato
+ * sin multiplicar la red.
  */
+const SUMMARY_REFRESH_MS = 30_000;
+
 export interface ConsumptionSummaryState {
   summary: HomeConsumptionSummary | null;
   loading: boolean;
@@ -20,6 +26,7 @@ export interface ConsumptionSummaryState {
 }
 
 export function useConsumptionSummary(homeId: string): ConsumptionSummaryState {
+  const isActive = useIsAppActive();
   const [summary, setSummary] = useState<HomeConsumptionSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<ApiError | null>(null);
@@ -40,6 +47,16 @@ export function useConsumptionSummary(homeId: string): ConsumptionSummaryState {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- carga inicial de datos estándar
     void reload();
   }, [reload]);
+
+  // Solo con la app en primer plano: una consulta que no se ve es batería
+  // gastada sin nada a cambio.
+  useEffect(() => {
+    if (!isActive) return;
+    const timer = setInterval(() => {
+      void reload();
+    }, SUMMARY_REFRESH_MS);
+    return () => clearInterval(timer);
+  }, [isActive, reload]);
 
   return { summary, loading, error, reload };
 }

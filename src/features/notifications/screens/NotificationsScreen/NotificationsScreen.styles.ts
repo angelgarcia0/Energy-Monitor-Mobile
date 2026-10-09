@@ -118,4 +118,11 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     flex: 1,
     paddingVertical: Theme.spacing.xl,
   },
+  actionError: {
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.sm,
+    color: Theme.colors.dangerText,
+    paddingHorizontal: Theme.spacing.md,
+    paddingVertical: Theme.spacing.xs,
+  },
 }));

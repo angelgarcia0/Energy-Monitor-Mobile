@@ -91,6 +91,21 @@ export const styles = createThemeStyles(() => StyleSheet.create({
   navLabelActive: {
     color: Theme.colors.onBrand,
   },
+  navBadge: {
+    minWidth: Theme.spacing.xl,
+    height: Theme.spacing.xl,
+    paddingHorizontal: Theme.spacing.xs,
+    borderRadius: Theme.spacing.xl / 2,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Theme.colors.danger,
+  },
+  navBadgeLabel: {
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.xs,
+    fontWeight: Theme.typography.weight.bold,
+    color: Theme.colors.onDanger,
+  },
   homesChevron: {
     marginLeft: "auto",
   },

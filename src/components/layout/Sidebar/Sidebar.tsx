@@ -15,6 +15,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Button } from "@/components/Button/Button";
 import { Theme } from "@/constants/theme";
+import { useAlerts } from "@/context/AlertsContext";
 import { useUser } from "@/context/UserContext";
 import { styles, TRIGGER_TOP_OFFSET } from "./Sidebar.styles";
 import { NavHomes } from "./NavHomes";
@@ -48,9 +49,11 @@ interface NavItemProps {
   label: string;
   active: boolean;
   onPress: () => void;
+  /** Alertas pendientes. Solo el item de notificaciones lo lleva. */
+  badge?: number;
 }
 
-function NavItem({ icon, label, active, onPress }: NavItemProps) {
+function NavItem({ icon, label, active, onPress, badge = 0 }: NavItemProps) {
   return (
     <Pressable
       onPress={onPress}
@@ -64,6 +67,11 @@ function NavItem({ icon, label, active, onPress }: NavItemProps) {
       <Text style={[styles.navLabel, active && styles.navLabelActive]}>
         {label}
       </Text>
+      {badge > 0 ? (
+        <View style={styles.navBadge}>
+          <Text style={styles.navBadgeLabel}>{badge > 99 ? "99+" : badge}</Text>
+        </View>
+      ) : null}
     </Pressable>
   );
 }
@@ -78,6 +86,7 @@ export function Sidebar(_props: SidebarProps) {
   const pathname = usePathname();
   const insets = useSafeAreaInsets();
   const { user, signOut } = useUser();
+  const { pendingCount } = useAlerts();
 
   useEffect(() => {
     Animated.timing(translateX, {
@@ -166,6 +175,7 @@ export function Sidebar(_props: SidebarProps) {
               label={t(item.labelKey)}
               active={pathname === item.route}
               onPress={() => handleNavigate(item.route)}
+              badge={item.route === "/notifications" ? pendingCount : 0}
             />
           ))}
         </View>

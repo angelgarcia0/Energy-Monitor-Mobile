@@ -114,4 +114,18 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     fontWeight: Theme.typography.weight.bold,
     color: Theme.colors.primary,
   },
+  actions: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Theme.spacing.sm,
+    marginTop: Theme.spacing.sm,
+  },
+  /** "Se resolverá sola cuando…": solo en las que cierra el sistema. */
+  hint: {
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.xs,
+    fontStyle: "italic",
+    color: Theme.colors.textSecondary,
+    marginTop: Theme.spacing.xs,
+  },
 }));

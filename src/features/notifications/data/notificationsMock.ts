@@ -1,17 +1,10 @@
-export type AlertSeverity = "critical" | "warning";
-export type AlertType = "threshold" | "connectivity";
-
-export interface AlertItem {
-  id: string;
-  kind: "alert";
-  type: AlertType;
-  severity: AlertSeverity;
-  titleKey: string;
-  messageKey: string;
-  home: string;
-  date: string;
-  resolved: boolean;
-}
+/**
+ * Las recomendaciones siguen siendo de muestra: es el siguiente módulo. Las
+ * alertas ya se leen del backend y no viven aquí.
+ *
+ * Guardan la clave del locale en vez del texto escrito, para que se traduzcan
+ * junto con la pantalla.
+ */
 
 export interface RecommendationItem {
   id: string;
@@ -22,48 +15,6 @@ export interface RecommendationItem {
   date: string;
   read: boolean;
 }
-
-export type NotificationItem = AlertItem | RecommendationItem;
-
-/**
- * Las alertas y recomendaciones guardan la key del locale en vez del texto ya
- * escrito, para que el contenido se traduzca junto con la pantalla.
- */
-export const INITIAL_ALERTS: AlertItem[] = [
-  {
-    id: "a1",
-    kind: "alert",
-    type: "threshold",
-    severity: "critical",
-    titleKey: "threshold.dailyExceeded.title",
-    messageKey: "threshold.dailyExceeded.message",
-    home: "Casa Principal",
-    date: "2026-07-07T09:12:00",
-    resolved: false,
-  },
-  {
-    id: "a2",
-    kind: "alert",
-    type: "connectivity",
-    severity: "warning",
-    titleKey: "connectivity.deviceOffline.title",
-    messageKey: "connectivity.deviceOffline.message",
-    home: "Casa Principal",
-    date: "2026-07-06T22:40:00",
-    resolved: false,
-  },
-  {
-    id: "a3",
-    kind: "alert",
-    type: "threshold",
-    severity: "warning",
-    titleKey: "threshold.monthlyApproaching.title",
-    messageKey: "threshold.monthlyApproaching.message",
-    home: "Oficina Norte",
-    date: "2026-07-05T18:05:00",
-    resolved: true,
-  },
-];
 
 export const INITIAL_RECOMMENDATIONS: RecommendationItem[] = [
   {

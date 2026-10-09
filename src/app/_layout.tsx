@@ -1,3 +1,4 @@
+import { AlertsProvider } from "@/context/AlertsContext";
 import { HomeProvider } from "@/context/HomeContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { UserProvider } from "@/context/UserContext";
@@ -31,12 +32,14 @@ export default function RootLayout() {
       <ThemeProvider>
         <UserProvider>
           <HomeProvider>
-            <StatusBar style="light" />
-            {ready ? (
-              <AuthGate>
-                <Stack screenOptions={{ headerShown: false }} />
-              </AuthGate>
-            ) : null}
+            <AlertsProvider>
+              <StatusBar style="light" />
+              {ready ? (
+                <AuthGate>
+                  <Stack screenOptions={{ headerShown: false }} />
+                </AuthGate>
+              ) : null}
+            </AlertsProvider>
           </HomeProvider>
         </UserProvider>
       </ThemeProvider>

@@ -8,15 +8,16 @@ import { Button } from "@/components/Button/Button";
 import { Card } from "@/components/Card/Card";
 import { Theme } from "@/constants/theme";
 import { useHomes } from "@/context/HomeContext";
-import type { Home } from "@/features/dashboard/components/HomeCard/HomeCard";
-import { getHomeTypeLabel } from "@/features/dashboard/validation/createHomeSchema";
+import { homeTypeLabel } from "@/features/shared/homeTypes";
+import { errorMessage } from "@/services/http";
+import type { HomeMembership } from "@/services/home";
+import { getInitials } from "../../data/initials";
 import { getRoleBadgeColor } from "../../data/userAvatarColors";
-import { getInitials } from "../../data/usersMock";
-import { ConfirmHomeActionModal, type ConfirmHomeAction } from "./ConfirmHomeActionModal";
+import { ConfirmHomeActionModal } from "./ConfirmHomeActionModal";
 import { styles } from "./HomeInfoTab.styles";
 
 export interface HomeInfoTabProps {
-  home: Home;
+  home: HomeMembership;
   isOwner: boolean;
 }
 
@@ -34,25 +35,52 @@ function Field({ label, children }: FieldProps) {
   );
 }
 
+/** `2026-10-08T…` → `08 oct 2026`, en el idioma activo. */
+function formatDate(iso: string | null): string {
+  if (!iso) return "";
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toLocaleDateString(undefined, {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}
+
 export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
   const { t } = useTranslation("home");
+  const { homeTypes, leaveHome } = useHomes();
   const router = useRouter();
-  const { removeHome } = useHomes();
-  const [confirmAction, setConfirmAction] = useState<ConfirmHomeAction | null>(null);
+  const [confirming, setConfirming] = useState(false);
+  const [leaving, setLeaving] = useState(false);
+  const [leaveError, setLeaveError] = useState<string | null>(null);
 
-  const typeLabel =
-    (home.homeTypeId === "other" && home.otherHomeType) ||
-    getHomeTypeLabel(t, home.homeTypeId);
+  const typeLabel = homeTypeLabel(t, home.homeTypeId, homeTypes);
+  // El backend manda el nombre del tipo; el ícono se elige por el id del seed.
   const typeIcon: "home-outline" | "business-outline" =
-    ["house", "country_house", "cabin"].includes(home.homeTypeId ?? "")
+    ["hous000001", "coun000001", "cabi000001"].includes(home.homeTypeId)
       ? "home-outline"
       : "business-outline";
-  const ownerColor = getRoleBadgeColor("owner");
+  const ownerColor = getRoleBadgeColor("OWNER");
 
-  const handleConfirm = () => {
-    if (confirmAction) removeHome(home.id);
-    setConfirmAction(null);
-    router.replace("/dashboard");
+  const responsibleName = [home.userResponsible, home.userResponsibleLastName]
+    .filter(Boolean)
+    .join(" ");
+
+  const handleConfirmLeave = async () => {
+    setConfirming(false);
+    setLeaving(true);
+    setLeaveError(null);
+    try {
+      const err = await leaveHome(home.idHome);
+      if (err) {
+        setLeaveError(errorMessage(t, err, "homeLeave"));
+        return;
+      }
+      router.replace("/dashboard");
+    } finally {
+      setLeaving(false);
+    }
   };
 
   return (
@@ -103,7 +131,9 @@ export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
           </Field>
 
           <Field label={t("fields.creationDate")}>
-            <Text style={styles.muted}>{t("placeholders.empty")}</Text>
+            <Text style={styles.muted}>
+              {formatDate(home.creationDate) || t("placeholders.empty")}
+            </Text>
           </Field>
 
           {isOwner ? (
@@ -123,7 +153,11 @@ export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
               <Text style={styles.hint}>{t("hints.accessCode")}</Text>
 
               <View style={styles.codeBox}>
-                <Text style={styles.codeText}>{t("placeholders.noCode")}</Text>
+                <Text style={styles.codeText}>
+                  {home.accessCode || t("placeholders.noCode")}
+                </Text>
+                {/* Copiar necesita `expo-clipboard`, que no está en el proyecto:
+                    hasta que se agregue, el código se lee pero no se copia. */}
                 <Pressable
                   disabled
                   accessibilityRole="button"
@@ -140,19 +174,26 @@ export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
             </>
           ) : null}
 
+          {leaveError ? (
+            <Text style={styles.error} accessibilityRole="alert">
+              {leaveError}
+            </Text>
+          ) : null}
+
           <View style={styles.actionRow}>
             <Button
               variant="danger"
-              onPress={() => setConfirmAction(isOwner ? "delete" : "leave")}
+              onPress={() => setConfirming(true)}
+              disabled={leaving}
               icon={
                 <Ionicons
-                  name={isOwner ? "trash-outline" : "log-out-outline"}
+                  name="log-out-outline"
                   size={Theme.typography.size.md}
                   color={Theme.colors.danger}
                 />
               }
             >
-              {isOwner ? t("buttons.deleteHome") : t("buttons.leaveHome")}
+              {leaving ? t("buttons.leaving") : t("buttons.leaveHome")}
             </Button>
           </View>
         </Card>
@@ -172,12 +213,12 @@ export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
               style={[styles.ownerAvatar, { backgroundColor: ownerColor.background }]}
             >
               <Text style={[styles.ownerInitials, { color: ownerColor.text }]}>
-                {getInitials(home.userResponsible)}
+                {getInitials(responsibleName)}
               </Text>
             </View>
             <View style={styles.ownerMeta}>
               <Text style={styles.ownerName} numberOfLines={1}>
-                {home.userResponsible || t("placeholders.empty")}
+                {responsibleName || t("placeholders.empty")}
               </Text>
               <View
                 style={[styles.ownerBadge, { backgroundColor: ownerColor.background }]}
@@ -198,18 +239,19 @@ export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
                 size={Theme.typography.size.xs}
                 color={Theme.colors.textSecondary}
               />
-              <Text style={styles.muted}>{t("placeholders.empty")}</Text>
+              <Text style={styles.muted}>
+                {home.userResponsibleEmail || t("placeholders.empty")}
+              </Text>
             </View>
           </Field>
         </Card>
       </ScrollView>
 
-      {confirmAction ? (
+      {confirming ? (
         <ConfirmHomeActionModal
           visible
-          mode={confirmAction}
-          onCancel={() => setConfirmAction(null)}
-          onConfirm={handleConfirm}
+          onCancel={() => setConfirming(false)}
+          onConfirm={handleConfirmLeave}
         />
       ) : null}
     </>

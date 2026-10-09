@@ -9,9 +9,10 @@ import { Button } from "@/components/Button/Button";
 import { Input } from "@/components/Input/Input";
 import { Modal } from "@/components/Modal/Modal";
 import { Theme } from "@/constants/theme";
+import { sortHomeTypes } from "@/features/shared/homeTypes";
+import type { HomeType } from "@/services/home";
 import {
   createHomeSchema,
-  HOME_TYPE_VALUES,
   sanitizeAddress,
   type CreateHomeFormValues,
 } from "../../validation/createHomeSchema";
@@ -19,19 +20,31 @@ import { styles } from "./CreateHomeModal.styles";
 
 export interface CreateHomeModalProps {
   visible: boolean;
+  /** Catálogo de `GET /home-types`, sin ordenar. */
+  types: HomeType[];
+  submitting?: boolean;
+  /** Mensaje ya traducido de la última llamada fallida. */
+  serverError?: string | null;
   onClose: () => void;
-  onSubmit: (values: CreateHomeFormValues) => void;
+  /** Devuelve `true` si el hogar se creó: el modal solo se cierra en ese caso. */
+  onSubmit: (values: CreateHomeFormValues) => Promise<boolean>;
 }
 
 const DEFAULT_VALUES: CreateHomeFormValues = {
   name: "",
   homeType: "",
-  otherType: "",
   address: "",
   description: "",
 };
 
-export function CreateHomeModal({ visible, onClose, onSubmit }: CreateHomeModalProps) {
+export function CreateHomeModal({
+  visible,
+  types,
+  submitting = false,
+  serverError,
+  onClose,
+  onSubmit,
+}: CreateHomeModalProps) {
   const { t } = useTranslation("createHomeModal");
   const { height } = useWindowDimensions();
   const {
@@ -43,16 +56,17 @@ export function CreateHomeModal({ visible, onClose, onSubmit }: CreateHomeModalP
     resolver: zodResolver(createHomeSchema),
     defaultValues: DEFAULT_VALUES,
   });
-  const homeType = useWatch({ control, name: "homeType" });
+  const address = useWatch({ control, name: "address" });
+
+  const sortedTypes = sortHomeTypes(types);
 
   const handleClose = () => {
     reset();
     onClose();
   };
 
-  const submit = (data: CreateHomeFormValues) => {
-    onSubmit(data);
-    handleClose();
+  const submit = async (data: CreateHomeFormValues) => {
+    if (await onSubmit(data)) handleClose();
   };
 
   return (
@@ -62,11 +76,15 @@ export function CreateHomeModal({ visible, onClose, onSubmit }: CreateHomeModalP
       title={t("title")}
       footer={
         <>
-          <Button variant="secondary" onPress={handleClose}>
+          <Button variant="secondary" onPress={handleClose} disabled={submitting}>
             {t("buttons.cancel")}
           </Button>
-          <Button variant="primary" onPress={handleSubmit(submit)}>
-            {t("buttons.create")}
+          <Button
+            variant="primary"
+            onPress={handleSubmit(submit)}
+            disabled={submitting || sortedTypes.length === 0}
+          >
+            {submitting ? t("buttons.creating") : t("buttons.create")}
           </Button>
         </>
       }
@@ -104,12 +122,22 @@ export function CreateHomeModal({ visible, onClose, onSubmit }: CreateHomeModalP
                   selectedValue={value}
                   onValueChange={(next) => onChange(String(next))}
                   mode="dropdown"
+                  enabled={!submitting}
                   style={styles.picker}
                   dropdownIconColor={Theme.colors.textSecondary}
                 >
-                  <Picker.Item label={t("placeholders.type")} value="" color={Theme.colors.textSecondary} />
-                  {HOME_TYPE_VALUES.map((option) => (
-                    <Picker.Item key={option} label={t(`homeTypes.${option}`)} value={option} color={Theme.colors.textPrimary} />
+                  <Picker.Item
+                    label={t("placeholders.type")}
+                    value=""
+                    color={Theme.colors.textSecondary}
+                  />
+                  {sortedTypes.map((type) => (
+                    <Picker.Item
+                      key={type.idHomeType}
+                      label={t(`homeTypes.${type.name}`, { defaultValue: type.name })}
+                      value={type.idHomeType}
+                      color={Theme.colors.textPrimary}
+                    />
                   ))}
                 </Picker>
               </View>
@@ -117,26 +145,8 @@ export function CreateHomeModal({ visible, onClose, onSubmit }: CreateHomeModalP
           />
         </View>
         {errors.homeType ? <Text style={styles.error}>{errors.homeType.message}</Text> : null}
-
-        {homeType === "other" ? (
-          <>
-            <Controller
-              control={control}
-              name="otherType"
-              render={({ field: { value, onChange, onBlur } }) => (
-                <Input
-                  label={t("fields.other")}
-                  value={value}
-                  onChangeText={onChange}
-                  onBlur={onBlur}
-                  placeholder={t("placeholders.other")}
-                  maxLength={50}
-                  autoCapitalize="sentences"
-                />
-              )}
-            />
-            {errors.otherType ? <Text style={styles.error}>{errors.otherType.message}</Text> : null}
-          </>
+        {sortedTypes.length === 0 ? (
+          <Text style={styles.error}>{t("errors.noTypesAvailable")}</Text>
         ) : null}
 
         <Controller
@@ -154,10 +164,8 @@ export function CreateHomeModal({ visible, onClose, onSubmit }: CreateHomeModalP
                 autoCapitalize="words"
               />
               <View style={styles.helperRow}>
-                <Text style={styles.examples}>
-                  {t("fields.addressExamples")}
-                </Text>
-                <Text style={styles.counter}>{value.length}/200</Text>
+                <Text style={styles.examples}>{t("fields.addressExamples")}</Text>
+                <Text style={styles.counter}>{address.length}/200</Text>
               </View>
             </View>
           )}
@@ -185,6 +193,12 @@ export function CreateHomeModal({ visible, onClose, onSubmit }: CreateHomeModalP
           )}
         />
         {errors.description ? <Text style={styles.error}>{errors.description.message}</Text> : null}
+
+        {serverError ? (
+          <Text style={styles.error} accessibilityRole="alert">
+            {serverError}
+          </Text>
+        ) : null}
       </ScrollView>
     </Modal>
   );

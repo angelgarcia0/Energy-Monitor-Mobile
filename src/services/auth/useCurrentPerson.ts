@@ -4,6 +4,7 @@ import {
   getCurrentPerson,
   getSessionSnapshot,
   subscribeSession,
+  type CurrentPerson,
 } from "./session";
 
 /**
@@ -12,7 +13,7 @@ import {
  * `raw` es la huella de la sesión: cambia con cada `saveSession`/`clearSession`, así
  * que basta como dependencia para releer la persona.
  */
-export function useCurrentPerson() {
+export function useCurrentPerson(): CurrentPerson | null {
   const raw = useSyncExternalStore(subscribeSession, getSessionSnapshot);
 
   return useMemo(

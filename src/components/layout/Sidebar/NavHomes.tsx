@@ -6,6 +6,7 @@ import { Pressable, Text, View } from "react-native";
 
 import { Theme } from "@/constants/theme";
 import { useHomes } from "@/context/HomeContext";
+import type { Href } from "expo-router";
 import { styles } from "./Sidebar.styles";
 
 export interface NavHomesProps {
@@ -21,8 +22,8 @@ export function NavHomes({ onNavigate }: NavHomesProps) {
 
   const active = pathname === "/homes" || pathname.startsWith("/home/");
 
-  const handleHomePress = (id: number) => {
-    router.push(`/home/${id}`);
+  const handleHomePress = (idHome: string) => {
+    router.push(`/home/${idHome}` as Href);
     onNavigate();
   };
 
@@ -57,11 +58,11 @@ export function NavHomes({ onNavigate }: NavHomesProps) {
             <Text style={styles.noHomes}>{t("noHomes")}</Text>
           ) : (
             homes.map((home) => {
-              const selected = pathname === `/home/${home.id}`;
+              const selected = pathname === `/home/${home.idHome}`;
               return (
                 <Pressable
-                  key={home.id}
-                  onPress={() => handleHomePress(home.id)}
+                  key={home.idHome}
+                  onPress={() => handleHomePress(home.idHome)}
                   style={[styles.homeItem, selected && styles.homeItemActive]}
                 >
                   <View style={styles.homeAvatar}>

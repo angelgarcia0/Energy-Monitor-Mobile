@@ -99,35 +99,13 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     marginLeft: Theme.spacing.md + AVATAR_SIZE + Theme.spacing.sm,
     backgroundColor: Theme.colors.border,
   },
-  inviteRow: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    gap: Theme.spacing.sm,
-    marginTop: Theme.spacing.md,
-  },
-  inviteInputWrap: {
-    flex: 1,
-  },
-  inviteError: {
+  error: {
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.sm,
     color: Theme.colors.dangerText,
     marginTop: Theme.spacing.sm,
   },
-  pendingIcon: {
-    width: AVATAR_SIZE,
-    height: AVATAR_SIZE,
-    borderRadius: AVATAR_SIZE / 2,
-    backgroundColor: Theme.colors.gradient,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  pendingLabel: {
-    fontFamily: Theme.typography.fontPrimary,
-    fontSize: Theme.typography.size.xs,
-    color: Theme.colors.textSecondary,
-  },
-  emptyPending: {
+  emptyText: {
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.sm,
     color: Theme.colors.textSecondary,

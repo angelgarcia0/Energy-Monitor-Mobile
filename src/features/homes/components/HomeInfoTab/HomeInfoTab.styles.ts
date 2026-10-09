@@ -108,6 +108,12 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     borderColor: Theme.colors.border,
     opacity: 0.5,
   },
+  error: {
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.sm,
+    color: Theme.colors.dangerText,
+    marginTop: Theme.spacing.sm,
+  },
   actionRow: {
     marginTop: Theme.spacing.md,
   },

@@ -19,11 +19,21 @@ import { styles } from "./JoinHomeModal.styles";
 
 export interface JoinHomeModalProps {
   visible: boolean;
+  submitting?: boolean;
+  /** Mensaje ya traducido de la última llamada fallida. */
+  serverError?: string | null;
   onClose: () => void;
-  onSubmit: (code: string) => void;
+  /** Devuelve `true` si entró al hogar: el modal solo se cierra en ese caso. */
+  onSubmit: (code: string) => Promise<boolean>;
 }
 
-export function JoinHomeModal({ visible, onClose, onSubmit }: JoinHomeModalProps) {
+export function JoinHomeModal({
+  visible,
+  submitting = false,
+  serverError,
+  onClose,
+  onSubmit,
+}: JoinHomeModalProps) {
   const { t } = useTranslation("joinHomeModal");
   const {
     control,
@@ -40,9 +50,8 @@ export function JoinHomeModal({ visible, onClose, onSubmit }: JoinHomeModalProps
     onClose();
   };
 
-  const submit = (data: JoinHomeFormValues) => {
-    onSubmit(data.code);
-    handleClose();
+  const submit = async (data: JoinHomeFormValues) => {
+    if (await onSubmit(data.code)) handleClose();
   };
 
   return (
@@ -52,11 +61,15 @@ export function JoinHomeModal({ visible, onClose, onSubmit }: JoinHomeModalProps
       title={t("title")}
       footer={
         <>
-          <Button variant="secondary" onPress={handleClose}>
+          <Button variant="secondary" onPress={handleClose} disabled={submitting}>
             {t("cancel")}
           </Button>
-          <Button variant="primary" onPress={handleSubmit(submit)}>
-            {t("join")}
+          <Button
+            variant="primary"
+            onPress={handleSubmit(submit)}
+            disabled={submitting}
+          >
+            {submitting ? t("joining") : t("join")}
           </Button>
         </>
       }
@@ -89,6 +102,12 @@ export function JoinHomeModal({ visible, onClose, onSubmit }: JoinHomeModalProps
           )}
         />
         {errors.code ? <Text style={styles.error}>{errors.code.message}</Text> : null}
+
+        {serverError ? (
+          <Text style={styles.error} accessibilityRole="alert">
+            {serverError}
+          </Text>
+        ) : null}
 
         <Text style={styles.hint}>{t("hint")}</Text>
       </View>

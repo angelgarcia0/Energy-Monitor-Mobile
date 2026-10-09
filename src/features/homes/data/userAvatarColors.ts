@@ -1,5 +1,5 @@
 import { Theme } from "@/constants/theme";
-import type { ProjectUser } from "./usersMock";
+import type { Role } from "@/services/home";
 
 export interface AvatarColor {
   background: string;
@@ -15,17 +15,18 @@ const GUEST_COLOR: AvatarColor = { background: "#eeedfe", text: "#534ab7" };
 
 const AVATAR_COLOR_COUNT = 4;
 
-export const getRoleBadgeColor = (role: ProjectUser["role"]): AvatarColor =>
-  role === "owner"
+/** El rol llega del backend en mayúsculas (`Role` del dominio). */
+export const getRoleBadgeColor = (role: Role): AvatarColor =>
+  role === "OWNER"
     ? OWNER_COLOR
     : { background: Theme.colors.successSoft, text: Theme.colors.successText };
 
 export const getAvatarColor = (index: number): AvatarColor => {
   switch (index % AVATAR_COLOR_COUNT) {
     case 0:
-      return getRoleBadgeColor("owner");
+      return getRoleBadgeColor("OWNER");
     case 1:
-      return getRoleBadgeColor("member");
+      return getRoleBadgeColor("MEMBER");
     case 2:
       return { background: Theme.colors.warningSoft, text: Theme.colors.warningText };
     default:

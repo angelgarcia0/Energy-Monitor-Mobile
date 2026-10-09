@@ -5,57 +5,38 @@ import { Pressable, Text, View } from "react-native";
 
 import { Card } from "@/components/Card/Card";
 import { Theme } from "@/constants/theme";
+import type { HomeMembership } from "@/services/home";
 import { styles } from "./HomeCard.styles";
 
-export type HomeTextField =
-  | "name"
-  | "address"
-  | "description"
-  | "userResponsible";
-
-export interface Home {
-  id: number;
-  name: string;
-  address: string;
-  description: string;
-  userResponsible: string;
-  variant: "owned" | "joined";
-  favorite: boolean;
-  homeTypeId?: string;
-  otherHomeType?: string;
-  /**
-   * Campos cuyo texto viene del locale y no del usuario. Se guardan como claves
-   * y se resuelven al renderizar para que sigan el idioma activo.
-   */
-  mockFields?: Partial<Record<HomeTextField, string>>;
-}
-
 export interface HomeCardProps {
-  home: Home;
-  favorite: boolean;
-  onPress?: (home: Home) => void;
-  onToggleFavorite?: (id: number) => void;
+  home: HomeMembership;
+  onPress?: (home: HomeMembership) => void;
+  onToggleFavorite?: (idHome: string) => void;
+  /** El backend guarda un solo límite de tiempo por llamada; ver `homeApi`. */
+  togglingFavorite?: boolean;
 }
 
 const DESCRIPTION_LIMIT = 150;
 
 export function HomeCard({
   home,
-  favorite,
   onPress,
   onToggleFavorite,
+  togglingFavorite = false,
 }: HomeCardProps) {
   const { t } = useTranslation("homeCard");
   const [expanded, setExpanded] = useState(false);
 
+  // El backend no manda un color: el tono lo decide el rol, como en la Web.
   const headerColor =
-    home.variant === "joined" ? Theme.colors.secondary : Theme.colors.primary;
+    home.role === "MEMBER" ? Theme.colors.secondary : Theme.colors.primary;
 
-  const isLong = home.description.length > DESCRIPTION_LIMIT;
+  const description = home.description ?? "";
+  const isLong = description.length > DESCRIPTION_LIMIT;
   const displayText =
     expanded || !isLong
-      ? home.description
-      : home.description.slice(0, DESCRIPTION_LIMIT) + "…";
+      ? description
+      : description.slice(0, DESCRIPTION_LIMIT) + "…";
 
   return (
     <Pressable
@@ -65,18 +46,24 @@ export function HomeCard({
       <View style={[styles.header, { backgroundColor: headerColor }]}>
         <View style={styles.headerText}>
           <Text style={styles.title}>{home.name}</Text>
-          <Text style={styles.responsible}>{home.userResponsible}</Text>
+          <Text style={styles.responsible}>
+            {home.role === "MEMBER" ? t("member") : t("owner")}
+          </Text>
         </View>
 
         <Pressable
-          onPress={() => onToggleFavorite?.(home.id)}
-          accessibilityLabel={favorite ? t("removeFavorite") : t("addFavorite")}
-          style={[styles.favoriteButton, favorite && styles.favorited]}
+          onPress={() => onToggleFavorite?.(home.idHome)}
+          disabled={togglingFavorite}
+          accessibilityRole="button"
+          accessibilityLabel={home.favorite ? t("removeFavorite") : t("addFavorite")}
+          style={[styles.favoriteButton, home.favorite && styles.favorited]}
         >
           <Ionicons
-            name={favorite ? "heart" : "heart-outline"}
+            name={home.favorite ? "heart" : "heart-outline"}
             size={Theme.typography.size.size18}
-            color={favorite ? Theme.colors.primary : Theme.colors.onBrand}
+            color={
+              home.favorite ? Theme.colors.primary : Theme.colors.onBrand
+            }
           />
         </Pressable>
       </View>

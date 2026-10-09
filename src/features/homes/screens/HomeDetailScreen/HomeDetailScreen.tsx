@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { BottomTabBar, type BottomTabItem } from "@/components/layout/BottomTabBar/BottomTabBar";
 import { Theme } from "@/constants/theme";
-import type { Home } from "@/features/dashboard/components/HomeCard/HomeCard";
+import type { HomeMembership } from "@/services/home";
 import { ConsumptionHistoryTab } from "../../components/ConsumptionHistoryTab/ConsumptionHistoryTab";
 import { ConsumptionTab } from "../../components/ConsumptionTab/ConsumptionTab";
 import { DevicesTab } from "../../components/DevicesTab/DevicesTab";
@@ -20,7 +20,7 @@ import { useThresholdsState } from "../../hooks/useThresholdsState";
 import { styles } from "./HomeDetailScreen.styles";
 
 export interface HomeDetailScreenProps {
-  home: Home;
+  home: HomeMembership;
 }
 
 type HomeTab = "consumption" | "history" | "users" | "devices" | "thresholds" | "home";
@@ -40,8 +40,9 @@ export function HomeDetailScreen({ home }: HomeDetailScreenProps) {
   const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState<HomeTab>(TABS[0].id);
   const { devices, addDevice, removeDevice } = useDevicesState();
-  const { thresholds, saveThresholds } = useThresholdsState();
-  const isOwner = home.variant === "owned";
+  const thresholds = useThresholdsState(home.idHome);
+
+  const isOwner = home.role === "OWNER";
   const tabs = useMemo<BottomTabItem[]>(
     () => TABS.map((tab) => ({ ...tab, label: t(`tabs.${tab.id}`) })),
     [t],
@@ -62,7 +63,7 @@ export function HomeDetailScreen({ home }: HomeDetailScreenProps) {
 
       <View style={styles.body}>
         {activeTab === "consumption" ? (
-          <ConsumptionTab devices={devices} thresholds={thresholds} />
+          <ConsumptionTab devices={devices} thresholds={thresholds.thresholds} />
         ) : activeTab === "history" ? (
           <ConsumptionHistoryTab devices={devices} />
         ) : activeTab === "devices" ? (
@@ -73,13 +74,9 @@ export function HomeDetailScreen({ home }: HomeDetailScreenProps) {
             isOwner={isOwner}
           />
         ) : activeTab === "thresholds" ? (
-          <ThresholdsTab
-            thresholds={thresholds}
-            saveThresholds={saveThresholds}
-            isOwner={isOwner}
-          />
+          <ThresholdsTab state={thresholds} isOwner={isOwner} />
         ) : activeTab === "users" ? (
-          <UsersTab isOwner={isOwner} />
+          <UsersTab homeId={home.idHome} isOwner={isOwner} />
         ) : (
           <HomeInfoTab home={home} isOwner={isOwner} />
         )}

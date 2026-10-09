@@ -10,24 +10,21 @@ import { EmptyState } from "@/components/EmptyState/EmptyState";
 import { Header } from "@/components/Header/Header";
 import { Theme } from "@/constants/theme";
 import { useHomes } from "@/context/HomeContext";
-import {
-  HomeCard,
-  type Home,
-} from "@/features/dashboard/components/HomeCard/HomeCard";
+import { HomeCard } from "@/features/dashboard/components/HomeCard/HomeCard";
+import type { HomeMembership } from "@/services/home";
 import { styles } from "./FavoritesScreen.styles";
 
 export function FavoritesScreen() {
   const { t } = useTranslation("favorites");
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { homes, toggleFavorite } = useHomes();
+  const { homes, setFavorite } = useHomes();
   const favoriteHomes = homes.filter((home) => home.favorite);
 
-  const handleHomePress = (home: Home) => {
-    // ponytail: cast a Href hasta que `expo start` regenere los tipos de rutas.
-    router.push(
-      `/home/${home.id}?home=${encodeURIComponent(JSON.stringify(home))}` as Href,
-    );
+  // Solo el id viaja en la ruta: el hogar se resuelve del contexto, así que no
+  // se pone el objeto entero en la URL.
+  const handleHomePress = (home: HomeMembership) => {
+    router.push(`/home/${home.idHome}` as Href);
   };
 
   return (
@@ -63,12 +60,11 @@ export function FavoritesScreen() {
           {favoriteHomes.length > 0 ? (
             <View style={styles.grid}>
               {favoriteHomes.map((home) => (
-                <View key={home.id} style={styles.gridItem}>
+                <View key={home.idHome} style={styles.gridItem}>
                   <HomeCard
                     home={home}
-                    favorite={home.favorite}
                     onPress={handleHomePress}
-                    onToggleFavorite={toggleFavorite}
+                    onToggleFavorite={setFavorite}
                   />
                 </View>
               ))}

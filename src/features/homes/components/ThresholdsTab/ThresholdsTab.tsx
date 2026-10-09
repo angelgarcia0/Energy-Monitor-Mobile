@@ -12,21 +12,19 @@ import {
 import { Button } from "@/components/Button/Button";
 import { Card } from "@/components/Card/Card";
 import { Input } from "@/components/Input/Input";
+import { Loader } from "@/components/Loader/Loader";
 import { Switch } from "@/components/Switch/Switch";
 import { Theme } from "@/constants/theme";
-import {
-  DAYS_PER_MONTH,
-  DEFAULT_THRESHOLDS,
-  type Thresholds,
-} from "../../data/thresholds";
+import { errorMessage } from "@/services/http";
+import { DAYS_PER_MONTH } from "../../data/thresholds";
+import type { ThresholdsState } from "../../hooks/useThresholdsState";
 import { validateThresholdValue } from "../../validation/thresholdsSchema";
 import { styles } from "./ThresholdsTab.styles";
 
 type Period = "daily" | "monthly";
 
 export interface ThresholdsTabProps {
-  thresholds: Thresholds;
-  saveThresholds: (next: Thresholds) => void;
+  state: ThresholdsState;
   isOwner: boolean;
 }
 
@@ -69,17 +67,18 @@ function parsePositive(raw: string): number | null {
 /** 1 decimal sin `.0` final: 300/30 -> "10", 270/30 -> "9", 15/30 -> "0.5". */
 const formatOneDecimal = (value: number) => String(Math.round(value * 10) / 10);
 
-export function ThresholdsTab({
-  thresholds,
-  saveThresholds,
-  isOwner,
-}: ThresholdsTabProps) {
+export function ThresholdsTab({ state, isOwner }: ThresholdsTabProps) {
   const { t } = useTranslation("thresholds");
-  const [useDefaults, setUseDefaults] = useState(thresholds.useDefaults);
-  const [period, setPeriod] = useState<Period>("daily");
-  const [daily, setDaily] = useState(() => String(thresholds.daily));
-  const [monthly, setMonthly] = useState(() => String(thresholds.monthly));
-  const [error, setError] = useState("");
+  const { thresholds, limitPeriod, loading, error, saving, saveError, reload, save } =
+    state;
+
+  const [useDefaults, setUseDefaults] = useState(thresholds?.useDefaults ?? false);
+  const [period, setPeriod] = useState<Period>(
+    limitPeriod === "MONTHLY" ? "monthly" : "daily",
+  );
+  const [daily, setDaily] = useState(() => String(thresholds?.daily ?? ""));
+  const [monthly, setMonthly] = useState(() => String(thresholds?.monthly ?? ""));
+  const [message, setMessage] = useState("");
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
@@ -89,18 +88,13 @@ export function ThresholdsTab({
   }, [saved]);
 
   const clearFeedback = () => {
-    setError("");
+    setMessage("");
     setSaved(false);
   };
 
   const handleToggleDefaults = (next: boolean) => {
     if (!isOwner) return;
-
     setUseDefaults(next);
-    if (next) {
-      setDaily(String(DEFAULT_THRESHOLDS.daily));
-      setMonthly(String(DEFAULT_THRESHOLDS.monthly));
-    }
     clearFeedback();
   };
 
@@ -108,6 +102,8 @@ export function ThresholdsTab({
   const dailyNumber = parsePositive(daily);
   const monthlyNumber = parsePositive(monthly);
 
+  // El campo inactivo es el que el backend derivaría, así que se calcula igual
+  // para mostrar el mismo número que quedaría guardado.
   const calculatedDaily =
     !isDaily && monthlyNumber !== null
       ? formatOneDecimal(monthlyNumber / DAYS_PER_MONTH)
@@ -117,22 +113,14 @@ export function ThresholdsTab({
       ? String(Math.round(dailyNumber * DAYS_PER_MONTH))
       : "";
 
-  const dailyValue = useDefaults
-    ? String(DEFAULT_THRESHOLDS.daily)
-    : isDaily
-      ? daily
-      : calculatedDaily;
-  const monthlyValue = useDefaults
-    ? String(DEFAULT_THRESHOLDS.monthly)
-    : isDaily
-      ? calculatedMonthly
-      : monthly;
+  const dailyValue = isDaily ? daily : calculatedDaily;
+  const monthlyValue = isDaily ? calculatedMonthly : monthly;
 
-  const dailyEditable = !useDefaults && isDaily;
-  const monthlyEditable = !useDefaults && !isDaily;
+  const dailyEditable = isOwner && !useDefaults && isDaily && !saving;
+  const monthlyEditable = isOwner && !useDefaults && !isDaily && !saving;
 
   const handleTogglePeriod = (nextIsMonthly: boolean) => {
-    if (!isOwner || useDefaults) return;
+    if (!isOwner || useDefaults || saving) return;
 
     // El campo que era calculado pasa a ser editable: se fija su valor en el
     // estado para no perder el número que el usuario estaba viendo.
@@ -155,35 +143,48 @@ export function ThresholdsTab({
     clearFeedback();
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (useDefaults) {
-      saveThresholds({
-        daily: DEFAULT_THRESHOLDS.daily,
-        monthly: DEFAULT_THRESHOLDS.monthly,
-        useDefaults: true,
-      });
-      setError("");
-      setSaved(true);
-      return;
-    }
-
-    const message = validateThresholdValue(isDaily ? daily : monthly);
-    if (message) {
-      setError(message);
+      // Ningún endpoint expone `resetToDefaults`: activarlo otra vez no se puede
+      // guardar. Se dice en vez de fingir que se guardó.
+      setMessage(t("cannotResetDefaults"));
       setSaved(false);
       return;
     }
 
-    setError("");
-    // Se guardan los valores ya resueltos (el inactivo es el calculado), no el
-    // estado crudo: si no, el par guardado sería incoherente con lo que se ve.
-    saveThresholds({
-      daily: Number(dailyValue),
-      monthly: Number(monthlyValue),
-      useDefaults: false,
-    });
+    const raw = isDaily ? daily : monthly;
+    const validation = validateThresholdValue(raw);
+    if (validation) {
+      setMessage(validation);
+      setSaved(false);
+      return;
+    }
+
+    const ok = await save(isDaily ? "DAILY" : "MONTHLY", Number(raw));
+    if (!ok) return;
+
+    setMessage("");
     setSaved(true);
   };
+
+  if (loading) return <Loader text={t("state.loading")} style={styles.flex} />;
+
+  if (error) {
+    return (
+      <View style={[styles.content, styles.readOnlyNotice]}>
+        <Text style={styles.error} accessibilityRole="alert">
+          {errorMessage(t, error, "thresholdsUpdate")}
+        </Text>
+        <Button variant="secondary" onPress={() => void reload()}>
+          {t("state.retry")}
+        </Button>
+      </View>
+    );
+  }
+
+  const backendError = saveError
+    ? errorMessage(t, saveError, "thresholdsUpdate")
+    : "";
 
   return (
     <KeyboardAvoidingView
@@ -235,7 +236,7 @@ export function ThresholdsTab({
               <Switch
                 value={useDefaults}
                 onValueChange={handleToggleDefaults}
-                disabled={!isOwner}
+                disabled={!isOwner || saving}
                 accessibilityLabel={t("defaults.label")}
               />
             </View>
@@ -264,7 +265,7 @@ export function ThresholdsTab({
                 <Switch
                   value={!isDaily}
                   onValueChange={handleTogglePeriod}
-                  disabled={!isOwner || useDefaults}
+                  disabled={!isOwner || saving}
                   accessibilityLabel={t("accessibility.monthlyPeriodicity")}
                 />
               </View>
@@ -322,12 +323,16 @@ export function ThresholdsTab({
           </View>
 
           <View style={styles.errorSlot}>
-            {error ? <Text style={styles.error}>{error}</Text> : null}
+            {message ? <Text style={styles.error}>{message}</Text> : null}
+            {backendError && !message ? (
+              <Text style={styles.error}>{backendError}</Text>
+            ) : null}
           </View>
 
           {isOwner ? (
             <Button
               onPress={handleSave}
+              disabled={saving}
               icon={
                 saved ? (
                   <Ionicons
@@ -339,7 +344,11 @@ export function ThresholdsTab({
               }
               style={styles.saveButton}
             >
-              {saved ? t("buttons.saved") : t("buttons.save")}
+              {saving
+                ? t("buttons.saving")
+                : saved
+                  ? t("buttons.saved")
+                  : t("buttons.save")}
             </Button>
           ) : null}
         </Card>

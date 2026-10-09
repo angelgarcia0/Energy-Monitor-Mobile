@@ -29,16 +29,16 @@ export default function RootLayout() {
   return (
     <I18nextProvider i18n={i18n}>
       <ThemeProvider>
-        <HomeProvider>
-          <UserProvider>
+        <UserProvider>
+          <HomeProvider>
             <StatusBar style="light" />
             {ready ? (
               <AuthGate>
                 <Stack screenOptions={{ headerShown: false }} />
               </AuthGate>
             ) : null}
-          </UserProvider>
-        </HomeProvider>
+          </HomeProvider>
+        </UserProvider>
       </ThemeProvider>
     </I18nextProvider>
   );

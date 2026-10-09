@@ -6,12 +6,14 @@ import { Text } from "react-native";
 import { Button } from "@/components/Button/Button";
 import { Modal } from "@/components/Modal/Modal";
 import { Theme } from "@/constants/theme";
-import type { ProjectUser } from "../../data/usersMock";
 import { styles } from "./ConfirmRemoveUserModal.styles";
 
 export interface ConfirmRemoveUserModalProps {
   visible: boolean;
-  user: ProjectUser;
+  /** Solo se usa el nombre para el mensaje; el id va en la llamada. */
+  user: { name: string; lastName: string };
+  /** `true` mientras corre `DELETE`: el botón queda bloqueado. */
+  removing?: boolean;
   onCancel: () => void;
   onConfirm: () => void;
 }
@@ -19,10 +21,12 @@ export interface ConfirmRemoveUserModalProps {
 export function ConfirmRemoveUserModal({
   visible,
   user,
+  removing = false,
   onCancel,
   onConfirm,
 }: ConfirmRemoveUserModalProps) {
   const { t } = useTranslation("users");
+  const fullName = [user.name, user.lastName].filter(Boolean).join(" ");
 
   return (
     <Modal
@@ -39,17 +43,17 @@ export function ConfirmRemoveUserModal({
       }
       footer={
         <>
-          <Button variant="secondary" onPress={onCancel} style={styles.footerButton}>
+          <Button variant="secondary" onPress={onCancel} disabled={removing} style={styles.footerButton}>
             {t("confirmRemove.cancel")}
           </Button>
-          <Button variant="danger" onPress={onConfirm} style={styles.footerButton}>
-            {t("confirmRemove.confirm")}
+          <Button variant="danger" onPress={onConfirm} disabled={removing} style={styles.footerButton}>
+            {removing ? t("confirmRemove.removing") : t("confirmRemove.confirm")}
           </Button>
         </>
       }
     >
       <Text style={styles.message}>
-        {t("confirmRemove.message", { name: user.name })}
+        {t("confirmRemove.message", { name: fullName })}
       </Text>
     </Modal>
   );

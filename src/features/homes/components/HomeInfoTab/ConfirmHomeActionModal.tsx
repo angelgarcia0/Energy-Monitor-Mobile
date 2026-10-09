@@ -8,30 +8,31 @@ import { Modal } from "@/components/Modal/Modal";
 import { Theme } from "@/constants/theme";
 import { styles } from "./ConfirmHomeActionModal.styles";
 
-export type ConfirmHomeAction = "delete" | "leave";
-
+/**
+ * Confirmación de salir del hogar.
+ *
+ * Solo hay una acción: el backend expone `DELETE /homes/{id}/members/me` y
+ * ningún endpoint para eliminar el hogar, así que el dueño también abandona.
+ */
 export interface ConfirmHomeActionModalProps {
   visible: boolean;
-  mode: ConfirmHomeAction;
   onCancel: () => void;
   onConfirm: () => void;
 }
 
 export function ConfirmHomeActionModal({
   visible,
-  mode,
   onCancel,
   onConfirm,
 }: ConfirmHomeActionModalProps) {
   const { t } = useTranslation("home");
-  const isDelete = mode === "delete";
 
   return (
     <Modal
       visible={visible}
       onRequestClose={onCancel}
       variant="danger"
-      title={isDelete ? t("confirm.deleteTitle") : t("confirm.leaveTitle")}
+      title={t("confirm.leaveTitle")}
       icon={
         <Ionicons
           name="alert-circle-outline"
@@ -45,14 +46,12 @@ export function ConfirmHomeActionModal({
             {t("confirm.cancel")}
           </Button>
           <Button variant="danger" onPress={onConfirm} style={styles.footerButton}>
-            {isDelete ? t("buttons.deleteHome") : t("buttons.leaveHome")}
+            {t("buttons.leaveHome")}
           </Button>
         </>
       }
     >
-      <Text style={styles.message}>
-        {isDelete ? t("confirm.delete") : t("confirm.leave")}
-      </Text>
+      <Text style={styles.message}>{t("confirm.leave")}</Text>
     </Modal>
   );
 }

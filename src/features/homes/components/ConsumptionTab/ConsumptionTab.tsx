@@ -15,7 +15,8 @@ import { styles } from "./ConsumptionTab.styles";
 
 export interface ConsumptionTabProps {
   devices: Device[];
-  thresholds: Thresholds;
+  /** `null` mientras `GET /homes/{id}/thresholds` no responde. */
+  thresholds: Thresholds | null;
 }
 
 interface LimitBarProps {
@@ -97,7 +98,7 @@ export function ConsumptionTab({ devices, thresholds }: ConsumptionTabProps) {
         </Text>
         <Text style={styles.kpiSub}>
           {t("consumption:kpi.currentLimit")}
-          {thresholds.daily} kWh
+          {thresholds ? `${thresholds.daily} kWh` : "—"}
         </Text>
       </Card>
 
@@ -192,13 +193,13 @@ export function ConsumptionTab({ devices, thresholds }: ConsumptionTabProps) {
       <LimitBar
         label={t("consumption:limits.daily")}
         used={data.limitesDiario.usado}
-        limit={thresholds.daily}
+        limit={thresholds?.daily ?? 0}
         noData={t("consumption:kpi.noData")}
       />
       <LimitBar
         label={t("consumption:limits.monthly")}
         used={data.limiteMensual.usado}
-        limit={thresholds.monthly}
+        limit={thresholds?.monthly ?? 0}
         noData={t("consumption:kpi.noData")}
       />
     </ScrollView>

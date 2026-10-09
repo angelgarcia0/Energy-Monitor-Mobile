@@ -9,4 +9,5 @@ export {
   isAuthenticated,
   isSessionHydrated,
   saveSession,
+  type CurrentPerson,
 } from "./session";

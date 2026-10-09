@@ -16,7 +16,7 @@ export default function HomeDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { homes } = useHomes();
 
-  const home = homes.find((h) => String(h.id) === id) ?? null;
+  const home = homes.find((h) => h.idHome === id) ?? null;
 
   // La key remonta la pantalla al cambiar de paleta para que los estilos
   // reconstruidos se apliquen (ver useTheme).

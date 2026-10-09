@@ -63,9 +63,9 @@ export function HomeDetailScreen({ home }: HomeDetailScreenProps) {
 
       <View style={styles.body}>
         {activeTab === "consumption" ? (
-          <ConsumptionTab devices={devices} thresholds={thresholds.thresholds} />
+          <ConsumptionTab homeId={home.idHome} devices={devices} />
         ) : activeTab === "history" ? (
-          <ConsumptionHistoryTab devices={devices} />
+          <ConsumptionHistoryTab homeId={home.idHome} />
         ) : activeTab === "devices" ? (
           <DevicesTab
             devices={devices}

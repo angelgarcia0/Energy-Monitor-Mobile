@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import type { ApiError } from "@/services/http";
 import { homeApi, type LimitPeriod } from "@/services/home";
-import type { Thresholds } from "../data/thresholds";
 
 /**
  * Umbrales del hogar contra el backend.
@@ -16,6 +15,11 @@ import type { Thresholds } from "../data/thresholds";
  * el dominio pero ningún endpoint lo llama. Por eso `useDefaults` se lee pero no
  * se puede volver a activar desde el cliente.
  */
+export interface Thresholds {
+  daily: number;
+  monthly: number;
+  useDefaults: boolean;
+}
 export interface ThresholdsState {
   thresholds: Thresholds | null;
   /** Periodo con el límite editable, según lo último que fijó el dueño. */

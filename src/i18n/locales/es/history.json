@@ -28,8 +28,10 @@
     "totalConsumption": "CONSUMO TOTAL PERIODO",
     "average": "PROMEDIO",
     "topConsumer": "MAYOR CONSUMIDOR",
-    "vsPrevious": "↑ 10% vs periodo anterior",
-    "periodAverage": "Promedio del periodo"
+    "vsPrevious": "{{sign}} {{pct}}% vs periodo anterior",
+    "periodAverage": "Promedio del periodo",
+    "noPrevious": "Sin datos del periodo anterior",
+    "periodTotal": "Total del periodo"
   },
   "subfilters": {
     "showAll": "Mostrar todo",
@@ -74,5 +76,9 @@
     "oct": "Oct",
     "nov": "Nov",
     "dec": "Dic"
+  },
+  "state": {
+    "loading": "Cargando historial...",
+    "retry": "Reintentar"
   }
 }

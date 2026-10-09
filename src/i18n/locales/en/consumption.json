@@ -26,7 +26,10 @@
       "MEDIUM": "Medium",
       "HIGH": "High",
       "CRITICAL": "Critical"
-    }
+    },
+    "noDevices": "No linked devices",
+    "someOffline_one": "{{count}} offline",
+    "someOffline_other": "{{count}} offline"
   },
   "charts": {
     "globalConsumption": "Global Consumption —",
@@ -53,5 +56,9 @@
   "devicesValueUnit": " / ",
   "deviceChartValues": "Values in W",
   "deviceLegendUnit": "kW",
-  "limitsUnit": "kWh"
+  "limitsUnit": "kWh",
+  "state": {
+    "loading": "Loading consumption...",
+    "retry": "Retry"
+  }
 }

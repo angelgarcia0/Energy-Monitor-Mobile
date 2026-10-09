@@ -2,43 +2,69 @@ import { Switch } from "@/components/Switch/Switch";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Text, View } from "react-native";
+import { ActivityIndicator, Pressable, Text, View } from "react-native";
 import { Theme } from "@/constants/theme";
+import { errorMessage } from "@/services/http";
 import { SettingsSectionCard } from "../../components/SettingsSectionCard/SettingsSectionCard";
+import { useNotificationPreferences } from "../../hooks/useNotificationPreferences";
 import { styles } from "./NotificationSettings.styles";
 
+/**
+ * Canales por los que llegan las alertas de los hogares.
+ *
+ * El correo lo envía el servidor. El push no: son las suscripciones VAPID de los
+ * navegadores, así que desde aquí se enciende o apaga la preferencia, pero lo que
+ * llega es a los navegadores ya suscritos, nunca a este teléfono.
+ */
 export function NotificationSettings() {
   const { t } = useTranslation("settings");
-  const [settings, setSettings] = useState({
-    email: true,
-    push: true,
-    combined: true,
-  });
+  const { preferences, loading, error, reload, save, pending } =
+    useNotificationPreferences();
 
-  const toggleSetting = (key: "email" | "push" | "combined") => {
-    setSettings((prev) => {
-      if (key === "combined") {
-        const newValue = !prev.combined;
-        return {
-          email: newValue,
-          push: newValue,
-          combined: newValue,
-        };
-      }
+  // El mensaje de error vive aquí, no en el hook, porque el hook no traduce.
+  const [message, setMessage] = useState<string | null>(null);
 
-      const updated = {
-        ...prev,
-        [key]: !prev[key],
-      };
+  const email = !!preferences?.emailEnabled;
+  const push = !!preferences?.pushEnabled;
+  const combined = email && push;
+  const pushAvailable = !!preferences?.pushAvailable;
 
-      return {
-        ...updated,
-        combined: updated.email && updated.push,
-      };
-    });
+  const run = async (
+    next: { emailEnabled: boolean; pushEnabled: boolean },
+  ): Promise<void> => {
+    setMessage(null);
+    const err = await save(next);
+    if (err) setMessage(errorMessage(t, err));
   };
 
-  const activeCount = [settings.email, settings.push].filter(Boolean).length;
+  const toggleEmail = () => {
+    if (!preferences || pending) return;
+    // Tocar el correo no cambia el push de los navegadores.
+    void run({ emailEnabled: !email, pushEnabled: push });
+  };
+
+  const togglePush = () => {
+    if (!preferences || pending) return;
+    void run({ emailEnabled: email, pushEnabled: !push });
+  };
+
+  const toggleCombined = () => {
+    if (!preferences || pending) return;
+    const value = !combined;
+    void run({ emailEnabled: value, pushEnabled: value });
+  };
+
+  // El push depende de que el servidor tenga clave configurada. Sin ella,
+  // `/notifications/push/public-key` responde 404 y encender el interruptor no
+  // suscribiría a nadie.
+  const pushHint = !pushAvailable
+    ? t("notifications.push.unavailable")
+    : preferences && preferences.pushBrowsers > 0
+      ? t("notifications.push.browsers", { count: preferences.pushBrowsers })
+      : t("notifications.push.description");
+
+  const activeCount = [email, push].filter(Boolean).length;
+  const busy = !!pending;
 
   return (
     <SettingsSectionCard
@@ -60,30 +86,60 @@ export function NotificationSettings() {
       }
     >
       <View style={styles.options}>
+        {loading && !preferences ? (
+          <View style={styles.loading}>
+            <ActivityIndicator color={Theme.colors.primary} />
+          </View>
+        ) : null}
+
+        {error && !preferences ? (
+          <View style={styles.row}>
+            <Text style={styles.message} accessibilityRole="alert">
+              {errorMessage(t, error)}
+            </Text>
+            <Pressable
+              onPress={reload}
+              accessibilityRole="button"
+              accessibilityLabel={t("notifications.retry")}
+            >
+              <Text style={styles.retry}>{t("notifications.retry")}</Text>
+            </Pressable>
+          </View>
+        ) : null}
+
         <NotificationRow
           icon="mail-outline"
           title={t("notifications.email.title")}
           description={t("notifications.email.description")}
-          enabled={settings.email}
-          onToggle={() => toggleSetting("email")}
+          enabled={email}
+          disabled={loading || busy}
+          onToggle={toggleEmail}
         />
 
         <NotificationRow
           icon="phone-portrait-outline"
           title={t("notifications.push.title")}
-          description={t("notifications.push.description")}
-          enabled={settings.push}
-          onToggle={() => toggleSetting("push")}
+          description={pushHint}
+          enabled={push}
+          disabled={loading || busy || !pushAvailable}
+          onToggle={togglePush}
         />
 
         <NotificationRow
           icon="checkmark-done-outline"
           title={t("notifications.combined.title")}
           description={t("notifications.combined.description")}
-          enabled={settings.combined}
-          onToggle={() => toggleSetting("combined")}
+          enabled={combined}
+          disabled={loading || busy || !pushAvailable}
+          onToggle={toggleCombined}
         />
       </View>
+
+      {message ? (
+        <Text style={styles.message} accessibilityRole="alert">
+          {message}
+        </Text>
+      ) : null}
     </SettingsSectionCard>
   );
 }
@@ -93,6 +149,7 @@ interface NotificationRowProps {
   title: string;
   description: string;
   enabled: boolean;
+  disabled?: boolean;
   onToggle: () => void;
 }
 
@@ -101,6 +158,7 @@ function NotificationRow({
   title,
   description,
   enabled,
+  disabled = false,
   onToggle,
 }: NotificationRowProps) {
   const { t } = useTranslation("settings");
@@ -132,7 +190,12 @@ function NotificationRow({
           </Text>
         </View>
 
-        <Switch value={enabled} onValueChange={onToggle} />
+        <Switch
+          value={enabled}
+          onValueChange={onToggle}
+          disabled={disabled}
+          accessibilityLabel={title}
+        />
       </View>
     </View>
   );

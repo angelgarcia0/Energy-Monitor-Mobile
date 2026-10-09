@@ -80,4 +80,20 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     fontSize: Theme.typography.size.size11,
     fontWeight: Theme.typography.weight.bold,
   },
+  loading: {
+    paddingVertical: Theme.spacing.md,
+    alignItems: "center",
+  },
+  message: {
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.size13,
+    color: Theme.colors.dangerText,
+    paddingVertical: Theme.spacing.xs,
+  },
+  retry: {
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.size13,
+    fontWeight: Theme.typography.weight.bold,
+    color: Theme.colors.primary,
+  },
 }));

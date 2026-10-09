@@ -13,5 +13,11 @@
     "joinedDescription": "Maison que vous avez rejointe en tant qu'utilisateur standard.",
     "you": "Vous"
   },
-  "homeAddress": "Av. Central 45, Bureau 3"
+  "homeAddress": "Av. Central 45, Bureau 3",
+  "state": {
+    "loading": "Chargement des maisons...",
+    "error": "Impossible de charger les maisons.",
+    "errorDescription": "Vérifie ta connexion et réessaie.",
+    "retry": "Réessayer"
+  }
 }

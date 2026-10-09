@@ -24,7 +24,8 @@
   "scopeNote": "Chaque maison conserve ses propres seuils ; les modifier ici n'affecte pas vos autres maisons.",
   "buttons": {
     "save": "Enregistrer les modifications",
-    "saved": "Enregistré"
+    "saved": "Enregistré",
+    "saving": "Enregistrement..."
   },
   "errors": {
     "invalid": "Entrez une valeur supérieure à 0"
@@ -33,5 +34,10 @@
     "daily": "Limite quotidienne en kWh",
     "monthly": "Limite mensuelle en kWh",
     "monthlyPeriodicity": "Configurer par périodicité mensuelle"
-  }
+  },
+  "state": {
+    "loading": "Chargement des seuils...",
+    "retry": "Réessayer"
+  },
+  "cannotResetDefaults": "Impossible encore de rétablir les valeurs par défaut du système."
 }

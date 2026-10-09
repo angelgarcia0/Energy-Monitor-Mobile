@@ -9,7 +9,9 @@
     "member": "Member"
   },
   "members": {
-    "title": "Project members"
+    "title": "Project members",
+    "onlyOwnerTitle": "No other users yet",
+    "onlyOwnerDescription": "Share the home access code so other people can join."
   },
   "invite": {
     "title": "Invite user by email",
@@ -35,6 +37,11 @@
     "title": "Remove member?",
     "message": "You are about to remove \"{{name}}\" from the project. They will stop receiving the home consumption data and you will need to invite them again if you want them to participate.",
     "confirm": "Remove",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "removing": "Removing..."
+  },
+  "state": {
+    "loading": "Loading members...",
+    "retry": "Retry"
   }
 }

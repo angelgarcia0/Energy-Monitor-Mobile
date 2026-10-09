@@ -9,7 +9,9 @@
     "member": "Membre"
   },
   "members": {
-    "title": "Membres du projet"
+    "title": "Membres du projet",
+    "onlyOwnerTitle": "Aucun autre utilisateur pour l'instant",
+    "onlyOwnerDescription": "Partagez le code d'accès du domicile pour que d'autres personnes le rejoignent."
   },
   "invite": {
     "title": "Inviter un utilisateur par e-mail",
@@ -35,6 +37,11 @@
     "title": "Retirer le membre ?",
     "message": "Vous êtes sur le point de retirer « {{name}} » du projet. Il ne recevra plus les données de consommation du foyer et vous devrez le réinviter si vous souhaitez qu'il participe.",
     "confirm": "Retirer",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "removing": "Suppression..."
+  },
+  "state": {
+    "loading": "Chargement des membres...",
+    "retry": "Réessayer"
   }
 }

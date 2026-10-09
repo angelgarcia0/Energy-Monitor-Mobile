@@ -13,5 +13,11 @@
     "joinedDescription": "Lar no qual você entrou como usuário comum.",
     "you": "Você"
   },
-  "homeAddress": "Av. Central 45, Escritório 3"
+  "homeAddress": "Av. Central 45, Escritório 3",
+  "state": {
+    "loading": "Carregando lares...",
+    "error": "Não foi possível carregar os lares.",
+    "errorDescription": "Verifique sua conexão e tente novamente.",
+    "retry": "Tentar novamente"
+  }
 }

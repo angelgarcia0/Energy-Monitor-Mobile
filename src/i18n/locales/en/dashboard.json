@@ -13,5 +13,11 @@
     "joinedDescription": "Home you joined as a regular user.",
     "you": "You"
   },
-  "homeAddress": "Av. Central 45, Office 3"
+  "homeAddress": "Av. Central 45, Office 3",
+  "state": {
+    "loading": "Loading homes...",
+    "error": "Could not load the homes list.",
+    "errorDescription": "Check your connection and try again.",
+    "retry": "Retry"
+  }
 }

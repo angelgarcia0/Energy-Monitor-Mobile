@@ -9,7 +9,9 @@
     "member": "Membro"
   },
   "members": {
-    "title": "Membros do projeto"
+    "title": "Membros do projeto",
+    "onlyOwnerTitle": "Ainda não há outros usuários vinculados",
+    "onlyOwnerDescription": "Compartilhe o código de acesso do lar para que outras pessoas entrem."
   },
   "invite": {
     "title": "Convidar usuário por e-mail",
@@ -35,6 +37,11 @@
     "title": "Remover membro?",
     "message": "Você está prestes a remover \"{{name}}\" do projeto. Ela deixará de receber os dados de consumo da casa e você precisará convidá-la novamente se quiser que participe.",
     "confirm": "Remover",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "removing": "Removendo..."
+  },
+  "state": {
+    "loading": "Carregando membros...",
+    "retry": "Tentar novamente"
   }
 }

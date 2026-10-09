@@ -22,7 +22,8 @@
   "buttons": {
     "copy": "Copiar código de acesso",
     "deleteHome": "Excluir lar",
-    "leaveHome": "Sair do lar"
+    "leaveHome": "Sair do lar",
+    "leaving": "Saindo..."
   },
   "status": {
     "responsible": "Responsável"

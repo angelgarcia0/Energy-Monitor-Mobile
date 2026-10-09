@@ -22,7 +22,8 @@
   "buttons": {
     "copy": "Copy access code",
     "deleteHome": "Delete home",
-    "leaveHome": "Leave home"
+    "leaveHome": "Leave home",
+    "leaving": "Leaving..."
   },
   "status": {
     "responsible": "Responsible"

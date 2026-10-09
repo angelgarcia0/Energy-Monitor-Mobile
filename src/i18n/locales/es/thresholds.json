@@ -24,7 +24,8 @@
   "scopeNote": "Cada hogar guarda sus propios umbrales; cambiarlos aquí no afecta a tus otros hogares.",
   "buttons": {
     "save": "Guardar cambios",
-    "saved": "Guardado"
+    "saved": "Guardado",
+    "saving": "Guardando..."
   },
   "errors": {
     "invalid": "Ingresa un valor mayor a 0"
@@ -33,5 +34,10 @@
     "daily": "Límite diario en kWh",
     "monthly": "Límite mensual en kWh",
     "monthlyPeriodicity": "Configurar por periodicidad mensual"
-  }
+  },
+  "state": {
+    "loading": "Cargando límites...",
+    "retry": "Reintentar"
+  },
+  "cannotResetDefaults": "Todavía no se pueden restablecer los valores del sistema."
 }

@@ -24,7 +24,8 @@
   "scopeNote": "Cada lar mantém seus próprios limites; alterá-los aqui não afeta seus outros lares.",
   "buttons": {
     "save": "Salvar alterações",
-    "saved": "Salvo"
+    "saved": "Salvo",
+    "saving": "Salvando..."
   },
   "errors": {
     "invalid": "Digite um valor maior que 0"
@@ -33,5 +34,10 @@
     "daily": "Limite diário em kWh",
     "monthly": "Limite mensal em kWh",
     "monthlyPeriodicity": "Configurar por periodicidade mensal"
-  }
+  },
+  "state": {
+    "loading": "Carregando limites...",
+    "retry": "Tentar novamente"
+  },
+  "cannotResetDefaults": "Ainda não é possível restaurar os valores padrão do sistema."
 }

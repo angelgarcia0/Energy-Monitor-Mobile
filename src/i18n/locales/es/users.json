@@ -9,7 +9,9 @@
     "member": "Miembro"
   },
   "members": {
-    "title": "Miembros del proyecto"
+    "title": "Miembros del proyecto",
+    "onlyOwnerTitle": "Aún no hay más usuarios vinculados",
+    "onlyOwnerDescription": "Comparte el código de acceso del hogar para que otras personas se unan."
   },
   "invite": {
     "title": "Invitar usuario por correo",
@@ -35,6 +37,11 @@
     "title": "¿Eliminar miembro?",
     "message": "Vas a eliminar a \"{{name}}\" del proyecto. Dejará de recibir los datos de consumo del hogar y tendrás que volver a invitarlo si quieres que participe.",
     "confirm": "Eliminar",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "removing": "Eliminando..."
+  },
+  "state": {
+    "loading": "Cargando miembros...",
+    "retry": "Reintentar"
   }
 }

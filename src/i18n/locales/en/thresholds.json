@@ -24,7 +24,8 @@
   "scopeNote": "Each home keeps its own thresholds; changing these won't affect your other homes.",
   "buttons": {
     "save": "Save changes",
-    "saved": "Saved"
+    "saved": "Saved",
+    "saving": "Saving..."
   },
   "errors": {
     "invalid": "Enter a value greater than 0"
@@ -33,5 +34,10 @@
     "daily": "Daily limit in kWh",
     "monthly": "Monthly limit in kWh",
     "monthlyPeriodicity": "Configure by monthly periodicity"
-  }
+  },
+  "state": {
+    "loading": "Loading limits...",
+    "retry": "Retry"
+  },
+  "cannotResetDefaults": "System defaults cannot be restored yet."
 }

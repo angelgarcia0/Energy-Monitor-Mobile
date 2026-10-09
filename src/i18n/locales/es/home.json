@@ -22,7 +22,8 @@
   "buttons": {
     "copy": "Copiar código de acceso",
     "deleteHome": "Eliminar hogar",
-    "leaveHome": "Salirse del hogar"
+    "leaveHome": "Salirse del hogar",
+    "leaving": "Saliendo..."
   },
   "status": {
     "responsible": "Responsable"

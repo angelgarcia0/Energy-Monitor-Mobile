@@ -14,11 +14,15 @@
     "active": "Active",
     "resolved": "Résolue",
     "new": "Nouvelle",
-    "read": "Lue"
+    "read": "Lue",
+    "resolvedAuto": "Résolue"
   },
   "actions": {
     "markRead": "Marquer comme lue",
-    "markAllRead": "Tout marquer comme lu"
+    "markAllRead": "Tout marquer comme lu",
+    "delete": "Supprimer",
+    "deleteAllResolved_one": "Supprimer {{count}} résolue",
+    "deleteAllResolved_other": "Supprimer {{count}} résolues"
   },
   "threshold": {
     "dailyExceeded": {
@@ -28,6 +32,14 @@
     "monthlyApproaching": {
       "title": "Proche de la limite mensuelle",
       "message": "Le foyer « {{home}} » approche de la limite de consommation mensuelle configurée."
+    },
+    "high": {
+      "title": "Consommation élevée",
+      "message": "Un appareil de « {{home}} » consomme plus que d’habitude."
+    },
+    "critical": {
+      "title": "Consommation critique",
+      "message": "Un appareil de « {{home}} » consomme à un niveau critique."
     }
   },
   "connectivity": {
@@ -68,5 +80,31 @@
       "description": "Aucune recommandation n'a encore été générée pour vos foyers."
     }
   },
-  "markReadLabel": "Marquer comme lue : {{title}}"
+  "markReadLabel": "Marquer comme lue : {{title}}",
+  "device": {
+    "linked": {
+      "title": "Nouvel appareil lié",
+      "message": "« {{home}} » a un nouvel appareil connecté qui envoie déjà des mesures."
+    }
+  },
+  "limit": {
+    "daily": {
+      "title": "Limite journalière atteinte",
+      "message": "« {{home}} » a déjà consommé aujourd’hui la limite journalière que vous avez définie."
+    },
+    "monthly": {
+      "title": "Limite mensuelle atteinte",
+      "message": "« {{home}} » a déjà consommé ce mois-ci la limite mensuelle que vous avez définie."
+    }
+  },
+  "autoResolveHint": {
+    "threshold": "Se résoudra quand la consommation redeviendra normale",
+    "connectivity": "Se résoudra quand l’appareil se reconnectera",
+    "limit": "Se résoudra d’elle-même au début d’une nouvelle période ou si vous augmentez la limite"
+  },
+  "state": {
+    "loading": "Chargement des notifications...",
+    "retry": "Réessayer"
+  },
+  "deleteLabel": "Supprimer l'alerte {{title}}"
 }

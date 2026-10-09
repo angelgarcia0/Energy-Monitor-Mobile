@@ -14,11 +14,15 @@
     "active": "Ativa",
     "resolved": "Resolvida",
     "new": "Nova",
-    "read": "Lida"
+    "read": "Lida",
+    "resolvedAuto": "Resolvida"
   },
   "actions": {
     "markRead": "Marcar como lida",
-    "markAllRead": "Marcar todas como lidas"
+    "markAllRead": "Marcar todas como lidas",
+    "delete": "Excluir",
+    "deleteAllResolved_one": "Excluir {{count}} resolvida",
+    "deleteAllResolved_other": "Excluir {{count}} resolvidas"
   },
   "threshold": {
     "dailyExceeded": {
@@ -28,6 +32,14 @@
     "monthlyApproaching": {
       "title": "Perto do limite mensal",
       "message": "A casa \"{{home}}\" está perto de atingir o limite mensal de consumo configurado."
+    },
+    "high": {
+      "title": "Consumo alto",
+      "message": "Um dispositivo de \"{{home}}\" está consumindo acima do normal."
+    },
+    "critical": {
+      "title": "Consumo crítico",
+      "message": "Um dispositivo de \"{{home}}\" está consumindo em nível crítico."
     }
   },
   "connectivity": {
@@ -68,5 +80,31 @@
       "description": "Ainda não há recomendações geradas para as suas casas."
     }
   },
-  "markReadLabel": "Marcar como lida: {{title}}"
+  "markReadLabel": "Marcar como lida: {{title}}",
+  "device": {
+    "linked": {
+      "title": "Novo dispositivo vinculado",
+      "message": "\"{{home}}\" tem um novo dispositivo conectado que já está enviando medições."
+    }
+  },
+  "limit": {
+    "daily": {
+      "title": "Limite diário atingido",
+      "message": "\"{{home}}\" já consumiu hoje o limite diário que você configurou."
+    },
+    "monthly": {
+      "title": "Limite mensal atingido",
+      "message": "\"{{home}}\" já consumiu este mês o limite mensal que você configurou."
+    }
+  },
+  "autoResolveHint": {
+    "threshold": "Será resolvida quando o consumo se normalizar",
+    "connectivity": "Será resolvida quando o dispositivo se reconectar",
+    "limit": "Será resolvido sozinho quando começar um novo período ou se você aumentar o limite"
+  },
+  "state": {
+    "loading": "Carregando notificações...",
+    "retry": "Tentar novamente"
+  },
+  "deleteLabel": "Excluir alerta {{title}}"
 }

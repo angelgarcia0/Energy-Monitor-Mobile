@@ -14,11 +14,15 @@
     "active": "Active",
     "resolved": "Resolved",
     "new": "New",
-    "read": "Read"
+    "read": "Read",
+    "resolvedAuto": "Resolved"
   },
   "actions": {
     "markRead": "Mark as read",
-    "markAllRead": "Mark all as read"
+    "markAllRead": "Mark all as read",
+    "delete": "Delete",
+    "deleteAllResolved_one": "Delete {{count}} resolved",
+    "deleteAllResolved_other": "Delete {{count}} resolved"
   },
   "threshold": {
     "dailyExceeded": {
@@ -28,6 +32,14 @@
     "monthlyApproaching": {
       "title": "Close to the monthly limit",
       "message": "The home \"{{home}}\" is close to reaching the configured monthly consumption limit."
+    },
+    "high": {
+      "title": "High consumption",
+      "message": "A device in \"{{home}}\" is using more power than usual."
+    },
+    "critical": {
+      "title": "Critical consumption",
+      "message": "A device in \"{{home}}\" is using power at a critical level."
     }
   },
   "connectivity": {
@@ -68,5 +80,31 @@
       "description": "There are no recommendations generated for your homes yet."
     }
   },
-  "markReadLabel": "Mark as read: {{title}}"
+  "markReadLabel": "Mark as read: {{title}}",
+  "device": {
+    "linked": {
+      "title": "New device linked",
+      "message": "\"{{home}}\" has a new device connected and it is already sending measurements."
+    }
+  },
+  "limit": {
+    "daily": {
+      "title": "Daily limit reached",
+      "message": "\"{{home}}\" has already used today the daily limit you set."
+    },
+    "monthly": {
+      "title": "Monthly limit reached",
+      "message": "\"{{home}}\" has already used this month the monthly limit you set."
+    }
+  },
+  "autoResolveHint": {
+    "threshold": "Resolves itself when consumption is back to normal",
+    "connectivity": "Resolves itself when the device reconnects",
+    "limit": "Resolves itself when a new period starts or if you raise the limit"
+  },
+  "state": {
+    "loading": "Loading notifications...",
+    "retry": "Retry"
+  },
+  "deleteLabel": "Delete alert {{title}}"
 }

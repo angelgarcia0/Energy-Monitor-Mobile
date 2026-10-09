@@ -43,6 +43,14 @@ export function HomeDetailScreen({ home }: HomeDetailScreenProps) {
   const thresholds = useThresholdsState(home.idHome);
 
   const isOwner = home.role === "OWNER";
+
+  // Entrar por URL directa o recargar deja el stack con una sola pantalla: no
+  // hay a qué volver, así que se cae al dashboard en vez de avisar en consola.
+  const handleBack = () => {
+    if (router.canGoBack()) router.back();
+    else router.replace("/dashboard");
+  };
+
   const tabs = useMemo<BottomTabItem[]>(
     () => TABS.map((tab) => ({ ...tab, label: t(`tabs.${tab.id}`) })),
     [t],
@@ -53,7 +61,11 @@ export function HomeDetailScreen({ home }: HomeDetailScreenProps) {
       <StatusBar style="auto" />
 
       <View style={styles.header}>
-        <Pressable onPress={() => router.back()} accessibilityLabel={t("breadcrumb.home")} style={styles.backButton}>
+        <Pressable
+          onPress={handleBack}
+          accessibilityLabel={t("breadcrumb.home")}
+          style={styles.backButton}
+        >
           <Ionicons name="arrow-back" size={Theme.typography.size.lg} color={Theme.colors.textPrimary} />
         </Pressable>
         <Text style={styles.title} numberOfLines={1}>

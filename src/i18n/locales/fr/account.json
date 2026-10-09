@@ -13,7 +13,8 @@
     "title": "Supprimer votre compte ?",
     "message": "Cette action est définitive. Vous perdrez l'accès à vos foyers et à vos données de consommation.",
     "confirm": "Supprimer",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "passwordLabel": "Mot de passe"
   },
   "breadcrumb": {
     "home": "Accueil",
@@ -41,7 +42,8 @@
     "confirmLabel": "Confirmer le mot de passe",
     "newPlaceholder": "Minimum 8 caractères",
     "confirmPlaceholder": "Répétez le nouveau mot de passe",
-    "save": "Enregistrer"
+    "save": "Enregistrer",
+    "saving": "Enregistrement..."
   },
   "success": {
     "nameUpdated": "Nom mis à jour",
@@ -49,7 +51,9 @@
     "emailUpdated": "Email mis à jour",
     "avatarUpdated": "Photo de profil mise à jour",
     "avatarRemoved": "Photo de profil supprimée",
-    "permissionDenied": "Nous avons besoin de l'autorisation de la galerie pour ajouter une photo",
     "passwordUpdated": "Mot de passe mis à jour"
+  },
+  "permissions": {
+    "photoDenied": "Nous avons besoin de l'accès à vos photos pour en ajouter une."
   }
 }

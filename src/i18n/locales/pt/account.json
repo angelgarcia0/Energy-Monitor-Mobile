@@ -13,7 +13,8 @@
     "title": "Excluir sua conta?",
     "message": "Esta ação é permanente. Você perderá o acesso às suas casas e aos seus dados de consumo.",
     "confirm": "Excluir",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "passwordLabel": "Senha"
   },
   "breadcrumb": {
     "home": "Início",
@@ -41,7 +42,8 @@
     "confirmLabel": "Confirmar senha",
     "newPlaceholder": "Mínimo 8 caracteres",
     "confirmPlaceholder": "Repita a nova senha",
-    "save": "Salvar"
+    "save": "Salvar",
+    "saving": "Salvando..."
   },
   "success": {
     "nameUpdated": "Nome atualizado",
@@ -49,7 +51,9 @@
     "emailUpdated": "E-mail atualizado",
     "avatarUpdated": "Foto de perfil atualizada",
     "avatarRemoved": "Foto de perfil removida",
-    "permissionDenied": "Precisamos de permissão da galeria para adicionar uma foto",
     "passwordUpdated": "Senha atualizada"
+  },
+  "permissions": {
+    "photoDenied": "Precisamos de permissão para acessar suas fotos para adicionar uma."
   }
 }

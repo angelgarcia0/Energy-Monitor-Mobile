@@ -13,7 +13,8 @@
     "title": "¿Eliminar tu cuenta?",
     "message": "Esta acción es permanente. Perderás el acceso a tus hogares y a tus datos de consumo.",
     "confirm": "Eliminar",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "passwordLabel": "Contraseña"
   },
   "breadcrumb": {
     "home": "Inicio",
@@ -41,7 +42,8 @@
     "confirmLabel": "Confirmar contraseña",
     "newPlaceholder": "Mínimo 8 caracteres",
     "confirmPlaceholder": "Repite la nueva contraseña",
-    "save": "Guardar"
+    "save": "Guardar",
+    "saving": "Guardando..."
   },
   "success": {
     "nameUpdated": "Nombre actualizado",
@@ -49,7 +51,9 @@
     "emailUpdated": "Correo actualizado",
     "avatarUpdated": "Foto de perfil actualizada",
     "avatarRemoved": "Foto de perfil eliminada",
-    "permissionDenied": "Necesitamos permiso de la galería para agregar una foto",
     "passwordUpdated": "Contraseña actualizada"
+  },
+  "permissions": {
+    "photoDenied": "Necesitamos permiso de la galería para agregar una foto."
   }
 }

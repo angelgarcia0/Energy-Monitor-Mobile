@@ -21,6 +21,7 @@ import enCreateHomeModal from "./locales/en/createHomeModal.json";
 import enDashboard from "./locales/en/dashboard.json";
 import enDevices from "./locales/en/devices.json";
 import enEmptyState from "./locales/en/emptyState.json";
+import enErrors from "./locales/en/errors.json";
 import enFavorites from "./locales/en/favorites.json";
 import enHistory from "./locales/en/history.json";
 import enHome from "./locales/en/home.json";
@@ -45,6 +46,7 @@ import esCreateHomeModal from "./locales/es/createHomeModal.json";
 import esDashboard from "./locales/es/dashboard.json";
 import esDevices from "./locales/es/devices.json";
 import esEmptyState from "./locales/es/emptyState.json";
+import esErrors from "./locales/es/errors.json";
 import esFavorites from "./locales/es/favorites.json";
 import esHistory from "./locales/es/history.json";
 import esHome from "./locales/es/home.json";
@@ -69,6 +71,7 @@ import frCreateHomeModal from "./locales/fr/createHomeModal.json";
 import frDashboard from "./locales/fr/dashboard.json";
 import frDevices from "./locales/fr/devices.json";
 import frEmptyState from "./locales/fr/emptyState.json";
+import frErrors from "./locales/fr/errors.json";
 import frFavorites from "./locales/fr/favorites.json";
 import frHistory from "./locales/fr/history.json";
 import frHome from "./locales/fr/home.json";
@@ -93,6 +96,7 @@ import ptCreateHomeModal from "./locales/pt/createHomeModal.json";
 import ptDashboard from "./locales/pt/dashboard.json";
 import ptDevices from "./locales/pt/devices.json";
 import ptEmptyState from "./locales/pt/emptyState.json";
+import ptErrors from "./locales/pt/errors.json";
 import ptFavorites from "./locales/pt/favorites.json";
 import ptHistory from "./locales/pt/history.json";
 import ptHome from "./locales/pt/home.json";
@@ -119,6 +123,7 @@ const esResources = {
   dashboard: esDashboard,
   devices: esDevices,
   emptyState: esEmptyState,
+  errors: esErrors,
   favorites: esFavorites,
   history: esHistory,
   home: esHome,
@@ -146,6 +151,7 @@ const enResources = {
   dashboard: enDashboard,
   devices: enDevices,
   emptyState: enEmptyState,
+  errors: enErrors,
   favorites: enFavorites,
   history: enHistory,
   home: enHome,
@@ -173,6 +179,7 @@ const frResources = {
   dashboard: frDashboard,
   devices: frDevices,
   emptyState: frEmptyState,
+  errors: frErrors,
   favorites: frFavorites,
   history: frHistory,
   home: frHome,
@@ -200,6 +207,7 @@ const ptResources = {
   dashboard: ptDashboard,
   devices: ptDevices,
   emptyState: ptEmptyState,
+  errors: ptErrors,
   favorites: ptFavorites,
   history: ptHistory,
   home: ptHome,

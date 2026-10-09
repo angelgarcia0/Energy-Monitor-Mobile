@@ -13,7 +13,8 @@
     "title": "Delete your account?",
     "message": "This action is permanent. You will lose access to your homes and your consumption data.",
     "confirm": "Delete",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "passwordLabel": "Password"
   },
   "breadcrumb": {
     "home": "Home",
@@ -41,7 +42,8 @@
     "confirmLabel": "Confirm password",
     "newPlaceholder": "Minimum 8 characters",
     "confirmPlaceholder": "Repeat the new password",
-    "save": "Save"
+    "save": "Save",
+    "saving": "Saving..."
   },
   "success": {
     "nameUpdated": "Name updated",
@@ -49,7 +51,9 @@
     "emailUpdated": "Email updated",
     "avatarUpdated": "Profile photo updated",
     "avatarRemoved": "Profile photo removed",
-    "permissionDenied": "We need gallery permission to add a photo",
     "passwordUpdated": "Password updated"
+  },
+  "permissions": {
+    "photoDenied": "We need permission to access your photos to add one."
   }
 }

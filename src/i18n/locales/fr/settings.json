@@ -34,7 +34,10 @@
     },
     "push": {
       "title": "Notifications push",
-      "description": "Alertes dans la plateforme"
+      "description": "Alertes vers les navigateurs abonnés. Ce téléphone ne les reçoit pas.",
+      "unavailable": "Le serveur n'a aucune notification push configurée, il n'y a donc personne à qui les envoyer.",
+      "browsers_one": "Alertes vers le navigateur abonné. Ce téléphone ne les reçoit pas.",
+      "browsers_other": "Alertes vers les {{count}} navigateurs abonnés. Ce téléphone ne les reçoit pas."
     },
     "combined": {
       "title": "Mode combiné",
@@ -43,13 +46,13 @@
     "status": {
       "active": "Actif",
       "inactive": "Inactif"
-    }
+    },
+    "retry": "Réessayer"
   },
   "helpCenter": {
     "title": "Centre d'aide",
     "description": "Ressources et support pour tirer le meilleur du système"
   },
-
   "help": {
     "docs": {
       "title": "Documentation",

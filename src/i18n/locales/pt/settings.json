@@ -34,7 +34,10 @@
     },
     "push": {
       "title": "Notificações push",
-      "description": "Alertas dentro da plataforma"
+      "description": "Alertas para os navegadores inscritos. Este telefone não as recebe.",
+      "unavailable": "O servidor não tem notificações push configuradas, então não há para quem enviar.",
+      "browsers_one": "Alertas para o navegador inscrito. Este telefone não as recebe.",
+      "browsers_other": "Alertas para os {{count}} navegadores inscritos. Este telefone não as recebe."
     },
     "combined": {
       "title": "Modo combinado",
@@ -43,13 +46,13 @@
     "status": {
       "active": "Ativo",
       "inactive": "Inativo"
-    }
+    },
+    "retry": "Tentar novamente"
   },
   "helpCenter": {
     "title": "Central de ajuda",
     "description": "Recursos e suporte para tirar o máximo proveito do sistema"
   },
-
   "help": {
     "docs": {
       "title": "Documentação",

@@ -37,7 +37,10 @@
     },
     "push": {
       "title": "Notificaciones push",
-      "description": "Alertas dentro de la plataforma"
+      "description": "Alertas a los navegadores que estén suscritos. Este teléfono no las recibe.",
+      "unavailable": "El servidor no tiene notificaciones push configuradas, así que no hay a quién enviarlas.",
+      "browsers_one": "Alertas al navegador suscrito. Este teléfono no las recibe.",
+      "browsers_other": "Alertas a los {{count}} navegadores suscritos. Este teléfono no las recibe."
     },
     "combined": {
       "title": "Modo combinado",
@@ -46,7 +49,8 @@
     "status": {
       "active": "Activo",
       "inactive": "Inactivo"
-    }
+    },
+    "retry": "Reintentar"
   },
 
   "helpCenter": {

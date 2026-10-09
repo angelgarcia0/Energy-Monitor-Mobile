@@ -34,7 +34,10 @@
     },
     "push": {
       "title": "Push notifications",
-      "description": "Alerts within the platform"
+      "description": "Alerts to the browsers that are subscribed. This phone does not receive them.",
+      "unavailable": "The server has no push configured, so there is nobody to send them to.",
+      "browsers_one": "Alerts to the subscribed browser. This phone does not receive them.",
+      "browsers_other": "Alerts to the {{count}} subscribed browsers. This phone does not receive them."
     },
     "combined": {
       "title": "Combined mode",
@@ -43,13 +46,13 @@
     "status": {
       "active": "Active",
       "inactive": "Inactive"
-    }
+    },
+    "retry": "Retry"
   },
   "helpCenter": {
     "title": "Help center",
     "description": "Resources and support to get the most out of the system"
   },
-
   "help": {
     "docs": {
       "title": "Documentation",

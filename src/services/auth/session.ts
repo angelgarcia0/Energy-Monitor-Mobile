@@ -29,6 +29,12 @@ export interface SessionProfile {
 export interface Session {
   accessToken: string;
   refreshToken: string;
+  /**
+   * Epoch ms en que vence el access token. El backend manda `expiresIn` en el
+   * login y en cada renovación; guardarlo permite renewar **antes** de la
+   * petición en vez de descubrir que ya venció cuando responde 401.
+   */
+  expiresAt?: number;
   account?: SessionAccount;
   profile?: SessionProfile;
 }
@@ -104,6 +110,15 @@ export function saveSession(patch: Partial<Session>): void {
     profile: { ...previous?.profile, ...patch.profile },
   } as Session;
 
+  // Cada token nuevo trae su propio vencimiento. El login lo manda explícito
+  // (`expiresIn`), pero la renovación solo devuelve el JWT, así que se lee del
+  // claim `exp`. Si no se puede leer, `expiresAt` queda sin valor y el token se
+  // trata como vencido, que es la postura segura: renueva de más una vez, no
+  // renueva tarde.
+  if (patch.accessToken && patch.expiresAt === undefined) {
+    next.expiresAt = expiryFromToken(patch.accessToken);
+  }
+
   cache = next;
   notify();
 
@@ -130,6 +145,27 @@ export function clearSession(): void {
 }
 
 export const isAuthenticated = (): boolean => Boolean(cache?.accessToken);
+
+/**
+ * Margen de renovación: si al token le queda menos de esto ya se cuenta como
+ * vencido. Cubre el reloj del dispositivo atrasado y el viaje de la petición.
+ */
+const EXPIRY_SKEW_MS = 30_000;
+
+/**
+ * `true` si el access token venció o está por vencer.
+ *
+ * Una sesión sin `expiresAt` —escrita antes de que existiera el campo— se toma
+ * como vencida a propósito: la primera petición la renueva y lo guarda, y desde
+ * ahí deja de renovar antes de tiempo. Sin esto, una sesión guardada por una
+ * versión anterior dispararía un 401 en cada arranque.
+ */
+export function isAccessTokenExpired(now: number = Date.now()): boolean {
+  const session = cache;
+  if (!session?.accessToken) return false;
+  if (session.expiresAt === undefined) return true;
+  return session.expiresAt - EXPIRY_SKEW_MS <= now;
+}
 
 /** Decodifica base64url a texto (Hermes no expone `atob`). */
 function decodeBase64Url(value: string): string {
@@ -159,16 +195,28 @@ function decodeBase64Url(value: string): string {
   return output;
 }
 
-/** El `sub` del access token es el id de la sesión (lo pide POST /auth/logout). */
-export function getSessionId(): string | null {
+/** Claims del access token, o `null` si el token no es un JWT legible. */
+function readClaims(token: string | undefined): { exp?: number; sub?: string } | null {
   try {
-    const payload = cache?.accessToken.split(".")[1];
+    const payload = token?.split(".")[1];
     if (!payload) return null;
-    const claims = JSON.parse(decodeBase64Url(payload)) as { sub?: string };
-    return claims.sub ?? null;
+    return JSON.parse(decodeBase64Url(payload)) as { exp?: number; sub?: string };
   } catch {
     return null;
   }
+}
+
+/** Epoch ms en que expira el token, según su claim `exp`. */
+function expiryFromToken(token: string | undefined): number | undefined {
+  const exp = readClaims(token)?.exp;
+  return typeof exp === "number" ? exp * 1000 : undefined;
+}
+
+/**
+ * El `sub` del access token es el id de la sesión (lo pide POST /auth/logout).
+ */
+export function getSessionId(): string | null {
+  return readClaims(cache?.accessToken)?.sub ?? null;
 }
 
 /** Datos del usuario en sesión (el backend no devuelve nombre en el login). */

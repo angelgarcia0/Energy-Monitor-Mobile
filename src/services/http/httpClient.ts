@@ -4,6 +4,7 @@ import { API_BASE_URL } from "@/config/env";
 import {
   clearSession,
   getSession,
+  isAccessTokenExpired,
   saveSession,
 } from "@/services/auth/session";
 import { normalizeError } from "./errors";
@@ -31,13 +32,37 @@ const PUBLIC_AUTH =
 
 type RetriableConfig = InternalAxiosRequestConfig & { _retry?: boolean };
 
-httpClient.interceptors.request.use((config) => {
+/**
+ * `true` solo cuando el refresh fue contestado por el backend (o la sesión ya no
+ * existe): ahí la sesión está muerta. Una caída de red deja el token en pie, así
+ * que no se cierra la sesión por un fallo que puede ser del transporte.
+ */
+function isSessionDead(refreshError: unknown): boolean {
+  if ((refreshError as Error)?.message === "sin sesión") return true;
+  return Boolean((refreshError as AxiosError)?.response);
+}
+
+httpClient.interceptors.request.use(async (config) => {
   if (PUBLIC_AUTH.test(config.url ?? "")) return config;
 
-  const token = getSession()?.accessToken;
-  if (token && !config.headers.Authorization) {
-    config.headers.Authorization = `Bearer ${token}`;
+  const session = getSession();
+  if (!session?.accessToken || config.headers.Authorization) return config;
+
+  // El access token dura 15 minutos. Si ya venció (o está por vencer), se
+  // renueva ANTES de salir: así el backend nunca responde 401 por algo que el
+  // cliente ya sabía, y la consola no se llena de errores en cada arranque.
+  if (session.refreshToken && isAccessTokenExpired()) {
+    try {
+      await refreshTokens();
+    } catch (refreshError) {
+      if (isSessionDead(refreshError)) notifySessionExpired();
+      // Si solo fue la red, se envía el token viejo: el backend lo rechazará y
+      // el interceptor de respuesta lo manejará como siempre.
+    }
   }
+
+  const token = getSession()?.accessToken;
+  if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
@@ -89,6 +114,8 @@ function refreshTokens(staleAccess?: string): Promise<void> {
     // Si hubo logout mientras tanto, no resucitar la sesión.
     if (getSession()?.refreshToken !== current.refreshToken) return;
 
+    // `saveSession` lee el vencimiento del claim `exp` del token nuevo: la
+    // respuesta de `/auth/refresh` no trae `expiresIn`.
     saveSession({ accessToken: data.accessToken, refreshToken: data.refreshToken });
   })().finally(() => {
     refreshing = null;
@@ -120,14 +147,11 @@ httpClient.interceptors.response.use(
         await refreshTokens(stale);
       } catch (refreshError) {
         // Sin respuesta (red caída) no se cierra la sesión: el token sigue siendo válido.
-        const refreshAxios = refreshError as AxiosError;
-        if (refreshAxios.response || (refreshError as Error).message === "sin sesión") {
-          notifySessionExpired();
-        }
+        if (isSessionDead(refreshError)) notifySessionExpired();
         // Si el refresh respondió, el rechazo muestra el error original de la
         // petición; si no, el del refresh (que es una caída de red).
         return Promise.reject(
-          normalizeError(refreshAxios.response ? error : refreshError),
+          (refreshError as AxiosError).response ? error : refreshError,
         );
       }
 

@@ -6,6 +6,7 @@ export {
   getSession,
   getSessionId,
   hydrateSession,
+  isAccessTokenExpired,
   isAuthenticated,
   isSessionHydrated,
   saveSession,

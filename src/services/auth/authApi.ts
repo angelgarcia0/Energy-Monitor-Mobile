@@ -37,6 +37,9 @@ export async function login({ email, password }: LoginCredentials): Promise<Acco
   saveSession({
     accessToken: data.accessToken,
     refreshToken: data.refreshToken,
+    // El backend declara cuánto vive el token; sin esto el cliente descubre que
+    // venció cuando el backend le responde 401.
+    expiresAt: Date.now() + data.expiresIn * 1000,
     account: data.account,
     profile: {
       name: data.account.name ?? "",

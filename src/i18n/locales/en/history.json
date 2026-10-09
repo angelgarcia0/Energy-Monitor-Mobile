@@ -13,7 +13,8 @@
   },
   "chart": {
     "title": "CONSUMPTION DISTRIBUTION BY DEVICE",
-    "empty": "Link a device to see its consumption history"
+    "empty": "Link a device to see its consumption history",
+    "noData": "No readings in this period."
   },
   "ranking": {
     "title": "CONSUMPTION RANKING",

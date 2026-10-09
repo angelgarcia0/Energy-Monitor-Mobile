@@ -13,7 +13,8 @@
   },
   "chart": {
     "title": "RÉPARTITION DE LA CONSOMMATION PAR APPAREIL",
-    "empty": "Associez un appareil pour voir son historique de consommation"
+    "empty": "Associez un appareil pour voir son historique de consommation",
+    "noData": "Aucune mesure sur cette période."
   },
   "ranking": {
     "title": "CLASSEMENT DE CONSOMMATION",

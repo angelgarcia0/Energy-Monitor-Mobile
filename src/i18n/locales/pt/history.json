@@ -13,7 +13,8 @@
   },
   "chart": {
     "title": "DISTRIBUIÇÃO DE CONSUMO POR DISPOSITIVO",
-    "empty": "Vincule um dispositivo para ver seu histórico de consumo"
+    "empty": "Vincule um dispositivo para ver seu histórico de consumo",
+    "noData": "Não há medições neste período."
   },
   "ranking": {
     "title": "RANKING DE CONSUMO",

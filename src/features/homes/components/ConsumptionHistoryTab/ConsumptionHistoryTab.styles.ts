@@ -73,8 +73,7 @@ export const styles = createThemeStyles(() => StyleSheet.create({
   chart: {
     padding: 0,
     backgroundColor: "transparent",
-    shadowOpacity: 0,
-    elevation: 0,
+    ...Theme.shadow.none,
   },
   empty: {
     fontFamily: Theme.typography.fontPrimary,

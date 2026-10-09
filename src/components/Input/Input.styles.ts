@@ -49,7 +49,7 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     borderWidth: 2,
     borderColor: Theme.colors.secondary,
     borderRadius: Theme.radius.md,
-    ...Theme.shadow.md,
+    ...Theme.shadowText.md,
   },
   icon: {
     marginLeft: Theme.spacing.sm,

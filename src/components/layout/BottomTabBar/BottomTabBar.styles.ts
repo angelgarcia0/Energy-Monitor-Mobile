@@ -9,8 +9,7 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     backgroundColor: Theme.colors.surface,
     borderTopWidth: 1,
     borderTopColor: Theme.colors.border,
-    ...Theme.shadow.md,
-    shadowOffset: { width: 0, height: -2 },
+    ...Theme.shadow.mdUp,
   },
   tab: {
     flex: 1,

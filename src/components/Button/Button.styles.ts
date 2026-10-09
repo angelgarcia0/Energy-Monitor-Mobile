@@ -68,8 +68,7 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     backgroundColor: "transparent",
     borderWidth: 1,
     borderColor: Theme.colors.border,
-    shadowOpacity: 0,
-    elevation: 0,
+    ...Theme.shadow.none,
   },
   text_ghost: {
     color: Theme.colors.textSecondary,

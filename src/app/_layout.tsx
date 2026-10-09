@@ -7,6 +7,8 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import { I18nextProvider } from "react-i18next";
 
+import { AuthGate } from "@/components/layout/AuthGate/AuthGate";
+
 export default function RootLayout() {
   const [ready, setReady] = useState(false);
 
@@ -30,7 +32,11 @@ export default function RootLayout() {
         <HomeProvider>
           <UserProvider>
             <StatusBar style="light" />
-            {ready ? <Stack screenOptions={{ headerShown: false }} /> : null}
+            {ready ? (
+              <AuthGate>
+                <Stack screenOptions={{ headerShown: false }} />
+              </AuthGate>
+            ) : null}
           </UserProvider>
         </HomeProvider>
       </ThemeProvider>

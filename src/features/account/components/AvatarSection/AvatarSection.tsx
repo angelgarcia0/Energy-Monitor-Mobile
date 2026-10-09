@@ -11,7 +11,8 @@ const AVATAR_SIZE = Theme.spacing.xl * 4;
 
 export interface AvatarSectionProps {
   avatarUri: string | null;
-  onPickAvatar: (uri: string) => void;
+  /** Recibe un data-URL, que es lo que guarda `user.profile_image`. */
+  onPickAvatar: (dataUrl: string) => void;
   onRemoveAvatar: () => void;
   onPermissionDenied: () => void;
 }
@@ -37,15 +38,22 @@ export function AvatarSection({
       return;
     }
 
+    // El backend guarda el avatar en `user.profile_image` (MEDIUMTEXT), así que
+    // viaja como data-URL y no como la URI del archivo del dispositivo: una
+    // `file://` no le sirve a nadie más que a esta app. La Web redimensiona antes
+    // de convertir; aquí se pide la imagen ya comprimida al picker para no subir
+    // el archivo entero.
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images"],
       allowsEditing: true,
       aspect: [1, 1],
-      quality: 0.8,
+      quality: 0.6,
+      base64: true,
     });
 
-    if (!result.canceled && result.assets[0]?.uri) {
-      onPickAvatar(result.assets[0].uri);
+    const asset = result.canceled ? null : result.assets[0];
+    if (asset?.base64) {
+      onPickAvatar(`data:image/jpeg;base64,${asset.base64}`);
     }
   };
 

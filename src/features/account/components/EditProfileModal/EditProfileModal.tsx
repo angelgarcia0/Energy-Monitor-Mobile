@@ -28,7 +28,7 @@ export interface EditProfileModalProps {
   field: EditableField;
   initialValue: string;
   onClose: () => void;
-  onSubmit: (field: EditableField, value: string) => void;
+  onSubmit: (field: EditableField, value: string) => Promise<void> | void;
 }
 
 interface FormValues {
@@ -89,7 +89,7 @@ export function EditProfileModal({
     control,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: { value: initialValue },
@@ -99,8 +99,10 @@ export function EditProfileModal({
     if (visible) reset({ value: initialValue });
   }, [visible, initialValue, reset, field]);
 
-  const submit = (values: FormValues) => {
-    onSubmit(field, values.value.trim());
+  // El modal se cierra solo si el backend aceptó el cambio; si lo rechaza, quien
+  // llama muestra el error y el formulario sigue abierto con lo escrito.
+  const submit = async (values: FormValues) => {
+    await onSubmit(field, values.value.trim());
     onClose();
   };
 
@@ -114,7 +116,7 @@ export function EditProfileModal({
           <Button variant="secondary" onPress={onClose}>
             {t("deleteAccount.cancel")}
           </Button>
-          <Button onPress={handleSubmit(submit)}>
+          <Button disabled={isSubmitting} onPress={handleSubmit(submit)}>
             {t("editField.save")}
           </Button>
         </>

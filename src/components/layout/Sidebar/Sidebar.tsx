@@ -77,7 +77,7 @@ export function Sidebar(_props: SidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const insets = useSafeAreaInsets();
-  const { user } = useUser();
+  const { user, signOut } = useUser();
 
   useEffect(() => {
     Animated.timing(translateX, {
@@ -98,8 +98,10 @@ export function Sidebar(_props: SidebarProps) {
     closeDrawer();
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     closeDrawer();
+    // La sesión local se borra primero; el backend solo recibe el aviso.
+    await signOut();
     router.replace("/");
   };
 

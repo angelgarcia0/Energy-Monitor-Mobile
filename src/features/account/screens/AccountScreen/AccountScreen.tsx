@@ -12,6 +12,8 @@ import { Card } from "@/components/Card/Card";
 import { Header } from "@/components/Header/Header";
 import { Theme } from "@/constants/theme";
 import { useUser } from "@/context/UserContext";
+import { authApi } from "@/services/auth";
+import { errorMessage } from "@/services/http/errorMessages";
 import { AvatarSection } from "../../components/AvatarSection/AvatarSection";
 import { ChangePasswordModal } from "../../components/ChangePasswordModal/ChangePasswordModal";
 import { DeleteAccountModal } from "../../components/DeleteAccountModal/DeleteAccountModal";
@@ -24,6 +26,7 @@ import { styles } from "./AccountScreen.styles";
 
 const MASKED_PASSWORD = "••••••••";
 const SUCCESS_TIMEOUT = 2500;
+const ERROR_TIMEOUT = 5000;
 
 export function AccountScreen() {
   const { t } = useTranslation("account");
@@ -31,17 +34,18 @@ export function AccountScreen() {
   const insets = useSafeAreaInsets();
   const {
     user,
+    refresh,
     updateName,
     updateLastName,
     updateEmail,
     updateAvatar,
-    resetUser,
   } = useUser();
 
   const [editingField, setEditingField] = useState<EditableField | null>(null);
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage_, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (!successMessage) return;
@@ -49,30 +53,65 @@ export function AccountScreen() {
     return () => clearTimeout(timer);
   }, [successMessage]);
 
+  useEffect(() => {
+    if (!errorMessage_) return;
+    const timer = setTimeout(() => setErrorMessage(null), ERROR_TIMEOUT);
+    return () => clearTimeout(timer);
+  }, [errorMessage_]);
+
+  // El perfil se relee al abrirlo, igual que el ProtectedRoute de la Web: el
+  // nombre, la foto y el correo pueden haber cambiado en otra sesión.
+  useEffect(() => {
+    refresh().catch(() => {});
+  }, [refresh]);
+
   const showSuccess = (message: string) => setSuccessMessage(message);
 
-  const handleEditSubmit = (field: EditableField, value: string) => {
+  /** Envuelve una acción del backend: éxito con mensaje o error visible. */
+  const run = async (action: () => Promise<unknown>, success?: string) => {
+    try {
+      await action();
+      if (success) showSuccess(success);
+    } catch (error) {
+      setErrorMessage(errorMessage(t, error));
+    }
+  };
+
+  const handleEditSubmit = async (field: EditableField, value: string) => {
     if (field === "name") {
-      updateName(value);
-      showSuccess(t("success.nameUpdated"));
+      await run(() => updateName(value), t("success.nameUpdated"));
       return;
     }
 
     if (field === "lastName") {
-      updateLastName(value);
-      showSuccess(t("success.lastNameUpdated"));
+      await run(() => updateLastName(value), t("success.lastNameUpdated"));
       return;
     }
 
-    updateEmail(value);
-    showSuccess(t("success.emailUpdated"));
+    await run(() => updateEmail(value), t("success.emailUpdated"));
   };
 
-  const handleDeleteAccount = () => {
-    // TODO: llamar al endpoint de eliminación cuando exista backend.
-    resetUser();
-    setDeleteModalOpen(false);
-    router.replace("/" as Href);
+  const handleDeleteAccount = async (password: string) => {
+    try {
+      await authApi.deleteAccount(password);
+      setDeleteModalOpen(false);
+      router.replace("/" as Href);
+    } catch (error) {
+      setErrorMessage(errorMessage(t, error, "accountDelete"));
+    }
+  };
+
+  const handlePasswordChange = async (values: {
+    currentPassword: string;
+    newPassword: string;
+  }) => {
+    try {
+      await authApi.changePassword(values);
+      setPasswordModalOpen(false);
+      showSuccess(t("success.passwordUpdated"));
+    } catch (error) {
+      setErrorMessage(errorMessage(t, error, "passwordChange"));
+    }
   };
 
   const editingInitialValue =
@@ -120,19 +159,31 @@ export function AccountScreen() {
           />
         ) : null}
 
+        {errorMessage_ ? (
+          <Alert
+            variant="danger"
+            title={errorMessage_}
+            icon={
+              <Ionicons
+                name="alert-circle"
+                size={Theme.typography.size.xl}
+                color={Theme.colors.dangerText}
+              />
+            }
+          />
+        ) : null}
+
         <Card style={styles.card}>
           <AvatarSection
             avatarUri={user.avatarUri}
-            onPickAvatar={(uri) => {
-              updateAvatar(uri);
-              showSuccess(t("success.avatarUpdated"));
-            }}
-            onRemoveAvatar={() => {
-              updateAvatar(null);
-              showSuccess(t("success.avatarRemoved"));
-            }}
+            onPickAvatar={(dataUrl) =>
+              run(() => updateAvatar(dataUrl), t("success.avatarUpdated"))
+            }
+            onRemoveAvatar={() =>
+              run(() => updateAvatar(null), t("success.avatarRemoved"))
+            }
             onPermissionDenied={() =>
-              showSuccess(t("success.permissionDenied"))
+              setErrorMessage(t("permissions.photoDenied"))
             }
           />
 
@@ -206,10 +257,7 @@ export function AccountScreen() {
         <ChangePasswordModal
           visible
           onClose={() => setPasswordModalOpen(false)}
-          onSubmit={() => {
-            setPasswordModalOpen(false);
-            showSuccess(t("success.passwordUpdated"));
-          }}
+          onSubmit={handlePasswordChange}
         />
       ) : null}
 

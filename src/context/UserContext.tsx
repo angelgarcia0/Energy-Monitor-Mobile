@@ -2,10 +2,14 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from "react";
+
+import { authApi, useCurrentPerson } from "@/services/auth";
+import { hydrateSession, isSessionHydrated } from "@/services/auth/session";
 
 export interface User {
   name: string;
@@ -14,22 +18,19 @@ export interface User {
   avatarUri: string | null;
 }
 
-// TODO: persistencia. El usuario y la foto viven solo en memoria y se pierden
-// al recargar; aquí se engancha el backend (o AsyncStorage) más adelante.
-const INITIAL_USER: User = {
-  name: "Usuario001",
-  lastName: "Apellido001",
-  email: "Usuario001@email.com",
-  avatarUri: null,
-};
-
 export interface UserContextValue {
   user: User;
-  updateName: (name: string) => void;
-  updateLastName: (lastName: string) => void;
-  updateEmail: (email: string) => void;
-  updateAvatar: (avatarUri: string | null) => void;
-  resetUser: () => void;
+  /** Hay un access token en sesión. */
+  isAuthenticated: boolean;
+  /** La sesión guardada en disco todavía se está leyendo: no se navega aún. */
+  isRestoring: boolean;
+  /** Vuelve a leer correo, nombre, apellido y foto del backend. */
+  refresh: () => Promise<void>;
+  updateName: (name: string) => Promise<void>;
+  updateLastName: (lastName: string) => Promise<void>;
+  updateEmail: (email: string) => Promise<void>;
+  updateAvatar: (avatarUri: string | null) => Promise<void>;
+  signOut: () => Promise<void>;
 }
 
 const UserContext = createContext<UserContextValue | null>(null);
@@ -38,47 +39,97 @@ export interface UserProviderProps {
   children: ReactNode;
 }
 
+/** Sin sesión: pantalla de perfil vacía y acciones inertes. */
+const EMPTY_USER: User = {
+  name: "",
+  lastName: "",
+  email: "",
+  avatarUri: null,
+};
+
 export function UserProvider({ children }: UserProviderProps) {
-  const [user, setUser] = useState<User>(INITIAL_USER);
+  const person = useCurrentPerson();
+  const [isRestoring, setIsRestoring] = useState(!isSessionHydrated());
 
-  // TODO: cambio de correo. En producción habría que verificar el nuevo correo
-  // con un código OTP (ver VerifyAccountScreen); por ahora se actualiza directo.
-  const updateName = useCallback((name: string) => {
-    setUser((current) => ({ ...current, name }));
+  // La sesión vive en disco; se lee una vez al arrancar para no cerrar la app
+  // entre recargas ni saltarse el login de una sesión válida.
+  useEffect(() => {
+    let active = true;
+    hydrateSession().finally(() => {
+      if (active) setIsRestoring(false);
+    });
+    return () => {
+      active = false;
+    };
   }, []);
 
-  const updateLastName = useCallback((lastName: string) => {
-    setUser((current) => ({ ...current, lastName }));
+  const user = useMemo<User>(
+    () =>
+      person
+        ? {
+            name: person.name,
+            lastName: person.lastName,
+            email: person.email,
+            avatarUri: person.profileImage,
+          }
+        : EMPTY_USER,
+    [person],
+  );
+
+  const refresh = useCallback(async () => {
+    await authApi.refreshProfile();
   }, []);
 
-  const updateEmail = useCallback((email: string) => {
-    setUser((current) => ({ ...current, email }));
+  // El backend reemplaza el nombre como par: mandar solo uno deja ambos sin
+  // cambios, así que siempre se envían los dos.
+  const updateName = useCallback(
+    async (name: string) => {
+      await authApi.updateProfile({ name, lastName: user.lastName });
+    },
+    [user.lastName],
+  );
+
+  const updateLastName = useCallback(
+    async (lastName: string) => {
+      await authApi.updateProfile({ name: user.name, lastName });
+    },
+    [user.name],
+  );
+
+  const updateEmail = useCallback(async (email: string) => {
+    await authApi.updateEmail(email);
   }, []);
 
-  const updateAvatar = useCallback((avatarUri: string | null) => {
-    setUser((current) => ({ ...current, avatarUri }));
+  const updateAvatar = useCallback(async (avatarUri: string | null) => {
+    await authApi.updateProfile({ profileImage: avatarUri ?? "" });
   }, []);
 
-  const resetUser = useCallback(() => {
-    setUser(INITIAL_USER);
+  const signOut = useCallback(async () => {
+    await authApi.logout();
   }, []);
 
   const value = useMemo(
     () => ({
       user,
+      isAuthenticated: Boolean(person),
+      isRestoring,
+      refresh,
       updateName,
       updateLastName,
       updateEmail,
       updateAvatar,
-      resetUser,
+      signOut,
     }),
     [
       user,
+      person,
+      isRestoring,
+      refresh,
       updateName,
       updateLastName,
       updateEmail,
       updateAvatar,
-      resetUser,
+      signOut,
     ],
   );
 

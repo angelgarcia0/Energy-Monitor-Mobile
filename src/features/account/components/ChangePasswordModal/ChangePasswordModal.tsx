@@ -21,7 +21,11 @@ import { styles } from "./ChangePasswordModal.styles";
 export interface ChangePasswordModalProps {
   visible: boolean;
   onClose: () => void;
-  onSubmit: () => void;
+  /** Recibe las contraseñas sin confirmar; el error lo muestra quien llama. */
+  onSubmit: (values: {
+    currentPassword: string;
+    newPassword: string;
+  }) => Promise<void> | void;
 }
 
 const DEFAULT_VALUES: ChangePasswordValues = {
@@ -43,7 +47,7 @@ export function ChangePasswordModal({
     control,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<ChangePasswordValues>({
     resolver: zodResolver(changePasswordSchema),
     defaultValues: DEFAULT_VALUES,
@@ -55,11 +59,15 @@ export function ChangePasswordModal({
     onClose();
   };
 
-  const submit = () => {
-    // TODO: validar `currentPassword` contra el backend cuando exista.
+  // El modal solo se cierra si la llamada resuelve: si el backend rechaza la
+  // contraseña actual, quien llama muestra el error y el formulario sigue abierto.
+  const submit = async (values: ChangePasswordValues) => {
+    await onSubmit({
+      currentPassword: values.currentPassword,
+      newPassword: values.newPassword,
+    });
     reset();
     setShowPasswords(false);
-    onSubmit();
   };
 
   const eyeIcon = (
@@ -80,8 +88,8 @@ export function ChangePasswordModal({
           <Button variant="secondary" onPress={handleClose}>
             {t("deleteAccount.cancel")}
           </Button>
-          <Button onPress={handleSubmit(submit)}>
-            {t("changePassword.save")}
+          <Button disabled={isSubmitting} onPress={handleSubmit(submit)}>
+            {isSubmitting ? t("changePassword.saving") : t("changePassword.save")}
           </Button>
         </>
       }

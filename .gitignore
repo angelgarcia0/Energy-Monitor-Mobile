@@ -35,6 +35,8 @@ yarn-error.*
 *.pem
 
 # local env files
+# `.env` es la URL local de cada uno (cambia por máquina); `.env.example` sí se versiona.
+.env
 .env*.local
 
 # typescript

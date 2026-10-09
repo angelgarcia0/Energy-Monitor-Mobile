@@ -10,6 +10,8 @@ import { Button } from "@/components/Button/Button";
 import { Card } from "@/components/Card/Card";
 import { Input } from "@/components/Input/Input";
 import { Theme } from "@/constants/theme";
+import { authApi } from "@/services/auth";
+import { errorMessage } from "@/services/http/errorMessages";
 import { toRegisterPayload } from "../../service/registerPayload";
 import {
   registerSchema,
@@ -26,6 +28,8 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [serverError, setServerError] = useState("");
 
   const {
     control,
@@ -44,15 +48,21 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
     },
   });
 
-  const onSubmit = (data: RegisterFormValues) => {
-    // El payload ya tiene la forma que espera `POST /api/v1/auth/register`;
-    // solo falta la llamada. TEMPORAL: la navegación a verify-account es un
-    // placeholder que se reemplaza al conectar el backend real.
-    const payload = toRegisterPayload(data);
-    if (__DEV__) console.log("register payload:", payload);
-
-    router.push("/verify-account");
-    onSuccess?.();
+  const onSubmit = async (data: RegisterFormValues) => {
+    setSubmitting(true);
+    setServerError("");
+    try {
+      await authApi.register(toRegisterPayload(data));
+      // El registro no devuelve token: se verifica el correo y luego se inicia sesión.
+      router.push({
+        pathname: "/verify-account",
+        params: { email: data.email.trim() },
+      });
+      onSuccess?.();
+    } catch (error) {
+      setServerError(errorMessage(t, error, "register"));
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -220,14 +230,19 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           <Text style={styles.error}>{errors.terms.message}</Text>
         ) : null}
 
+        {serverError ? (
+          <Text style={styles.error}>{serverError}</Text>
+        ) : null}
+
         <View style={styles.buttonsContainer}>
           <Button
             variant="primary"
             size="large"
             style={styles.submitButton}
+            disabled={submitting}
             onPress={handleSubmit(onSubmit)}
           >
-            {t("register.submit")}
+            {submitting ? t("register.submitting") : t("register.submit")}
           </Button>
 
           <View style={styles.divider}>

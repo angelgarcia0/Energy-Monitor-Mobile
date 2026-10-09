@@ -23,6 +23,18 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     color: Theme.colors.textSecondary,
     textAlign: "center",
   },
+  error: {
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.xs,
+    color: Theme.colors.dangerText,
+    textAlign: "center",
+  },
+  notice: {
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.xs,
+    color: Theme.colors.successText,
+    textAlign: "center",
+  },
   submitButton: {
     width: "100%",
   },

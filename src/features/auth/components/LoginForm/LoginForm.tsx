@@ -10,6 +10,8 @@ import { Button } from "@/components/Button/Button";
 import { Card } from "@/components/Card/Card";
 import { Input } from "@/components/Input/Input";
 import { Theme } from "@/constants/theme";
+import { authApi } from "@/services/auth";
+import { errorMessage } from "@/services/http/errorMessages";
 import {
   loginSchema,
   type LoginFormValues,
@@ -25,6 +27,8 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [serverError, setServerError] = useState("");
 
   const {
     control,
@@ -35,11 +39,17 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
     defaultValues: { email: "", password: "" },
   });
 
-  const onSubmit = (_data: LoginFormValues) => {
-    // TEMPORAL: la navegación al dashboard es un placeholder que se
-    // reemplaza cuando se conecte el backend real (login pendiente).
-    router.replace("/dashboard");
-    onSuccess?.();
+  const onSubmit = async (data: LoginFormValues) => {
+    setSubmitting(true);
+    setServerError("");
+    try {
+      await authApi.login(data);
+      router.replace("/dashboard");
+      onSuccess?.();
+    } catch (error) {
+      setServerError(errorMessage(t, error, "login"));
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -114,14 +124,19 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           </Pressable>
         </View>
 
+        {serverError ? (
+          <Text style={styles.error}>{serverError}</Text>
+        ) : null}
+
         <View style={styles.buttonsContainer}>
           <Button
             variant="primary"
             size="large"
             style={styles.submitButton}
+            disabled={submitting}
             onPress={handleSubmit(onSubmit)}
           >
-            {t("login.submit")}
+            {submitting ? t("login.submitting") : t("login.submit")}
           </Button>
 
           <View style={styles.divider}>

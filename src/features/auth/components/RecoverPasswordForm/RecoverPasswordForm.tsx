@@ -8,6 +8,8 @@ import { Text, View } from "react-native";
 import { Button } from "@/components/Button/Button";
 import { Card } from "@/components/Card/Card";
 import { Input } from "@/components/Input/Input";
+import { authApi } from "@/services/auth";
+import { errorMessage } from "@/services/http/errorMessages";
 import {
   recoverPasswordSchema,
   type RecoverPasswordFormValues,
@@ -22,6 +24,7 @@ export function RecoverPasswordForm({ onSuccess }: RecoverPasswordFormProps) {
   const { t } = useTranslation("recoverPassword");
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
+  const [serverError, setServerError] = useState("");
 
   const {
     control,
@@ -33,15 +36,22 @@ export function RecoverPasswordForm({ onSuccess }: RecoverPasswordFormProps) {
     defaultValues: { email: "" },
   });
 
-  const onSubmit = (_data: RecoverPasswordFormValues) => {
-    // TEMPORAL: simulación de envío del código que se reemplaza cuando se
-    // conecte el backend real (envío de correo pendiente).
+  const onSubmit = async (data: RecoverPasswordFormValues) => {
     setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
-      router.push("/verify-recover-password");
+    setServerError("");
+    try {
+      await authApi.forgotPassword(data.email.trim());
+      // El backend responde 202 siempre, exista o no la cuenta: por eso no se
+      // distingue el caso, solo se pide el código y se sigue.
+      router.push({
+        pathname: "/verify-recover-password",
+        params: { email: data.email.trim() },
+      });
       onSuccess?.();
-    }, 600);
+    } catch (error) {
+      setServerError(errorMessage(t, error, "passwordForgot"));
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -68,6 +78,10 @@ export function RecoverPasswordForm({ onSuccess }: RecoverPasswordFormProps) {
         />
         {errors.email ? (
           <Text style={styles.error}>{errors.email.message}</Text>
+        ) : null}
+
+        {serverError ? (
+          <Text style={styles.error}>{serverError}</Text>
         ) : null}
 
         <Button

@@ -10,6 +10,12 @@ import { Button } from "@/components/Button/Button";
 import { Card } from "@/components/Card/Card";
 import { Input } from "@/components/Input/Input";
 import { Theme } from "@/constants/theme";
+import { authApi } from "@/services/auth";
+import { errorMessage } from "@/services/http/errorMessages";
+import {
+  clearRecoverFlow,
+  getRecoverFlow,
+} from "../../service/recoverFlow";
 import {
   newPasswordSchema,
   type NewPasswordFormValues,
@@ -26,6 +32,7 @@ export function NewPasswordForm({ onSuccess }: NewPasswordFormProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [serverError, setServerError] = useState("");
 
   const {
     control,
@@ -37,15 +44,28 @@ export function NewPasswordForm({ onSuccess }: NewPasswordFormProps) {
     defaultValues: { password: "", repeatPassword: "" },
   });
 
-  const onSubmit = (_data: NewPasswordFormValues) => {
-    // TEMPORAL: simulación del guardado que se reemplaza cuando se conecte el
-    // backend real (actualización de contraseña pendiente).
+  const onSubmit = async (data: NewPasswordFormValues) => {
+    const flow = getRecoverFlow();
+    if (!flow?.code) {
+      setServerError(t("newPassword.sessionExpired"));
+      return;
+    }
+
     setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
+    setServerError("");
+    try {
+      await authApi.resetPassword({
+        email: flow.email,
+        resetToken: flow.code,
+        newPassword: data.password,
+      });
+      clearRecoverFlow();
       router.navigate({ pathname: "/", params: { success: "passwordUpdated" } });
       onSuccess?.();
-    }, 600);
+    } catch (error) {
+      setServerError(errorMessage(t, error, "passwordReset"));
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -103,6 +123,10 @@ export function NewPasswordForm({ onSuccess }: NewPasswordFormProps) {
         />
         {errors.repeatPassword ? (
           <Text style={styles.error}>{errors.repeatPassword.message}</Text>
+        ) : null}
+
+        {serverError ? (
+          <Text style={styles.error}>{serverError}</Text>
         ) : null}
 
         <Button

@@ -38,6 +38,11 @@ export type ThemeColors = {
   // AuthLayout.module.css, Button.module.css, HomeCard.module.css).
   onBrand: string;
   onBrandMuted: string;
+
+  // Contenido dibujado sobre un relleno `danger`: el contador de alertas del
+  // sidebar. No puede ser `onBrand` fijo porque en los temas oscuros `danger` es
+  // un rosa claro (`#FCA5A5`) y el blanco se perdería.
+  onDanger: string;
 };
 
 // Paleta clara de EnergyMonitor. Es también la paleta por defecto de la app:
@@ -79,6 +84,7 @@ export const Colors: ThemeColors = {
 
   onBrand: "#FFFFFF",
   onBrandMuted: "rgba(255, 255, 255, 0.8)",
+  onDanger: "#FFFFFF",
 };
 
 export default Colors;

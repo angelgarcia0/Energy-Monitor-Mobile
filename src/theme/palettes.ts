@@ -69,6 +69,7 @@ const ecoLight: ThemePalette = {
     infoText: "#0C5460",
     onBrand: "#FFFFFF",
     onBrandMuted: "rgba(255, 255, 255, 0.8)",
+    onDanger: "#FFFFFF",
   },
 };
 
@@ -110,6 +111,8 @@ const energyDark: ThemePalette = {
     infoText: "#67E8F9",
     onBrand: "#FFFFFF",
     onBrandMuted: "rgba(255, 255, 255, 0.8)",
+    // `danger` es rosa claro en los temas oscuros: el texto sobre él va oscuro.
+    onDanger: "#1F2937",
   },
 };
 
@@ -151,6 +154,7 @@ const ecoDark: ThemePalette = {
     infoText: "#67E8F9",
     onBrand: "#FFFFFF",
     onBrandMuted: "rgba(255, 255, 255, 0.8)",
+    onDanger: "#1F2937",
   },
 };
 

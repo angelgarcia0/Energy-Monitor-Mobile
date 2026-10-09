@@ -1,5 +1,5 @@
-import { AlertsProvider } from "@/context/AlertsContext";
 import { HomeProvider } from "@/context/HomeContext";
+import { NotificationCenterProvider } from "@/context/NotificationCenterContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { UserProvider } from "@/context/UserContext";
 import i18n, { resolveInitialLanguage } from "@/i18n";
@@ -32,14 +32,14 @@ export default function RootLayout() {
       <ThemeProvider>
         <UserProvider>
           <HomeProvider>
-            <AlertsProvider>
+            <NotificationCenterProvider>
               <StatusBar style="light" />
               {ready ? (
                 <AuthGate>
                   <Stack screenOptions={{ headerShown: false }} />
                 </AuthGate>
               ) : null}
-            </AlertsProvider>
+            </NotificationCenterProvider>
           </HomeProvider>
         </UserProvider>
       </ThemeProvider>

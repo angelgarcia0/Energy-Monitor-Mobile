@@ -15,7 +15,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Button } from "@/components/Button/Button";
 import { Theme } from "@/constants/theme";
-import { useAlerts } from "@/context/AlertsContext";
+import { useNotificationCenter } from "@/context/NotificationCenterContext";
 import { useUser } from "@/context/UserContext";
 import { styles, TRIGGER_TOP_OFFSET } from "./Sidebar.styles";
 import { NavHomes } from "./NavHomes";
@@ -86,7 +86,8 @@ export function Sidebar(_props: SidebarProps) {
   const pathname = usePathname();
   const insets = useSafeAreaInsets();
   const { user, signOut } = useUser();
-  const { pendingCount } = useAlerts();
+  // Alertas sin resolver más recomendaciones sin leer, como en la Web.
+  const { pendingCount } = useNotificationCenter();
 
   useEffect(() => {
     Animated.timing(translateX, {

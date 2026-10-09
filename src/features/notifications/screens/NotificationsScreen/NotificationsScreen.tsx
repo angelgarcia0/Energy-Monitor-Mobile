@@ -10,14 +10,11 @@ import { EmptyState } from "@/components/EmptyState/EmptyState";
 import { Header } from "@/components/Header/Header";
 import { Loader } from "@/components/Loader/Loader";
 import { Theme } from "@/constants/theme";
-import { useAlerts } from "@/context/AlertsContext";
+import { useNotificationCenter } from "@/context/NotificationCenterContext";
 import { errorMessage } from "@/services/http";
 import { AlertRow, RecommendationRow } from "../../components/NotificationRow/NotificationRow";
 import type { UiAlert } from "../../data/alertTypes";
-import {
-  INITIAL_RECOMMENDATIONS,
-  type RecommendationItem,
-} from "../../data/notificationsMock";
+import type { UiRecommendation } from "../../data/recommendationTypes";
 import { styles } from "./NotificationsScreen.styles";
 
 type NotificationsTab = "all" | "alerts" | "recommendations";
@@ -31,20 +28,30 @@ const TABS: { id: NotificationsTab }[] = [
 const byNewest = (a: { date: string }, b: { date: string }) =>
   new Date(b.date).getTime() - new Date(a.date).getTime();
 
-/** Fila de la lista: alertas reales y recomendaciones de muestra, unidas por fecha. */
+/** Fila de la lista: alertas y recomendaciones, ambas reales, unidas por fecha. */
 type NotificationRowItem =
   | { kind: "alert"; alert: UiAlert; date: string }
-  | { kind: "recommendation"; recommendation: RecommendationItem; date: string };
+  | { kind: "recommendation"; recommendation: UiRecommendation; date: string };
 
 export function NotificationsScreen() {
   const { t, i18n } = useTranslation("notifications");
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { alerts, loading, error, reload, markRead, remove, removeAllResolved } =
-    useAlerts();
+  const {
+    alerts,
+    recommendations,
+    loading,
+    error,
+    reload,
+    markRead,
+    remove,
+    removeAllResolved,
+    markRecommendationRead,
+    markAllRecommendationsRead,
+    removeRecommendation,
+    removeAllReadRecommendations,
+  } = useNotificationCenter();
 
-  // Las recomendaciones siguen siendo de muestra: es el siguiente módulo.
-  const [recommendations, setRecommendations] = useState(INITIAL_RECOMMENDATIONS);
   const [activeTab, setActiveTab] = useState<NotificationsTab>("all");
   const [actionError, setActionError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -62,43 +69,12 @@ export function NotificationsScreen() {
     }
   };
 
-  const handleMarkRecommendationRead = (id: string) => {
-    setRecommendations((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, read: true } : r)),
-    );
-  };
-
-  const handleMarkAllRead = () => {
-    setRecommendations((prev) => prev.map((r) => ({ ...r, read: true })));
-  };
-
-  const handleAlertRead = async (id: string) => {
+  /** Envuelve una acción del contexto: estado de error y de "ocupado" compartidos. */
+  const run = async (action: () => Promise<unknown>) => {
     setBusy(true);
     setActionError(null);
     try {
-      const err = await markRead(id);
-      if (err) setActionError(errorMessage(t, err));
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  const handleAlertRemove = async (id: string) => {
-    setBusy(true);
-    setActionError(null);
-    try {
-      const err = await remove(id);
-      if (err) setActionError(errorMessage(t, err));
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  const handleDeleteAllResolved = async () => {
-    setBusy(true);
-    setActionError(null);
-    try {
-      const err = await removeAllResolved();
+      const err = await action();
       if (err) setActionError(errorMessage(t, err));
     } finally {
       setBusy(false);
@@ -108,6 +84,7 @@ export function NotificationsScreen() {
   const activeAlertsCount = alerts.filter((a) => !a.resolved).length;
   const resolvedAlertsCount = alerts.length - activeAlertsCount;
   const unreadRecommendationsCount = recommendations.filter((r) => !r.read).length;
+  const readRecommendationsCount = recommendations.length - unreadRecommendationsCount;
 
   const listToRender = useMemo<NotificationRowItem[]>(() => {
     const alertRows: NotificationRowItem[] = alerts.map((alert) => ({
@@ -133,7 +110,7 @@ export function NotificationsScreen() {
     return [...list].sort(byNewest);
   }, [activeTab, alerts, recommendations]);
 
-  const showLoading = loading && alerts.length === 0;
+  const showLoading = loading && alerts.length === 0 && recommendations.length === 0;
 
   return (
     <View
@@ -202,9 +179,12 @@ export function NotificationsScreen() {
               })}
             </View>
 
+            {/* Cada pestaña ofrece lo que su lista permite: borrar lo ya resuelto en
+                alertas, y marcar leídas o borrar las leídas en recomendaciones.
+                "Todas" no ofrece ninguno, porque no son la misma operación. */}
             {activeTab === "alerts" && resolvedAlertsCount > 0 ? (
               <Pressable
-                onPress={handleDeleteAllResolved}
+                onPress={() => void run(removeAllResolved)}
                 disabled={busy}
                 accessibilityRole="button"
                 accessibilityLabel={t("actions.deleteAllResolved", {
@@ -221,9 +201,10 @@ export function NotificationsScreen() {
                   {t("actions.deleteAllResolved", { count: resolvedAlertsCount })}
                 </Text>
               </Pressable>
-            ) : activeTab !== "alerts" && unreadRecommendationsCount > 0 ? (
+            ) : activeTab === "recommendations" && unreadRecommendationsCount > 0 ? (
               <Pressable
-                onPress={handleMarkAllRead}
+                onPress={() => void run(markAllRecommendationsRead)}
+                disabled={busy}
                 accessibilityRole="button"
                 accessibilityLabel={t("actions.markAllRead")}
                 style={styles.markAllButton}
@@ -235,6 +216,25 @@ export function NotificationsScreen() {
                 />
                 <Text style={styles.markAllLabel}>
                   {t("actions.markAllRead")}
+                </Text>
+              </Pressable>
+            ) : activeTab === "recommendations" && readRecommendationsCount > 0 ? (
+              <Pressable
+                onPress={() => void run(removeAllReadRecommendations)}
+                disabled={busy}
+                accessibilityRole="button"
+                accessibilityLabel={t("actions.deleteAllRead", {
+                  count: readRecommendationsCount,
+                })}
+                style={styles.markAllButton}
+              >
+                <Ionicons
+                  name="trash-outline"
+                  size={Theme.typography.size.sm}
+                  color={Theme.colors.danger}
+                />
+                <Text style={styles.markAllLabel}>
+                  {t("actions.deleteAllRead", { count: readRecommendationsCount })}
                 </Text>
               </Pressable>
             ) : null}
@@ -286,8 +286,8 @@ export function NotificationsScreen() {
                     key={item.alert.id}
                     alert={item.alert}
                     formatDate={formatDate}
-                    onMarkRead={handleAlertRead}
-                    onRemove={handleAlertRemove}
+                    onMarkRead={(id) => void run(() => markRead(id))}
+                    onRemove={(id) => void run(() => remove(id))}
                     busy={busy}
                   />
                 ) : (
@@ -295,7 +295,9 @@ export function NotificationsScreen() {
                     key={item.recommendation.id}
                     recommendation={item.recommendation}
                     formatDate={formatDate}
-                    onMarkRead={handleMarkRecommendationRead}
+                    onMarkRead={(id) => void run(() => markRecommendationRead(id))}
+                    onRemove={(id) => void run(() => removeRecommendation(id))}
+                    busy={busy}
                   />
                 ),
               )}

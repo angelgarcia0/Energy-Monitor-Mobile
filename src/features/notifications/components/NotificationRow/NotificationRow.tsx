@@ -5,7 +5,7 @@ import { Pressable, Text, View } from "react-native";
 
 import { Theme } from "@/constants/theme";
 import type { UiAlert } from "../../data/alertTypes";
-import type { RecommendationItem } from "../../data/notificationsMock";
+import type { UiRecommendation } from "../../data/recommendationTypes";
 import { styles } from "./NotificationRow.styles";
 
 type IoniconName = React.ComponentProps<typeof Ionicons>["name"];
@@ -131,19 +131,37 @@ export function AlertRow({
 }
 
 export interface RecommendationRowProps {
-  recommendation: RecommendationItem;
+  recommendation: UiRecommendation;
   formatDate: (isoDate: string) => string;
   onMarkRead: (id: string) => void;
+  /** Solo las ya leídas, que es lo que acepta el endpoint de borrado. */
+  onRemove?: (id: string) => void;
+  busy?: boolean;
 }
 
 export function RecommendationRow({
   recommendation,
   formatDate,
   onMarkRead,
+  onRemove,
+  busy = false,
 }: RecommendationRowProps) {
   const { t } = useTranslation("notifications");
-  const title = t(recommendation.titleKey, { home: recommendation.home });
-  const message = t(recommendation.messageKey, { home: recommendation.home });
+  // El equipo puede faltar porque la recomendación es del hogar entero o
+  // porque ese equipo ya no existe; en los dos casos el mensaje lo nombra
+  // igual. Si el backend manda una key que esta versión no conoce, se cae al
+  // texto genérico en vez de mostrar la clave.
+  const device = recommendation.device ?? t("recommendation.someDevice");
+  const values = { home: recommendation.home, device };
+  const title = t(`${recommendation.key}.title`, {
+    defaultValue: t("recommendation.generic.title"),
+  });
+  const message = t(`${recommendation.key}.message`, {
+    ...values,
+    defaultValue: t("recommendation.generic.message", {
+      home: recommendation.home,
+    }),
+  });
 
   return (
     <View style={[styles.row, recommendation.read && styles.rowMuted]}>
@@ -172,25 +190,53 @@ export function RecommendationRow({
 
         <View style={styles.meta}>
           <Text style={styles.metaText}>{recommendation.home}</Text>
+          {/* El nombre del equipo solo aparece cuando la recomendación es
+              sobre un equipo concreto y ese equipo sigue existiendo. */}
+          {recommendation.device ? (
+            <>
+              <View style={styles.metaDot} />
+              <Text style={styles.metaText}>{recommendation.device}</Text>
+            </>
+          ) : null}
           <View style={styles.metaDot} />
           <Text style={styles.metaText}>{formatDate(recommendation.date)}</Text>
         </View>
 
-        {!recommendation.read ? (
-          <Pressable
-            onPress={() => onMarkRead(recommendation.id)}
-            accessibilityRole="button"
-            accessibilityLabel={t("markReadLabel", { title })}
-            style={styles.markReadButton}
-          >
-            <Ionicons
-              name="checkmark"
-              size={Theme.typography.size.sm}
-              color={Theme.colors.primary}
-            />
-            <Text style={styles.markReadLabel}>{t("actions.markRead")}</Text>
-          </Pressable>
-        ) : null}
+        <View style={styles.actions}>
+          {!recommendation.read ? (
+            <Pressable
+              onPress={() => onMarkRead(recommendation.id)}
+              disabled={busy}
+              accessibilityRole="button"
+              accessibilityLabel={t("markReadLabel", { title })}
+              style={styles.markReadButton}
+            >
+              <Ionicons
+                name="checkmark"
+                size={Theme.typography.size.sm}
+                color={Theme.colors.primary}
+              />
+              <Text style={styles.markReadLabel}>{t("actions.markRead")}</Text>
+            </Pressable>
+          ) : null}
+
+          {recommendation.read && onRemove ? (
+            <Pressable
+              onPress={() => onRemove(recommendation.id)}
+              disabled={busy}
+              accessibilityRole="button"
+              accessibilityLabel={t("deleteRecommendationLabel", { title })}
+              style={styles.markReadButton}
+            >
+              <Ionicons
+                name="trash-outline"
+                size={Theme.typography.size.sm}
+                color={Theme.colors.danger}
+              />
+              <Text style={styles.markReadLabel}>{t("actions.delete")}</Text>
+            </Pressable>
+          ) : null}
+        </View>
       </View>
     </View>
   );

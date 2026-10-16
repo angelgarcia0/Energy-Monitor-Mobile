@@ -10,6 +10,11 @@ import {
 
 import { authApi, useCurrentPerson } from "@/services/auth";
 import { hydrateSession, isSessionHydrated } from "@/services/auth/session";
+import {
+  registerThisDevice,
+  unregisterThisDevice,
+  watchPushTokenRotation,
+} from "@/services/notifications/pushRegistration";
 
 export interface User {
   name: string;
@@ -76,6 +81,38 @@ export function UserProvider({ children }: UserProviderProps) {
     [person],
   );
 
+  // Mientras haya sesión, este teléfono es un destino de push. El registro se
+  // repite en cada arranque a propósito: es lo que reinscribe un token rotado
+  // y lo que devuelve la fila a la cuenta que acaba de entrar.
+  //
+  // Nunca se pide permiso aquí: solo se reinscribe lo que ya se autorizó, porque
+  // el permiso se concede en Ajustes, donde el usuario entiende qué está
+  // activando.
+  useEffect(() => {
+    if (!person) return;
+
+    let active = true;
+    let stopWatching: (() => void) | null = null;
+
+    registerThisDevice()
+      .then((registered) => {
+        // La suscripción al token rotado solo mientras haya sesión: al cerrarla
+        // el token se da de baja y no debe volver a escribirse.
+        if (active && registered) {
+          stopWatching = watchPushTokenRotation();
+        }
+      })
+      .catch(() => {
+        // Sin token, sin credencial del relay, o backend caído. El correo sigue
+        // funcionando y el siguiente arranque lo reintenta.
+      });
+
+    return () => {
+      active = false;
+      stopWatching?.();
+    };
+  }, [person]);
+
   const refresh = useCallback(async () => {
     await authApi.refreshProfile();
   }, []);
@@ -105,6 +142,10 @@ export function UserProvider({ children }: UserProviderProps) {
   }, []);
 
   const signOut = useCallback(async () => {
+    // Antes de cerrar: mientras la sesión siga viva, este teléfono es un destino
+    // válido y el servidor seguiría mandándole alertas de una cuenta que ya no
+    // está. El backend solo permite quitar el token si es de quien llama.
+    await unregisterThisDevice();
     await authApi.logout();
   }, []);
 

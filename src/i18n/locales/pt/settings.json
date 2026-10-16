@@ -34,10 +34,12 @@
     },
     "push": {
       "title": "Notificações push",
-      "description": "Alertas para os navegadores inscritos. Este telefone não as recebe.",
+      "description": "Os alertas chegam neste telefone e nos navegadores inscritos.",
       "unavailable": "O servidor não tem notificações push configuradas, então não há para quem enviar.",
-      "browsers_one": "Alertas para o navegador inscrito. Este telefone não as recebe.",
-      "browsers_other": "Alertas para os {{count}} navegadores inscritos. Este telefone não as recebe."
+      "browsers_one": "Alertas para este telefone e o navegador inscrito.",
+      "browsers_other": "Alertas para este telefone e os {{count}} navegadores inscritos.",
+      "permissionDenied": "Sem a permissão de notificações, este telefone não pode recebê-las. Você pode conceder em ajustes do sistema.",
+      "registrationFailed": "Não foi possível registrar este telefone para receber alertas. Tente novamente mais tarde."
     },
     "combined": {
       "title": "Modo combinado",

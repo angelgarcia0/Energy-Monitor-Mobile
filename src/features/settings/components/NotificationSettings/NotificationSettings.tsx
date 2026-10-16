@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Pressable, Text, View } from "react-native";
 import { Theme } from "@/constants/theme";
 import { errorMessage } from "@/services/http";
+import { enablePushOnThisDevice } from "@/services/notifications/pushRegistration";
 import { SettingsSectionCard } from "../../components/SettingsSectionCard/SettingsSectionCard";
 import { useNotificationPreferences } from "../../hooks/useNotificationPreferences";
 import { styles } from "./NotificationSettings.styles";
@@ -12,9 +13,13 @@ import { styles } from "./NotificationSettings.styles";
 /**
  * Canales por los que llegan las alertas de los hogares.
  *
- * El correo lo envía el servidor. El push no: son las suscripciones VAPID de los
- * navegadores, así que desde aquí se enciende o apaga la preferencia, pero lo que
- * llega es a los navegadores ya suscritos, nunca a este teléfono.
+ * El correo lo envía el servidor. El push también, pero a dos sitios distintos:
+ * los navegadores que se suscribieron y los teléfonos que registraron un token.
+ * Este interruptor es la preferencia del servidor para ambos.
+ *
+ * Encenderlo aquí además pide el permiso del sistema y registra este teléfono.
+ * Si el usuario lo denies, el interruptor vuelve a su sitio: dejarlo encendido
+ * sería una mentira, porque de este teléfono no saldría nada.
  */
 export function NotificationSettings() {
   const { t } = useTranslation("settings");
@@ -23,6 +28,7 @@ export function NotificationSettings() {
 
   // El mensaje de error vive aquí, no en el hook, porque el hook no traduce.
   const [message, setMessage] = useState<string | null>(null);
+  const [askingPermission, setAskingPermission] = useState(false);
 
   const email = !!preferences?.emailEnabled;
   const push = !!preferences?.pushEnabled;
@@ -39,24 +45,56 @@ export function NotificationSettings() {
 
   const toggleEmail = () => {
     if (!preferences || pending) return;
-    // Tocar el correo no cambia el push de los navegadores.
+    // Tocar el correo no cambia el push.
     void run({ emailEnabled: !email, pushEnabled: push });
   };
 
+  /**
+   * Encender el push pasa por el permiso del sistema, porque el interruptor solo
+   * guarda la preferencia del servidor: sin el token registrado, encenderlo no
+   * haría que este teléfono mostrara nada.
+   */
   const togglePush = () => {
-    if (!preferences || pending) return;
-    void run({ emailEnabled: email, pushEnabled: !push });
+    if (!preferences || pending || askingPermission) return;
+    setMessage(null);
+
+    if (push) {
+      // Apagar no pide permiso ni borra el token: apagar es una preferencia, y el
+      // teléfono se da de baja al cerrar sesión. Reinscribirse al volver a
+      // encender es instantáneo y no vuelve a molestar con un diálogo.
+      void run({ emailEnabled: email, pushEnabled: false });
+      return;
+    }
+
+    setAskingPermission(true);
+    void enablePushOnThisDevice()
+      .then((registered) => {
+        if (registered) {
+          void run({ emailEnabled: email, pushEnabled: true });
+        } else {
+          setMessage(t("notifications.push.permissionDenied"));
+        }
+      })
+      .catch(() => {
+        setMessage(t("notifications.push.registrationFailed"));
+      })
+      .finally(() => {
+        setAskingPermission(false);
+      });
   };
 
   const toggleCombined = () => {
     if (!preferences || pending) return;
     const value = !combined;
+    // El modo combinado no pide permiso: solo enciende o apaga el correo. Quien
+    // quiera notificaciones en el teléfono las pide en la fila de push, donde se
+    // entiende qué se está activando.
     void run({ emailEnabled: value, pushEnabled: value });
   };
 
-  // El push depende de que el servidor tenga clave configurada. Sin ella,
-  // `/notifications/push/public-key` responde 404 y encender el interruptor no
-  // suscribiría a nadie.
+  // Sin transporte configurado en el servidor no hay a quién enviar, ni a un
+  // navegador ni a un teléfono: `pushAvailable` es `false` cuando no hay ni clave
+  // VAPID ni credencial del relay.
   const pushHint = !pushAvailable
     ? t("notifications.push.unavailable")
     : preferences && preferences.pushBrowsers > 0
@@ -64,7 +102,7 @@ export function NotificationSettings() {
       : t("notifications.push.description");
 
   const activeCount = [email, push].filter(Boolean).length;
-  const busy = !!pending;
+  const busy = !!pending || askingPermission;
 
   return (
     <SettingsSectionCard

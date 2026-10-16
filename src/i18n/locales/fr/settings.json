@@ -34,10 +34,12 @@
     },
     "push": {
       "title": "Notifications push",
-      "description": "Alertes vers les navigateurs abonnés. Ce téléphone ne les reçoit pas.",
+      "description": "Les alertes arrivent sur ce téléphone et sur les navigateurs abonnés.",
       "unavailable": "Le serveur n'a aucune notification push configurée, il n'y a donc personne à qui les envoyer.",
-      "browsers_one": "Alertes vers le navigateur abonné. Ce téléphone ne les reçoit pas.",
-      "browsers_other": "Alertes vers les {{count}} navigateurs abonnés. Ce téléphone ne les reçoit pas."
+      "browsers_one": "Alertes vers ce téléphone et le navigateur abonné.",
+      "browsers_other": "Alertes vers ce téléphone et les {{count}} navigateurs abonnés.",
+      "permissionDenied": "Sans l'autorisation de notification, ce téléphone ne peut pas les recevoir. Vous pouvez l'accorder dans les réglages du système.",
+      "registrationFailed": "Ce téléphone n'a pas pu être enregistré pour recevoir des alertes. Réessayez plus tard."
     },
     "combined": {
       "title": "Mode combiné",

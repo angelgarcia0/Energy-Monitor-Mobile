@@ -34,10 +34,12 @@
     },
     "push": {
       "title": "Push notifications",
-      "description": "Alerts to the browsers that are subscribed. This phone does not receive them.",
+      "description": "Alerts reach this phone and the subscribed browsers.",
       "unavailable": "The server has no push configured, so there is nobody to send them to.",
-      "browsers_one": "Alerts to the subscribed browser. This phone does not receive them.",
-      "browsers_other": "Alerts to the {{count}} subscribed browsers. This phone does not receive them."
+      "browsers_one": "Alerts to this phone and the subscribed browser.",
+      "browsers_other": "Alerts to this phone and the {{count}} subscribed browsers.",
+      "permissionDenied": "Without the notification permission, this phone cannot receive them. You can grant it in the system settings.",
+      "registrationFailed": "This phone could not be registered to receive alerts. Try again later."
     },
     "combined": {
       "title": "Combined mode",

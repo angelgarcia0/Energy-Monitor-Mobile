@@ -113,6 +113,27 @@ export const styles = createThemeStyles(() => StyleSheet.create({
   errorSlot: {
     minHeight: Theme.typography.size.size13 + 2,
   },
+  /** Cabecera del asistente: "Paso 2 de 5" y las pastillas de progreso. */
+  stepHeader: {
+    gap: Theme.spacing.xs,
+    paddingHorizontal: Theme.spacing.md,
+    paddingBottom: Theme.spacing.sm,
+  },
+  /** Código del módulo que se detectó por Bluetooth, ya no editable. */
+  moduleChip: {
+    alignSelf: "flex-start",
+    paddingVertical: Theme.spacing.xs,
+    paddingHorizontal: Theme.spacing.sm,
+    borderRadius: Theme.radius.md,
+    backgroundColor: Theme.colors.primarySoft,
+  },
+  moduleChipText: {
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.sm,
+    fontWeight: Theme.typography.weight.bold,
+    color: Theme.colors.primary,
+    letterSpacing: 1,
+  },
   pickerWrapper: {
     borderWidth: 1,
     borderColor: Theme.colors.border,

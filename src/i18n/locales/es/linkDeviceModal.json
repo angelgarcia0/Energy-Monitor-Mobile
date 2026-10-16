@@ -2,11 +2,18 @@
   "title": "Vincular dispositivo",
   "close": "Cerrar",
   "discover": {
-    "title": "Buscando módulos cercanos",
-    "hint": "Asegúrate de que el módulo esté conectado al tomacorriente y en modo de emparejamiento",
-    "scanning": "Escaneando...",
-    "foundTitle": "Módulos encontrados",
-    "rescan": "Buscar de nuevo"
+    "title": "Encuentra tu módulo",
+    "hint": "Enchufa el módulo y mantén pulsado su botón BOOT 3 segundos, hasta que la luz parpadee. Después pulsa «Buscar módulo» y elige el de la lista.",
+    "scanning": "Conectando por Bluetooth...",
+    "foundTitle": "Módulo conectado",
+    "rescan": "Elegir otro módulo",
+    "search": "Buscar módulo",
+    "unsupported": "Este teléfono no tiene Bluetooth compatible con el módulo. Prueba con otro dispositivo.",
+    "portalFallback": "Alternativa: conéctate a la red Wi-Fi «EnergyMonitor-Setup» (la clave del portal configurada en el firmware), abre http://192.168.4.1 y configura allí la red.",
+    "empty": "Acerca el módulo y pulsa buscar.",
+    "noneFound": "No se ha encontrado ningún módulo. El módulo tiene que estar en modo de configuración.",
+    "permissionDenied": "Falta el permiso de Bluetooth. Actávalo en los ajustes del sistema e inténtalo de nuevo.",
+    "bluetoothOff": "El Bluetooth está apagado. Enciéndelo para continuar."
   },
   "appliance": {
     "title": "¿Qué electrodoméstico vas a monitorear?",
@@ -14,16 +21,24 @@
   },
   "network": {
     "title": "Conecta a tu red WiFi",
-    "subtitle": "Selecciona la red a la que se conectará el módulo",
+    "subtitle": "Estas son las redes que ve el módulo. Elige la de tu casa.",
     "passwordLabel": "Contraseña",
     "passwordPlaceholder": "Ingresa la contraseña de la red",
-    "open": "Abierta"
+    "open": "Abierta",
+    "scanning": "El módulo está buscando redes...",
+    "rescan": "Buscar redes de nuevo",
+    "manual": "Escribir el nombre de la red",
+    "pickFromList": "Elegir de la lista",
+    "ssidLabel": "Nombre de la red (SSID)",
+    "ssidPlaceholder": "Nombre exacto de tu red Wi-Fi",
+    "empty": "El módulo no ve ninguna red. Escribe el nombre a mano."
   },
   "connecting": {
     "title": "Conectando dispositivo",
-    "step1": "Buscando la red \"{{ssid}}\"",
-    "step2": "Verificando contraseña",
-    "step3": "Sincronizando dispositivo"
+    "step1": "Conectando el módulo a “{{ssid}}”",
+    "step2": "Verificando la contraseña",
+    "step3": "Conectando con el servidor",
+    "step0": "Registrando el dispositivo en tu hogar"
   },
   "done": {
     "title": "¡Dispositivo vinculado!",
@@ -38,24 +53,22 @@
     "continue": "Continuar",
     "connect": "Conectar",
     "finish": "Finalizar",
-    "linking": "Vinculando...",
-    "link": "Vincular"
+    "retry": "Reintentar"
   },
   "errors": {
     "passwordRequired": "Ingresa la contraseña de la red",
     "codeRequired": "Ingresa el código del módulo.",
     "codeMax": "Máximo 6 caracteres.",
     "codeInvalid": "Solo letras y números, sin espacios.",
-    "applianceRequired": "Elige un electrodoméstico."
+    "applianceRequired": "Elige un electrodoméstico.",
+    "bluetooth": "Se perdió la conexión Bluetooth con el módulo. Acércate y vuelve a intentarlo.",
+    "wifiAuth": "La contraseña de la red no es correcta.",
+    "wifiNotFound": "El módulo no encuentra esa red. Revisa el nombre o acércalo al router.",
+    "wifiFailed": "El módulo no pudo conectarse a la red Wi-Fi.",
+    "broker": "El módulo tiene Wi-Fi pero no logra conectarse al servidor.",
+    "timeout": "El módulo no respondió a tiempo. Revisa que siga encendido y cerca.",
+    "noBroker": "El servidor no tiene configurada la dirección del broker MQTT (DEVICE_MQTT_PUBLIC_HOST)."
   },
   "step": "Paso {{current}} de {{total}}",
-  "moduleLabel": "Módulo {{code}}",
-  "code": {
-    "label": "Código del módulo",
-    "placeholder": "EM-204",
-    "hint": "El código viene impreso en el módulo. También lo puedes copiar del portal de configuración."
-  },
-  "bluetooth": {
-    "unavailable": "Sin Bluetooth no se puede escribir la red al módulo: queda registrado aquí, pero necesita que le pases sus credenciales desde el portal de configuración."
-  }
+  "moduleLabel": "Módulo detectado"
 }

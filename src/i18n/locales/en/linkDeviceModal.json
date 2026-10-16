@@ -2,11 +2,18 @@
   "title": "Link device",
   "close": "Close",
   "discover": {
-    "title": "Searching for nearby modules",
-    "hint": "Make sure the module is plugged into the outlet and in pairing mode",
-    "scanning": "Scanning...",
-    "foundTitle": "Modules found",
-    "rescan": "Search again"
+    "title": "Find your module",
+    "hint": "Plug in the module and hold its BOOT button for 3 seconds, until the light blinks. Then press “Search module” and pick it from the list.",
+    "scanning": "Connecting over Bluetooth...",
+    "foundTitle": "Module connected",
+    "rescan": "Pick another module",
+    "search": "Find module",
+    "unsupported": "This phone has no Bluetooth compatible with the module. Try another device.",
+    "portalFallback": "Alternative: join the “EnergyMonitor-Setup” Wi-Fi network (the portal password set in the firmware), open http://192.168.4.1 and set the network there.",
+    "empty": "Bring the module close and press search.",
+    "noneFound": "No module was found. The module has to be in setup mode.",
+    "permissionDenied": "Bluetooth permission is missing. Enable it in the system settings and try again.",
+    "bluetoothOff": "Bluetooth is off. Turn it on to continue."
   },
   "appliance": {
     "title": "Which appliance are you going to monitor?",
@@ -14,16 +21,24 @@
   },
   "network": {
     "title": "Connect to your WiFi network",
-    "subtitle": "Select the network the module will connect to",
+    "subtitle": "These are the networks the module can see. Pick your home network.",
     "passwordLabel": "Password",
     "passwordPlaceholder": "Enter the network password",
-    "open": "Open"
+    "open": "Open",
+    "scanning": "The module is looking for networks...",
+    "rescan": "Scan again",
+    "manual": "Type the network name",
+    "pickFromList": "Pick from the list",
+    "ssidLabel": "Network name (SSID)",
+    "ssidPlaceholder": "Exact name of your Wi-Fi network",
+    "empty": "The module sees no networks. Type the name by hand."
   },
   "connecting": {
     "title": "Connecting device",
-    "step1": "Searching for network \"{{ssid}}\"",
-    "step2": "Verifying password",
-    "step3": "Syncing device"
+    "step1": "Connecting the module to “{{ssid}}”",
+    "step2": "Checking the password",
+    "step3": "Connecting to the server",
+    "step0": "Registering the device in your home"
   },
   "done": {
     "title": "Device linked!",
@@ -38,24 +53,22 @@
     "continue": "Continue",
     "connect": "Connect",
     "finish": "Finish",
-    "linking": "Linking...",
-    "link": "Link"
+    "retry": "Try again"
   },
   "errors": {
     "passwordRequired": "Enter the network password",
     "codeRequired": "Enter the module code.",
     "codeMax": "Maximum 6 characters.",
     "codeInvalid": "Letters and numbers only, no spaces.",
-    "applianceRequired": "Choose an appliance."
+    "applianceRequired": "Choose an appliance.",
+    "bluetooth": "The Bluetooth connection to the module was lost. Move closer and try again.",
+    "wifiAuth": "The network password is wrong.",
+    "wifiNotFound": "The module cannot find that network. Check the name or move it closer to the router.",
+    "wifiFailed": "The module could not join the Wi-Fi network.",
+    "broker": "The module has Wi-Fi but cannot reach the server.",
+    "timeout": "The module did not answer in time. Check it is still on and nearby.",
+    "noBroker": "The server has no MQTT broker address configured (DEVICE_MQTT_PUBLIC_HOST)."
   },
   "step": "Step {{current}} of {{total}}",
-  "moduleLabel": "Module {{code}}",
-  "code": {
-    "label": "Module code",
-    "placeholder": "EM-204",
-    "hint": "The code is printed on the module. You can also copy it from the setup portal."
-  },
-  "bluetooth": {
-    "unavailable": "Without Bluetooth the network cannot be written to the module: it is registered here, but you still need to hand it its credentials from the setup portal."
-  }
+  "moduleLabel": "Module found"
 }

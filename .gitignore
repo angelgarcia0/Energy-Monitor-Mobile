@@ -48,3 +48,9 @@ example
 /ios
 /android
 node_modules
+
+# IDE workspace
+.idea/
+
+# local build logs
+*.log

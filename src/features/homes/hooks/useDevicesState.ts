@@ -6,6 +6,7 @@ import {
   type ApplianceTypeResponse,
   type HomeDevice,
   type LinkDeviceRequest,
+  type LinkDeviceResponse,
   type UpdateDeviceRequest,
 } from "@/services/devices";
 import type { HomeConsumptionSummary } from "@/services/measurement";
@@ -15,6 +16,18 @@ import { useIsAppActive } from "./useIsAppActive";
 /** Dispositivos: estado ligero, casi en tiempo real. */
 const DEVICES_REFRESH_MS = 5000;
 
+/**
+ * Resultado de vincular.
+ *
+ * Antes era solo `ApiError | null`, pero al portar la vinculación por Bluetooth
+ * la respuesta deja de ser un detalle interno: trae el `apiKey` y la dirección
+ * del broker, que son exactamente los datos que hay que escribirle al módulo por
+ * Bluetooth. Sin devolverlos no hay forma de continuar la vinculación.
+ */
+export type LinkDeviceOutcome =
+  | { ok: true; linked: LinkDeviceResponse }
+  | { ok: false; error: ApiError };
+
 export interface DevicesState {
   devices: Device[];
   /** `GET /appliance-types`, sin ordenar. */
@@ -22,8 +35,8 @@ export interface DevicesState {
   loading: boolean;
   error: ApiError | null;
   reload: () => Promise<void>;
-  /** `null` si se vinculó, o el `ApiError` si falló. */
-  linkDevice: (request: LinkDeviceRequest) => Promise<ApiError | null>;
+  /** Devuelve el alta, o el error. La alta trae `apiKey` y `broker`. */
+  linkDevice: (request: LinkDeviceRequest) => Promise<LinkDeviceOutcome>;
   unlinkDevice: (deviceId: string) => Promise<ApiError | null>;
   updateDevice: (
     deviceId: string,
@@ -101,13 +114,16 @@ export function useDevicesState(
   }, [list, summary, now]);
 
   const linkDevice = useCallback(
-    async (request: LinkDeviceRequest) => {
+    async (request: LinkDeviceRequest): Promise<LinkDeviceOutcome> => {
       try {
-        await deviceApi.linkDevice(homeId, request);
+        const linked = await deviceApi.linkDevice(homeId, request);
+        // La lista se recarga después de entregar la respuesta, no antes: quien
+        // la necesita son los pasos siguientes, que van a escribir la red en el
+        // módulo recién vinculado.
         await loadDevices();
-        return null;
+        return { ok: true, linked };
       } catch (err) {
-        return err as ApiError;
+        return { ok: false, error: err as ApiError };
       }
     },
     [homeId, loadDevices],

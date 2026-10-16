@@ -19,6 +19,7 @@
       },
       "predictiveBackGestureEnabled": false,
       "package": "com.energymonitor.mobile",
+      "googleServicesFile": "./google-services.json",
       "permissions": [
         "android.permission.BLUETOOTH",
         "android.permission.BLUETOOTH_ADMIN",
@@ -43,6 +44,13 @@
       "expo-web-browser",
       "expo-localization",
       [
+        "expo-notifications",
+        {
+          "color": "#208AEF",
+          "defaultChannel": "alerts"
+        }
+      ],
+      [
         "react-native-ble-plx",
         {
           "isBackgroundEnabled": false,
@@ -53,6 +61,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "98821905-8663-4d75-b8f4-684a26cf80cf"
+      }
+    },
+    "owner": "admingar"
   }
 }

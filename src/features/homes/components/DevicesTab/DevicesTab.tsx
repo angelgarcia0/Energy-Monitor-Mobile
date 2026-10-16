@@ -17,7 +17,7 @@ import {
 } from "../../data/deviceTypes";
 import type { DevicesState } from "../../hooks/useDevicesState";
 import { ConfirmDeleteModal } from "./ConfirmDeleteModal";
-import { LinkDeviceModal } from "./LinkDeviceModal";
+import { LinkDeviceModal } from "./LinkDeviceModal/LinkDeviceModal";
 import { styles } from "./DevicesTab.styles";
 
 export interface DevicesTabProps {

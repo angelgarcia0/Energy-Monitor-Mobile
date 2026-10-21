@@ -217,11 +217,6 @@ export function Sidebar(_props: SidebarProps) {
                 <Text style={styles.dropdownItemText}>{t("profile.myAccount")}</Text>
               </Pressable>
 
-              <View style={styles.dropdownItem}>
-                <Ionicons name="add-outline" size={Theme.typography.size.md} color={Theme.colors.textSecondary} />
-                <Text style={styles.dropdownItemText}>{t("profile.addAccount")}</Text>
-              </View>
-
               <View style={styles.divider} />
 
               <Button variant="primary" size="medium" style={styles.logoutButton} onPress={handleLogout}>

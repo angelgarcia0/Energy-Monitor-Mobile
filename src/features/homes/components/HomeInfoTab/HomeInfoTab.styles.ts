@@ -106,7 +106,14 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     borderRadius: Theme.radius.sm,
     borderWidth: 1,
     borderColor: Theme.colors.border,
-    opacity: 0.5,
+  },
+  copyButtonPressed: {
+    opacity: 0.7,
+  },
+  /** Momento en que el código quedó en el portapapeles. */
+  copyButtonCopied: {
+    backgroundColor: Theme.colors.successSoft,
+    borderColor: Theme.colors.successText,
   },
   error: {
     fontFamily: Theme.typography.fontPrimary,

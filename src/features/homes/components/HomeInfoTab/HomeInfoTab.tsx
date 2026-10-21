@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import * as Clipboard from "expo-clipboard";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -54,6 +55,15 @@ export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
   const [confirming, setConfirming] = useState(false);
   const [leaving, setLeaving] = useState(false);
   const [leaveError, setLeaveError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  /** Copia el código de acceso y lo confirma con el ✓ durante 2 segundos. */
+  const handleCopyCode = async () => {
+    if (!home.accessCode) return;
+    await Clipboard.setStringAsync(home.accessCode);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const typeLabel = homeTypeLabel(t, home.homeTypeId, homeTypes);
   // El backend manda el nombre del tipo; el ícono se elige por el id del seed.
@@ -156,18 +166,21 @@ export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
                 <Text style={styles.codeText}>
                   {home.accessCode || t("placeholders.noCode")}
                 </Text>
-                {/* Copiar necesita `expo-clipboard`, que no está en el proyecto:
-                    hasta que se agregue, el código se lee pero no se copia. */}
                 <Pressable
-                  disabled
+                  onPress={() => void handleCopyCode()}
+                  disabled={!home.accessCode}
                   accessibilityRole="button"
                   accessibilityLabel={t("buttons.copy")}
-                  style={styles.copyButton}
+                  style={({ pressed }) => [
+                    styles.copyButton,
+                    copied && styles.copyButtonCopied,
+                    pressed && styles.copyButtonPressed,
+                  ]}
                 >
                   <Ionicons
-                    name="copy-outline"
+                    name={copied ? "checkmark" : "copy-outline"}
                     size={Theme.typography.size.md}
-                    color={Theme.colors.textSecondary}
+                    color={copied ? Theme.colors.successText : Theme.colors.textSecondary}
                   />
                 </Pressable>
               </View>

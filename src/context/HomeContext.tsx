@@ -38,6 +38,10 @@ export interface HomeContextValue {
   setFavorite: (homeId: string) => Promise<ApiError | null>;
   leaveHome: (homeId: string) => Promise<ApiError | null>;
   removeMember: (homeId: string, userId: string) => Promise<ApiError | null>;
+  transferOwnership: (
+    homeId: string,
+    newOwnerId: string,
+  ) => Promise<ApiError | null>;
 }
 
 const HomeContext = createContext<HomeContextValue | null>(null);
@@ -170,6 +174,24 @@ export function HomeProvider({ children }: HomeProviderProps) {
     [],
   );
 
+  /**
+   * `PUT /homes/{id}/owner` — al entregar el hogar quien lo hace pasa a simple
+   * miembro, así que se recargan los hogares para que el rol reflejado (y con él
+   * el resto de pantallas) se actualice, igual que en la Web.
+   */
+  const transferOwnership = useCallback(
+    async (homeId: string, newOwnerId: string) => {
+      try {
+        await homeApi.transferOwnership(homeId, newOwnerId);
+        await loadHomes();
+        return null;
+      } catch (err) {
+        return err as ApiError;
+      }
+    },
+    [loadHomes],
+  );
+
   const value = useMemo(
     () => ({
       homes,
@@ -182,6 +204,7 @@ export function HomeProvider({ children }: HomeProviderProps) {
       setFavorite,
       leaveHome,
       removeMember,
+      transferOwnership,
     }),
     [
       homes,
@@ -194,6 +217,7 @@ export function HomeProvider({ children }: HomeProviderProps) {
       setFavorite,
       leaveHome,
       removeMember,
+      transferOwnership,
     ],
   );
 

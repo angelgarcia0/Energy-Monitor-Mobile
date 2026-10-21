@@ -31,7 +31,8 @@
     "cancel": "Cancelar"
   },
   "actions": {
-    "removeUser": "Eliminar a {{name}}"
+    "removeUser": "Eliminar a {{name}}",
+    "transferOwnership": "Hacer responsable a {{name}}"
   },
   "confirmRemove": {
     "title": "¿Eliminar miembro?",
@@ -39,6 +40,15 @@
     "confirm": "Eliminar",
     "cancel": "Cancelar",
     "removing": "Eliminando..."
+  },
+  "confirmTransfer": {
+    "title": "¿Transferir el hogar?",
+    "message": "\"{{name}}\" pasará a ser el responsable de este hogar y tú quedarás como miembro: ya no podrás gestionar dispositivos, umbrales ni miembros. Los dispositivos, umbrales e historial no cambian.",
+    "acknowledge": "Entiendo que dejaré de ser el responsable",
+    "confirm": "Transferir",
+    "transferring": "Transfiriendo...",
+    "cancel": "Cancelar",
+    "done": "Ahora \"{{name}}\" es el responsable del hogar."
   },
   "state": {
     "loading": "Cargando miembros...",

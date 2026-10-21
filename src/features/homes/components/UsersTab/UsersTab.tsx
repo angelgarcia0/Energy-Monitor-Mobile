@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, Text, View } from "react-native";
@@ -14,6 +14,7 @@ import { homeApi, type Role, type UserHome } from "@/services/home";
 import { getInitials } from "../../data/initials";
 import { getAvatarColor, getRoleBadgeColor } from "../../data/userAvatarColors";
 import { ConfirmRemoveUserModal } from "./ConfirmRemoveUserModal";
+import { ConfirmTransferUserModal } from "./ConfirmTransferUserModal";
 import { styles } from "./UsersTab.styles";
 
 export interface UsersTabProps {
@@ -87,7 +88,9 @@ interface UserRowProps {
   index: number;
   isOwner: boolean;
   removing: boolean;
+  transferring: boolean;
   onRequestRemove: (user: MemberRow) => void;
+  onRequestTransfer: (user: MemberRow) => void;
 }
 
 function UserRow({
@@ -95,7 +98,9 @@ function UserRow({
   index,
   isOwner,
   removing,
+  transferring,
   onRequestRemove,
+  onRequestTransfer,
 }: UserRowProps) {
   const { t } = useTranslation("users");
   const badge = getRoleBadgeColor(user.role);
@@ -122,8 +127,27 @@ function UserRow({
 
       {isOwner && user.role !== "OWNER" ? (
         <Pressable
+          onPress={() => onRequestTransfer(user)}
+          disabled={removing || transferring}
+          accessibilityRole="button"
+          accessibilityLabel={t("actions.transferOwnership", { name: fullName })}
+          style={({ pressed }) => [
+            styles.transferButton,
+            pressed && styles.removeButtonPressed,
+          ]}
+        >
+          <MaterialCommunityIcons
+            name="crown-outline"
+            size={Theme.typography.size.md}
+            color={Theme.colors.primary}
+          />
+        </Pressable>
+      ) : null}
+
+      {isOwner && user.role !== "OWNER" ? (
+        <Pressable
           onPress={() => onRequestRemove(user)}
-          disabled={removing}
+          disabled={removing || transferring}
           accessibilityRole="button"
           accessibilityLabel={t("actions.removeUser", { name: fullName })}
           style={({ pressed }) => [
@@ -151,7 +175,7 @@ function UserRow({
  */
 export function UsersTab({ homeId, isOwner }: UsersTabProps) {
   const { t } = useTranslation("users");
-  const { removeMember } = useHomes();
+  const { removeMember, transferOwnership } = useHomes();
   const me = useCurrentPerson();
 
   const [members, setMembers] = useState<UserHome[]>([]);
@@ -160,6 +184,10 @@ export function UsersTab({ homeId, isOwner }: UsersTabProps) {
   const [userToRemove, setUserToRemove] = useState<MemberRow | null>(null);
   const [removingId, setRemovingId] = useState<string | null>(null);
   const [removeError, setRemoveError] = useState<string | null>(null);
+  const [transferTarget, setTransferTarget] = useState<MemberRow | null>(null);
+  const [transferring, setTransferring] = useState(false);
+  const [transferError, setTransferError] = useState<string | null>(null);
+  const [transferredTo, setTransferredTo] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -199,6 +227,32 @@ export function UsersTab({ homeId, isOwner }: UsersTabProps) {
     }
   };
 
+  const openTransfer = (user: MemberRow) => {
+    setTransferTarget(user);
+    setTransferError(null);
+    setTransferredTo(null);
+  };
+
+  const handleConfirmTransfer = async () => {
+    if (!transferTarget) return;
+    const fullName = [transferTarget.name, transferTarget.lastName]
+      .filter(Boolean)
+      .join(" ");
+    setTransferring(true);
+    setTransferError(null);
+    const err = await transferOwnership(homeId, transferTarget.id);
+    setTransferring(false);
+    setTransferTarget(null);
+    if (err) {
+      setTransferError(errorMessage(t, err, "ownershipTransfer"));
+      return;
+    }
+    setTransferredTo(fullName);
+    // Quien entrega queda como miembro: la lista vuelve a leerse con el nuevo
+    // rol y los hogares ya se recargaron dentro del contexto.
+    await load();
+  };
+
   return (
     <>
       <ScrollView
@@ -235,11 +289,18 @@ export function UsersTab({ homeId, isOwner }: UsersTabProps) {
                   index={index}
                   isOwner={isOwner}
                   removing={removingId === user.id}
+                  transferring={transferring}
                   onRequestRemove={setUserToRemove}
+                  onRequestTransfer={openTransfer}
                 />
                 {index < rows.length - 1 ? <View style={styles.divider} /> : null}
               </View>
             ))}
+            {transferredTo ? (
+              <Text style={styles.emptyText} accessibilityRole="text">
+                {t("confirmTransfer.done", { name: transferredTo })}
+              </Text>
+            ) : null}
           </Card>
         ) : null}
 
@@ -257,6 +318,12 @@ export function UsersTab({ homeId, isOwner }: UsersTabProps) {
             {removeError}
           </Text>
         ) : null}
+
+        {transferError ? (
+          <Text style={styles.error} accessibilityRole="alert">
+            {transferError}
+          </Text>
+        ) : null}
       </ScrollView>
 
       {userToRemove ? (
@@ -266,6 +333,16 @@ export function UsersTab({ homeId, isOwner }: UsersTabProps) {
           removing={removingId === userToRemove.id}
           onCancel={() => setUserToRemove(null)}
           onConfirm={handleConfirmRemove}
+        />
+      ) : null}
+
+      {transferTarget ? (
+        <ConfirmTransferUserModal
+          visible
+          user={transferTarget}
+          transferring={transferring}
+          onCancel={() => setTransferTarget(null)}
+          onConfirm={handleConfirmTransfer}
         />
       ) : null}
     </>

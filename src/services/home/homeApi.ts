@@ -59,6 +59,20 @@ export async function removeMember(
   );
 }
 
+/**
+ * `PUT /homes/{id}/owner` — entrega el hogar a uno de sus miembros (solo el
+ * dueño); quien llama queda como miembro. 403 si quien llama es miembro, 404 si
+ * el destinatario ya no es miembro, 409 si ya es responsable.
+ */
+export async function transferOwnership(
+  homeId: string,
+  newOwnerId: string,
+): Promise<void> {
+  await httpClient.put(`/homes/${encodeURIComponent(homeId)}/owner`, {
+    newOwnerId,
+  });
+}
+
 /** `GET /homes/{id}/members` */
 export async function listMembers(homeId: string): Promise<UserHome[]> {
   const { data } = await httpClient.get<UserHome[]>(

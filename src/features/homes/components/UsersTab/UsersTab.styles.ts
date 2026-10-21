@@ -91,6 +91,15 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  transferButton: {
+    width: Theme.spacing.xl,
+    height: Theme.spacing.xl,
+    borderRadius: Theme.radius.md,
+    borderWidth: 1,
+    borderColor: Theme.colors.primary,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   removeButtonPressed: {
     opacity: 0.7,
   },

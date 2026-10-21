@@ -53,7 +53,8 @@
     "continue": "Continuar",
     "connect": "Conectar",
     "finish": "Finalizar",
-    "retry": "Reintentar"
+    "retry": "Reintentar",
+    "saving": "Guardando..."
   },
   "errors": {
     "passwordRequired": "Ingresa la contraseña de la red",
@@ -70,5 +71,17 @@
     "noBroker": "El servidor no tiene configurada la dirección del broker MQTT (DEVICE_MQTT_PUBLIC_HOST)."
   },
   "step": "Paso {{current}} de {{total}}",
-  "moduleLabel": "Módulo detectado"
+  "moduleLabel": "Módulo detectado",
+  "reconnect": {
+    "title": "Cambiar red Wi-Fi de «{{name}}»",
+    "hint": "Úsalo si te mudaste, cambiaste la contraseña del Wi-Fi o de operador. Si el módulo no encuentra su red, activa el Bluetooth solo a los 5 minutos; para no esperar, mantén pulsado su botón BOOT 3 segundos hasta que la luz parpadee. Luego pulsa «Buscar módulo» y elige «EnergyMonitor-{{code}}».",
+    "wrongModule": "Ese es el módulo {{found}}, no {{code}}. Elige «EnergyMonitor-{{code}}» en la lista.",
+    "step0": "Preparando credenciales nuevas",
+    "doneTitle": "¡Red actualizada!"
+  },
+  "edit": {
+    "title": "Editar dispositivo",
+    "hint": "Cambia qué electrodoméstico mide este módulo, su nombre o su ubicación. El módulo sigue conectado.",
+    "save": "Guardar cambios"
+  }
 }

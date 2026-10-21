@@ -37,6 +37,12 @@ export interface DevicesState {
   reload: () => Promise<void>;
   /** Devuelve el alta, o el error. La alta trae `apiKey` y `broker`. */
   linkDevice: (request: LinkDeviceRequest) => Promise<LinkDeviceOutcome>;
+  /**
+   * `POST .../credentials` — credenciales nuevas para un módulo ya vinculado
+   * (cambio de red). Devuelve la misma forma que `linkDevice`: los pasos
+   * siguientes escriben ese `apiKey` y `broker` por Bluetooth.
+   */
+  reissueCredentials: (deviceId: string) => Promise<LinkDeviceOutcome>;
   unlinkDevice: (deviceId: string) => Promise<ApiError | null>;
   updateDevice: (
     deviceId: string,
@@ -129,6 +135,19 @@ export function useDevicesState(
     [homeId, loadDevices],
   );
 
+  const reissueCredentials = useCallback(
+    async (deviceId: string): Promise<LinkDeviceOutcome> => {
+      try {
+        const linked = await deviceApi.reissueCredentials(homeId, deviceId);
+        await loadDevices();
+        return { ok: true, linked };
+      } catch (err) {
+        return { ok: false, error: err as ApiError };
+      }
+    },
+    [homeId, loadDevices],
+  );
+
   const unlinkDevice = useCallback(
     async (deviceId: string) => {
       try {
@@ -164,6 +183,7 @@ export function useDevicesState(
     error,
     reload,
     linkDevice,
+    reissueCredentials,
     unlinkDevice,
     updateDevice,
   };

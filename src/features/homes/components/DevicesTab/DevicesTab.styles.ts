@@ -128,6 +128,24 @@ export const styles = createThemeStyles(() => StyleSheet.create({
   deleteButtonPressed: {
     opacity: 0.7,
   },
+  /** Acciones de editar y reconectar, con el fondo suave de la Web. */
+  rowActions: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Theme.spacing.xs,
+    flexShrink: 0,
+  },
+  actionButton: {
+    width: Theme.spacing.xl,
+    height: Theme.spacing.xl,
+    borderRadius: Theme.radius.md,
+    backgroundColor: Theme.colors.primarySoft,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  actionButtonPressed: {
+    opacity: 0.7,
+  },
   divider: {
     height: StyleSheet.hairlineWidth,
     marginLeft: Theme.spacing.md + DEVICE_ICON_SIZE + Theme.spacing.sm,

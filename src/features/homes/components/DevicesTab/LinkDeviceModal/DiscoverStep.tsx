@@ -66,6 +66,11 @@ export interface DiscoverStepProps {
   scanning: boolean;
   /** Lo que impide seguir: permiso, Bluetooth apagado o un fallo del escaneo. */
   blocked: string | null;
+  /**
+   * Texto bajo el título. Se pasa en la reconexión, que explica cómo poner el
+   * módulo en parpadeo y qué nombre (`EnergyMonitor-<code>`) elegir.
+   */
+  hint?: string;
   onSearch: () => void;
   onSelect: (id: string) => void;
 }
@@ -82,6 +87,7 @@ export function DiscoverStep({
   selectedId,
   scanning,
   blocked,
+  hint,
   onSearch,
   onSelect,
 }: DiscoverStepProps) {
@@ -108,7 +114,7 @@ export function DiscoverStep({
   return (
     <View style={styles.block}>
       <Text style={styles.stepTitle}>{t("discover.title")}</Text>
-      <Text style={styles.stepSubtitle}>{t("discover.hint")}</Text>
+      <Text style={styles.stepSubtitle}>{hint ?? t("discover.hint")}</Text>
 
       {modules.length === 0 ? (
         <View style={styles.scanningBox}>

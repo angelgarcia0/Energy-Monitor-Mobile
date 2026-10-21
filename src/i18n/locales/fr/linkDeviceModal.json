@@ -53,7 +53,8 @@
     "continue": "Continuer",
     "connect": "Connecter",
     "finish": "Terminer",
-    "retry": "Réessayer"
+    "retry": "Réessayer",
+    "saving": "Enregistrement..."
   },
   "errors": {
     "passwordRequired": "Entrez le mot de passe du réseau",
@@ -70,5 +71,17 @@
     "noBroker": "Le serveur n’a pas d’adresse de broker MQTT configurée (DEVICE_MQTT_PUBLIC_HOST)."
   },
   "step": "Étape {{current}} sur {{total}}",
-  "moduleLabel": "Module détecté"
+  "moduleLabel": "Module détecté",
+  "reconnect": {
+    "title": "Changer le Wi-Fi de « {{name}} »",
+    "hint": "À utiliser si vous avez déménagé, changé le mot de passe Wi-Fi ou d’opérateur. Si le module ne trouve pas son réseau, il active le Bluetooth tout seul au bout de 5 minutes ; pour ne pas attendre, maintenez son bouton BOOT 3 secondes jusqu’à ce que la lumière clignote. Appuyez ensuite sur « Rechercher le module » et choisissez « EnergyMonitor-{{code}} ».",
+    "wrongModule": "C’est le module {{found}}, pas {{code}}. Choisissez « EnergyMonitor-{{code}} » dans la liste.",
+    "step0": "Préparation de nouveaux identifiants",
+    "doneTitle": "Réseau mis à jour !"
+  },
+  "edit": {
+    "title": "Modifier l’appareil",
+    "hint": "Changez l’appareil mesuré par ce module, son nom ou son emplacement. Le module reste connecté.",
+    "save": "Enregistrer"
+  }
 }

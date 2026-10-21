@@ -24,7 +24,12 @@ export type ApiOperation =
   | "homeJoin"
   | "homeLeave"
   | "memberRemove"
-  | "thresholdsUpdate";
+  | "ownershipTransfer"
+  | "thresholdsUpdate"
+  | "deviceLink"
+  | "deviceUnlink"
+  | "deviceEdit"
+  | "deviceReconnect";
 
 /** Claves por status de una operación; `default` cubre cualquier otro status. */
 type OperationStatuses = Partial<Record<number, string>> & { default?: string };
@@ -63,7 +68,24 @@ const OPERATIONS: Partial<Record<ApiOperation, OperationStatuses>> = {
     404: "memberRemove.notFound",
     409: "memberRemove.isOwner",
   },
+  ownershipTransfer: {
+    403: "ownershipTransfer.notOwner",
+    404: "ownershipTransfer.notMember",
+    409: "ownershipTransfer.alreadyOwner",
+    default: "ownershipTransfer.failed",
+  },
   thresholdsUpdate: { 400: "thresholdsUpdate.invalid", 403: "thresholdsUpdate.notOwner" },
+  deviceLink: {
+    403: "deviceLink.notOwner",
+    409: "deviceLink.otherHome",
+    default: "deviceLink.failed",
+  },
+  deviceUnlink: { 403: "deviceUnlink.notOwner", default: "deviceUnlink.failed" },
+  deviceEdit: { 403: "deviceEdit.notOwner", default: "deviceEdit.failed" },
+  deviceReconnect: {
+    403: "deviceReconnect.notOwner",
+    default: "deviceReconnect.failed",
+  },
 };
 
 const GENERIC: Record<number, string> = {

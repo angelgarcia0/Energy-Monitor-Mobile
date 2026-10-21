@@ -1,5 +1,4 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Picker } from "@react-native-picker/picker";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, Text, useWindowDimensions, View } from "react-native";
@@ -7,6 +6,7 @@ import { Pressable, ScrollView, Text, useWindowDimensions, View } from "react-na
 import { Button } from "@/components/Button/Button";
 import { Input } from "@/components/Input/Input";
 import { Modal } from "@/components/Modal/Modal";
+import { SelectField } from "@/components/SelectField/SelectField";
 import { Theme } from "@/constants/theme";
 import { errorMessage } from "@/services/http";
 import {
@@ -24,9 +24,10 @@ import {
   getApplianceLabel,
   getRoomLabel,
   ROOM_KEYS,
+  type Device,
   type RoomKey,
 } from "../../../data/deviceTypes";
-import type { DevicesState } from "../../../hooks/useDevicesState";
+import type { DevicesState, LinkDeviceOutcome } from "../../../hooks/useDevicesState";
 import {
   ConnectingStep,
   DoneStep,
@@ -42,12 +43,32 @@ import { stepStyles } from "./steps.styles";
 /** Cuánto se espera a que el módulo confirme `mqtt_ok`. */
 const CONNECT_TIMEOUT_MS = 90_000;
 
-const STEPS = ["discover", "appliance", "network", "connecting", "done"] as const;
-type Step = (typeof STEPS)[number];
+type Step = "discover" | "appliance" | "network" | "connecting" | "done";
+
+const LINK_STEPS: readonly Step[] = [
+  "discover",
+  "appliance",
+  "network",
+  "connecting",
+  "done",
+];
+// Cambiar la red de un módulo ya vinculado (mudanza, nueva clave, otro
+// operador): no se vuelve a elegir electrodoméstico, ya está guardado.
+const RECONNECT_STEPS: readonly Step[] = [
+  "discover",
+  "network",
+  "connecting",
+  "done",
+];
 
 export interface LinkDeviceModalProps {
   visible: boolean;
   state: DevicesState;
+  /**
+   * Módulo ya vinculado: si viene, el asistente solo le manda otra red con
+   * credenciales nuevas (`POST .../credentials`), sin alta ni electrodoméstico.
+   */
+  device?: Device | null;
   onClose: () => void;
   /** Se llama solo cuando el módulo quedó registrado y conectado. */
   onLinked: () => void;
@@ -65,12 +86,17 @@ export interface LinkDeviceModalProps {
 export function LinkDeviceModal({
   visible,
   state,
+  device = null,
   onClose,
   onLinked,
 }: LinkDeviceModalProps) {
   const { t } = useTranslation("linkDeviceModal");
   const { height } = useWindowDimensions();
-  const { catalog, linkDevice } = state;
+  const { catalog, linkDevice, reissueCredentials } = state;
+
+  /** Con `device` el asistente solo cambia la red: se saltan dos pasos. */
+  const reconnect = device !== null;
+  const steps = reconnect ? RECONNECT_STEPS : LINK_STEPS;
 
   const sessionRef = useRef<ModuleSession | null>(null);
   const offStatusRef = useRef<(() => void) | null>(null);
@@ -183,6 +209,18 @@ export function LinkDeviceModal({
 
     try {
       const session = await connectModule(id);
+      if (reconnect && device && session.identity.code !== device.code) {
+        // Otro módulo cercano: no se le escribe la red ni la key de este.
+        void session.disconnect();
+        setSelectedId(null);
+        setError(
+          t("reconnect.wrongModule", {
+            code: device.code,
+            found: session.identity.code,
+          }),
+        );
+        return;
+      }
       sessionRef.current = session;
       // El código viene del módulo, no de lo que se escriba: es la identidad que
       // el backend espera, y por lo tanto lo único que vale.
@@ -213,7 +251,8 @@ export function LinkDeviceModal({
   }, [t]);
 
   const goToNetwork = () => {
-    if (!deviceCode || !applianceTypeId || !deviceName.trim()) return;
+    // En la reconexión no hay electrodoméstico que elegir: ya está guardado.
+    if (!reconnect && (!deviceCode || !applianceTypeId || !deviceName.trim())) return;
     setStep("network");
     if (networks.length === 0) void scanNetworks();
   };
@@ -221,7 +260,7 @@ export function LinkDeviceModal({
   // ── Paso 4: registrar en el backend y luego escribir por BLE ────────
   const handleConnect = async () => {
     const session = sessionRef.current;
-    if (!session || !applianceTypeId || !ssid) return;
+    if (!session || !ssid) return;
     if (needsPassword && !manual && !password) {
       setError(t("errors.passwordRequired"));
       return;
@@ -231,15 +270,25 @@ export function LinkDeviceModal({
     setStep("connecting");
     setProgress(PROGRESS.registering);
 
-    // Primero el backend: devuelve el apiKey y la dirección del broker.
-    const outcome = await linkDevice({
-      deviceCode,
-      name: deviceName.trim(),
-      applianceTypeId,
-      location: room,
-    });
+    // Primero el backend: en el alta devuelve el apiKey y la dirección del
+    // broker; en la reconexión, credenciales freschas para el mismo módulo.
+    let outcome: LinkDeviceOutcome;
+    if (reconnect && device) {
+      outcome = await reissueCredentials(device.id);
+    } else if (applianceTypeId) {
+      outcome = await linkDevice({
+        deviceCode,
+        name: deviceName.trim(),
+        applianceTypeId,
+        location: room,
+      });
+    } else {
+      // Defensivo: sin tipo de electrodoméstico no hay alta posible.
+      setStep("appliance");
+      return;
+    }
     if (!outcome.ok) {
-      setError(errorMessage(t, outcome.error));
+      setError(errorMessage(t, outcome.error, reconnect ? "deviceReconnect" : "deviceLink"));
       setStep("network");
       return;
     }
@@ -309,7 +358,7 @@ export function LinkDeviceModal({
     onLinked();
   };
 
-  const stepIndex = STEPS.indexOf(step);
+  const stepIndex = steps.indexOf(step);
   const connectingFailed = step === "connecting" && !!error;
 
   const footer = (() => {
@@ -320,7 +369,7 @@ export function LinkDeviceModal({
             {t("buttons.cancel")}
           </Button>
           <Button
-            onPress={() => setStep("appliance")}
+            onPress={() => (reconnect ? goToNetwork() : setStep("appliance"))}
             disabled={!deviceCode || !!blocked}
             style={styles.footerButton}
           >
@@ -350,7 +399,11 @@ export function LinkDeviceModal({
     if (step === "network") {
       return (
         <>
-          <Button variant="secondary" onPress={() => setStep("appliance")} style={styles.footerButton}>
+          <Button
+            variant="secondary"
+            onPress={() => setStep(reconnect ? "discover" : "appliance")}
+            style={styles.footerButton}
+          >
             {t("buttons.back")}
           </Button>
           <Button
@@ -387,12 +440,17 @@ export function LinkDeviceModal({
   })();
 
   return (
-    <Modal visible={visible} onRequestClose={handleClose} title={t("title")} footer={footer}>
+    <Modal
+      visible={visible}
+      onRequestClose={handleClose}
+      title={reconnect && device ? t("reconnect.title", { name: device.name }) : t("title")}
+      footer={footer}
+    >
       <View style={styles.stepHeader}>
         <Text style={stepStyles.stepOf}>
-          {t("step", { current: stepIndex + 1, total: STEPS.length })}
+          {t("step", { current: stepIndex + 1, total: steps.length })}
         </Text>
-        <StepDots total={STEPS.length} current={stepIndex} />
+        <StepDots total={steps.length} current={stepIndex} />
       </View>
 
       <ScrollView
@@ -407,6 +465,11 @@ export function LinkDeviceModal({
             selectedId={selectedId}
             scanning={scanning}
             blocked={blocked}
+            hint={
+              reconnect && device
+                ? t("reconnect.hint", { code: device.code })
+                : undefined
+            }
             onSearch={() => void handleSearch()}
             onSelect={(id) => void handleSelectModule(id)}
           />
@@ -477,26 +540,15 @@ export function LinkDeviceModal({
               accessibilityLabel={t("done.nameLabel")}
             />
 
-            <View>
-              <Text style={styles.label}>{t("done.roomLabel")}</Text>
-              <View style={styles.pickerWrapper}>
-                <Picker
-                  selectedValue={room}
-                  onValueChange={(value) => setRoom(String(value) as RoomKey)}
-                  mode="dropdown"
-                  dropdownIconColor={Theme.colors.textSecondary}
-                >
-                  {ROOM_KEYS.map((key) => (
-                    <Picker.Item
-                      key={key}
-                      label={getRoomLabel(t, key)}
-                      value={key}
-                      color={Theme.colors.textPrimary}
-                    />
-                  ))}
-                </Picker>
-              </View>
-            </View>
+            <SelectField
+              label={t("done.roomLabel")}
+              value={room}
+              options={ROOM_KEYS.map((key) => ({
+                value: key,
+                label: getRoomLabel(t, key),
+              }))}
+              onChange={(value) => setRoom(value as RoomKey)}
+            />
           </View>
         ) : null}
 
@@ -523,10 +575,20 @@ export function LinkDeviceModal({
         ) : null}
 
         {step === "connecting" ? (
-          <ConnectingStep progress={progress} failed={connectingFailed} ssid={ssid} />
+          <ConnectingStep
+            progress={progress}
+            failed={connectingFailed}
+            ssid={ssid}
+            step0={reconnect ? t("reconnect.step0") : undefined}
+          />
         ) : null}
 
-        {step === "done" ? <DoneStep deviceName={deviceName.trim()} /> : null}
+        {step === "done" ? (
+          <DoneStep
+            deviceName={reconnect && device ? device.name : deviceName.trim()}
+            title={reconnect ? t("reconnect.doneTitle") : undefined}
+          />
+        ) : null}
 
         {error ? (
           <Text style={styles.error} accessibilityRole="alert">

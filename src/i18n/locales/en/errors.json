@@ -53,6 +53,29 @@
     "invalid": "The limits are not valid: the daily limit cannot exceed the monthly limit.",
     "notOwner": "Only the home's owner can change the thresholds."
   },
+  "ownershipTransfer": {
+    "notOwner": "Only the owner of the home can transfer it.",
+    "notMember": "This user is no longer a member of the home.",
+    "alreadyOwner": "This user is already the owner of the home.",
+    "failed": "The home could not be transferred. Please try again."
+  },
+  "deviceLink": {
+    "notOwner": "Only the home owner can link devices.",
+    "otherHome": "This module is already linked to another home.",
+    "failed": "The device could not be registered."
+  },
+  "deviceUnlink": {
+    "notOwner": "Only the home owner can remove devices.",
+    "failed": "The device could not be removed."
+  },
+  "deviceEdit": {
+    "notOwner": "Only the home owner can edit devices.",
+    "failed": "The device changes could not be saved."
+  },
+  "deviceReconnect": {
+    "notOwner": "Only the home owner can change a device's network.",
+    "failed": "The device credentials could not be prepared."
+  },
   "emailVerify": {
     "invalidCode": "The code is not valid or has expired."
   },

@@ -34,14 +34,19 @@ export interface ConnectingStepProps {
   progress: number;
   failed: boolean;
   ssid: string;
+  /**
+   * Primer punto de la lista. En la reconexión no se "registra" nada: se
+   * renuevan credenciales, y eso es lo que dice este texto.
+   */
+  step0?: string;
 }
 
 /** Paso 4: el módulo se conecta al Wi-Fi y al broker. */
-export function ConnectingStep({ progress, failed, ssid }: ConnectingStepProps) {
+export function ConnectingStep({ progress, failed, ssid, step0 }: ConnectingStepProps) {
   const { t } = useTranslation("linkDeviceModal");
 
   const items = [
-    t("connecting.step0"),
+    step0 ?? t("connecting.step0"),
     t("connecting.step1", { ssid }),
     t("connecting.step2"),
     t("connecting.step3"),
@@ -101,8 +106,8 @@ export function ConnectingStep({ progress, failed, ssid }: ConnectingStepProps) 
   );
 }
 
-/** Paso 5: listo. */
-export function DoneStep({ deviceName }: { deviceName: string }) {
+/** Paso 5: listo. `title` cambia el titular cuando solo se actualizó la red. */
+export function DoneStep({ deviceName, title }: { deviceName: string; title?: string }) {
   const { t } = useTranslation("linkDeviceModal");
 
   return (
@@ -114,7 +119,7 @@ export function DoneStep({ deviceName }: { deviceName: string }) {
           color={Theme.colors.success}
           style={styles.doneIcon}
         />
-        <Text style={styles.stepTitle}>{t("done.title")}</Text>
+        <Text style={styles.stepTitle}>{title ?? t("done.title")}</Text>
         <Text style={styles.stepSubtitle}>{t("done.subtitle", { name: deviceName })}</Text>
       </View>
     </View>

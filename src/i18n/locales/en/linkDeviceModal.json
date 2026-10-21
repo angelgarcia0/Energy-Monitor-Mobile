@@ -53,7 +53,8 @@
     "continue": "Continue",
     "connect": "Connect",
     "finish": "Finish",
-    "retry": "Try again"
+    "retry": "Try again",
+    "saving": "Saving..."
   },
   "errors": {
     "passwordRequired": "Enter the network password",
@@ -70,5 +71,17 @@
     "noBroker": "The server has no MQTT broker address configured (DEVICE_MQTT_PUBLIC_HOST)."
   },
   "step": "Step {{current}} of {{total}}",
-  "moduleLabel": "Module found"
+  "moduleLabel": "Module found",
+  "reconnect": {
+    "title": "Change Wi-Fi of “{{name}}”",
+    "hint": "Use it if you moved, changed the Wi-Fi password or your internet provider. If the module cannot find its network it turns Bluetooth on by itself after 5 minutes; to skip the wait, hold its BOOT button for 3 seconds until the light blinks. Then press “Find module” and pick “EnergyMonitor-{{code}}”.",
+    "wrongModule": "That is module {{found}}, not {{code}}. Pick “EnergyMonitor-{{code}}” in the list.",
+    "step0": "Preparing new credentials",
+    "doneTitle": "Network updated!"
+  },
+  "edit": {
+    "title": "Edit device",
+    "hint": "Change which appliance this module measures, its name or its location. The module stays connected.",
+    "save": "Save changes"
+  }
 }

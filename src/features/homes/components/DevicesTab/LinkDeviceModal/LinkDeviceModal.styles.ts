@@ -4,7 +4,6 @@ import { createThemeStyles, Theme } from "@/constants/theme";
 
 const ICON_SIZE = Theme.spacing.xl + Theme.spacing.md;
 const APPLIANCE_ICON_SIZE = Theme.spacing.xl + Theme.spacing.md + Theme.spacing.xs;
-const PICKER_HEIGHT = Theme.spacing.xl + Theme.spacing.lg;
 
 export const styles = createThemeStyles(() => StyleSheet.create({
   scroll: {
@@ -99,12 +98,6 @@ export const styles = createThemeStyles(() => StyleSheet.create({
   field: {
     gap: Theme.spacing.xs,
   },
-  label: {
-    fontFamily: Theme.typography.fontPrimary,
-    fontSize: Theme.typography.size.sm,
-    fontWeight: Theme.typography.weight.bold,
-    color: Theme.colors.textPrimary,
-  },
   error: {
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.size13,
@@ -133,16 +126,6 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     fontWeight: Theme.typography.weight.bold,
     color: Theme.colors.primary,
     letterSpacing: 1,
-  },
-  pickerWrapper: {
-    borderWidth: 1,
-    borderColor: Theme.colors.border,
-    borderRadius: Theme.radius.sm,
-    backgroundColor: Theme.colors.background,
-  },
-  picker: {
-    height: PICKER_HEIGHT,
-    color: Theme.colors.textPrimary,
   },
   footerButton: {
     flex: 1,

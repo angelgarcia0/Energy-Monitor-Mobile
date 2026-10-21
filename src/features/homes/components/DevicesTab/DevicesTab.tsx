@@ -17,6 +17,7 @@ import {
 } from "../../data/deviceTypes";
 import type { DevicesState } from "../../hooks/useDevicesState";
 import { ConfirmDeleteModal } from "./ConfirmDeleteModal";
+import { EditDeviceModal } from "./EditDeviceModal/EditDeviceModal";
 import { LinkDeviceModal } from "./LinkDeviceModal/LinkDeviceModal";
 import { styles } from "./DevicesTab.styles";
 
@@ -36,9 +37,18 @@ interface DeviceRowProps {
   isOwner: boolean;
   removing: boolean;
   onRequestRemove: (device: Device) => void;
+  onRequestEdit: (device: Device) => void;
+  onRequestReconnect: (device: Device) => void;
 }
 
-function DeviceRow({ device, isOwner, removing, onRequestRemove }: DeviceRowProps) {
+function DeviceRow({
+  device,
+  isOwner,
+  removing,
+  onRequestRemove,
+  onRequestEdit,
+  onRequestReconnect,
+}: DeviceRowProps) {
   const { t } = useTranslation("devices");
   const isOnline = device.status === "online";
   const isChecking = device.status === "checking";
@@ -105,13 +115,56 @@ function DeviceRow({ device, isOwner, removing, onRequestRemove }: DeviceRowProp
       </View>
 
       {isOwner ? (
-        <PressableDelete
-          deviceName={deviceName}
-          disabled={removing}
-          onPress={() => onRequestRemove(device)}
-        />
+        <View style={styles.rowActions}>
+          <RowAction
+            icon="pencil-outline"
+            label={t("actions.edit", { name: deviceName })}
+            disabled={removing}
+            onPress={() => onRequestEdit(device)}
+          />
+          <RowAction
+            icon="refresh"
+            label={t("actions.reconnect", { name: deviceName })}
+            disabled={removing}
+            onPress={() => onRequestReconnect(device)}
+          />
+          <PressableDelete
+            deviceName={deviceName}
+            disabled={removing}
+            onPress={() => onRequestRemove(device)}
+          />
+        </View>
       ) : null}
     </View>
+  );
+}
+
+interface RowActionProps {
+  icon: React.ComponentProps<typeof MaterialCommunityIcons>["name"];
+  label: string;
+  disabled: boolean;
+  onPress: () => void;
+}
+
+/** Acción secundaria de la fila (editar, reconectar), con el fondo suave de la Web. */
+function RowAction({ icon, label, disabled, onPress }: RowActionProps) {
+  return (
+    <Pressable
+      onPress={onPress}
+      disabled={disabled}
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      style={({ pressed }) => [
+        styles.actionButton,
+        pressed && styles.actionButtonPressed,
+      ]}
+    >
+      <MaterialCommunityIcons
+        name={icon}
+        size={Theme.typography.size.md}
+        color={Theme.colors.primary}
+      />
+    </Pressable>
   );
 }
 
@@ -149,6 +202,8 @@ export function DevicesTab({ state, isOwner }: DevicesTabProps) {
   const { devices, loading, error, reload, unlinkDevice } = state;
   const [linkModalOpen, setLinkModalOpen] = useState(false);
   const [deviceToDelete, setDeviceToDelete] = useState<Device | null>(null);
+  const [deviceToEdit, setDeviceToEdit] = useState<Device | null>(null);
+  const [deviceToReconnect, setDeviceToReconnect] = useState<Device | null>(null);
   const [removing, setRemoving] = useState(false);
   const [removeError, setRemoveError] = useState<string | null>(null);
 
@@ -161,7 +216,7 @@ export function DevicesTab({ state, isOwner }: DevicesTabProps) {
     try {
       const err = await unlinkDevice(deviceToDelete.id);
       if (err) {
-        setRemoveError(errorMessage(t, err));
+        setRemoveError(errorMessage(t, err, "deviceUnlink"));
         return;
       }
       setDeviceToDelete(null);
@@ -246,6 +301,8 @@ export function DevicesTab({ state, isOwner }: DevicesTabProps) {
                     isOwner={isOwner}
                     removing={removing}
                     onRequestRemove={setDeviceToDelete}
+                    onRequestEdit={setDeviceToEdit}
+                    onRequestReconnect={setDeviceToReconnect}
                   />
                   {index < devices.length - 1 ? <View style={styles.divider} /> : null}
                 </View>
@@ -267,6 +324,26 @@ export function DevicesTab({ state, isOwner }: DevicesTabProps) {
           state={state}
           onClose={() => setLinkModalOpen(false)}
           onLinked={() => setLinkModalOpen(false)}
+        />
+      ) : null}
+
+      {deviceToReconnect && isOwner ? (
+        <LinkDeviceModal
+          visible
+          state={state}
+          device={deviceToReconnect}
+          onClose={() => setDeviceToReconnect(null)}
+          onLinked={() => setDeviceToReconnect(null)}
+        />
+      ) : null}
+
+      {deviceToEdit && isOwner ? (
+        <EditDeviceModal
+          visible
+          state={state}
+          device={deviceToEdit}
+          onClose={() => setDeviceToEdit(null)}
+          onSaved={() => setDeviceToEdit(null)}
         />
       ) : null}
 

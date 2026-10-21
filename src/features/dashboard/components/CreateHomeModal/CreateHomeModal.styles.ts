@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 import { createThemeStyles, Theme } from "@/constants/theme";
 
 const TEXTAREA_MIN_HEIGHT = Theme.spacing.xl * 3;
-const PICKER_HEIGHT = Theme.spacing.xl + Theme.spacing.lg;
 
 export const styles = createThemeStyles(() => StyleSheet.create({
   form: {
@@ -16,16 +15,6 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.sm,
     fontWeight: Theme.typography.weight.bold,
-    color: Theme.colors.textPrimary,
-  },
-  pickerWrapper: {
-    borderWidth: 1,
-    borderColor: Theme.colors.border,
-    borderRadius: Theme.radius.sm,
-    backgroundColor: Theme.colors.background,
-  },
-  picker: {
-    height: PICKER_HEIGHT,
     color: Theme.colors.textPrimary,
   },
   textarea: {

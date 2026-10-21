@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Picker } from "@react-native-picker/picker";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Controller, useForm, useWatch } from "react-hook-form";
@@ -8,7 +7,7 @@ import { ScrollView, Text, useWindowDimensions, View } from "react-native";
 import { Button } from "@/components/Button/Button";
 import { Input } from "@/components/Input/Input";
 import { Modal } from "@/components/Modal/Modal";
-import { Theme } from "@/constants/theme";
+import { SelectField } from "@/components/SelectField/SelectField";
 import { sortHomeTypes } from "@/features/shared/homeTypes";
 import type { HomeType } from "@/services/home";
 import {
@@ -111,39 +110,23 @@ export function CreateHomeModal({
         />
         {errors.name ? <Text style={styles.error}>{errors.name.message}</Text> : null}
 
-        <View style={styles.field}>
-          <Text style={styles.label}>{t("fields.type")}</Text>
-          <Controller
-            control={control}
-            name="homeType"
-            render={({ field: { value, onChange } }) => (
-              <View style={styles.pickerWrapper}>
-                <Picker
-                  selectedValue={value}
-                  onValueChange={(next) => onChange(String(next))}
-                  mode="dropdown"
-                  enabled={!submitting}
-                  style={styles.picker}
-                  dropdownIconColor={Theme.colors.textSecondary}
-                >
-                  <Picker.Item
-                    label={t("placeholders.type")}
-                    value=""
-                    color={Theme.colors.textSecondary}
-                  />
-                  {sortedTypes.map((type) => (
-                    <Picker.Item
-                      key={type.idHomeType}
-                      label={t(`homeTypes.${type.name}`, { defaultValue: type.name })}
-                      value={type.idHomeType}
-                      color={Theme.colors.textPrimary}
-                    />
-                  ))}
-                </Picker>
-              </View>
-            )}
-          />
-        </View>
+        <Controller
+          control={control}
+          name="homeType"
+          render={({ field: { value, onChange } }) => (
+            <SelectField
+              label={t("fields.type")}
+              value={value}
+              options={sortedTypes.map((type) => ({
+                value: type.idHomeType,
+                label: t(`homeTypes.${type.name}`, { defaultValue: type.name }),
+              }))}
+              onChange={onChange}
+              placeholder={t("placeholders.type")}
+              disabled={submitting}
+            />
+          )}
+        />
         {errors.homeType ? <Text style={styles.error}>{errors.homeType.message}</Text> : null}
         {sortedTypes.length === 0 ? (
           <Text style={styles.error}>{t("errors.noTypesAvailable")}</Text>

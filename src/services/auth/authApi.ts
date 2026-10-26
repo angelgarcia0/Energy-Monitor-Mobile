@@ -31,7 +31,8 @@ export interface LoginResponse {
 export interface ProfileResponse {
   idPerson: string;
   name: string;
-  lastName: string;
+  /** `null` si la cuenta no tiene apellido (p. ej. creada con Google). */
+  lastName: string | null;
 }
 
 export async function login({
@@ -128,8 +129,9 @@ export const changePassword = ({
 }) => httpClient.post("/auth/password/change", { currentPassword, newPassword });
 
 /**
- * Edita nombre y apellido (siempre como par) y/o la foto de perfil. Solo se envían
- * los campos recibidos. `profileImage` es un data-URL; "" la elimina.
+ * Edita el nombre, el apellido y/o la foto de perfil, cada uno por separado: solo se
+ * envían los campos recibidos. `lastName: ""` borra el apellido; `profileImage` es un
+ * data-URL y "" la elimina.
  * Guarda en la sesión lo que el backend confirmó o, para la foto, lo enviado.
  */
 export async function updateProfile({
@@ -150,7 +152,7 @@ export async function updateProfile({
     profile: {
       ...getSession()?.profile,
       name: data.name,
-      lastName: data.lastName,
+      lastName: data.lastName ?? "",
       ...(profileImage !== undefined ? { profileImage: profileImage || null } : {}),
     },
   });

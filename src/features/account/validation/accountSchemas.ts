@@ -22,8 +22,18 @@ export const accountNameSchema = z.object({
   name: accountNameField,
 });
 
+// El apellido es opcional: una cuenta creada con Google puede no tenerlo, y vacío lo borra.
+// Si se escribe, las mismas reglas que el nombre.
+const accountLastNameField = z
+  .string()
+  .trim()
+  .max(100, message("validations:errors.nameMax"))
+  .refine((value) => value.length === 0 || value.length >= 2, {
+    error: tError("validations:errors.nameMin"),
+  });
+
 export const accountLastNameSchema = z.object({
-  lastName: accountNameField,
+  lastName: accountLastNameField,
 });
 
 export const accountEmailSchema = z.object({

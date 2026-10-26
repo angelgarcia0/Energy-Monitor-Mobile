@@ -91,5 +91,8 @@
     "failed": "Não foi possível atualizar o perfil. Tente novamente.",
     "emailTaken": "Esse e-mail já pertence a outra conta.",
     "invalid": "Os dados do perfil não são válidos."
+  },
+  "terms": {
+    "required": "Você precisa aceitar os termos e condições para continuar."
   }
 }

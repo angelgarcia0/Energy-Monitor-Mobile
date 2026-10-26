@@ -66,13 +66,22 @@ async function openSession(data: LoginResponse): Promise<AccountResponse> {
   return data.account;
 }
 
+/**
+ * `POST /auth/register` responde 202 sin cuenta: la cuenta se crea cuando se verifica el
+ * código que llega al correo (`/auth/email/verify`). Si no se verifica, el registro vence.
+ */
+export interface RegistrationResponse {
+  email: string;
+  expiresAt: string;
+}
+
 export const register = (payload: {
   email: string;
   password: string;
   name: string;
   lastName: string;
   profileImage?: string;
-}) => httpClient.post<AccountResponse>("/auth/register", payload).then((r) => r.data);
+}) => httpClient.post<RegistrationResponse>("/auth/register", payload).then((r) => r.data);
 
 export const verifyEmail = ({ email, code }: { email: string; code: string }) =>
   httpClient.post("/auth/email/verify", { email, code });

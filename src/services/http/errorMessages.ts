@@ -21,6 +21,7 @@ export type ApiOperation =
   | "passwordChange"
   | "accountDelete"
   | "accountUpdate"
+  | "emailUpdate"
   | "homeCreate"
   | "homeJoin"
   | "homeLeave"
@@ -43,7 +44,8 @@ const OPERATIONS: Partial<Record<ApiOperation, OperationStatuses>> = {
     409: "googleLogin.emailTaken",
     503: "googleLogin.unavailable",
   },
-  register: { 409: "register.emailTaken", 422: "password.policy" },
+  // 400: correo mal formado, con un proveedor mal escrito o cuyo dominio no recibe correo.
+  register: { 400: "register.invalidEmail", 409: "register.emailTaken", 422: "password.policy" },
   emailVerify: { 400: "emailVerify.invalidCode", 429: "generic.rateLimited" },
   emailResend: { 429: "generic.rateLimited" },
   passwordForgot: { 429: "generic.rateLimited" },
@@ -64,6 +66,11 @@ const OPERATIONS: Partial<Record<ApiOperation, OperationStatuses>> = {
   },
   accountUpdate: {
     400: "accountUpdate.invalid",
+    409: "accountUpdate.emailTaken",
+    default: "accountUpdate.failed",
+  },
+  emailUpdate: {
+    400: "register.invalidEmail",
     409: "accountUpdate.emailTaken",
     default: "accountUpdate.failed",
   },

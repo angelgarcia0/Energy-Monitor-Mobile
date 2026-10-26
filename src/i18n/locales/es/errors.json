@@ -24,7 +24,8 @@
     "failed": "No se pudo iniciar sesión con Google. Inténtalo de nuevo."
   },
   "register": {
-    "emailTaken": "Ya existe una cuenta con este correo."
+    "emailTaken": "Ya existe una cuenta con este correo.",
+    "invalidEmail": "Ese correo no existe o su dominio no recibe correos. Revisa que esté bien escrito."
   },
   "passwordReset": {
     "failed": "No se pudo cambiar la contraseña. Inténtalo de nuevo.",

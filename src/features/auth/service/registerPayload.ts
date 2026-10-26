@@ -13,6 +13,8 @@ export interface RegisterPayload {
   name: string;
   lastName: string;
   profileImage?: string;
+  /** El formulario no se envía sin el checkbox; el servidor lo exige (428 sin él). */
+  acceptTerms: true;
 }
 
 export function toRegisterPayload(values: RegisterFormValues): RegisterPayload {
@@ -21,5 +23,6 @@ export function toRegisterPayload(values: RegisterFormValues): RegisterPayload {
     password: values.password,
     name: values.name.trim(),
     lastName: values.lastName.trim(),
+    acceptTerms: true,
   };
 }

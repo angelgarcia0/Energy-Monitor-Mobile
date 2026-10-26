@@ -38,11 +38,17 @@ function configure() {
  * Inicio de sesión (o registro, la primera vez) con la cuenta de Google del
  * teléfono: pide el `idToken` a Google y lo canjea en `POST /auth/google`.
  *
+ * Crear la cuenta exige aceptar los términos. `acceptTerms` los da por aceptados
+ * (el checkbox del registro); si no, el servidor responde 428, se llama a
+ * `askTerms` y, si los acepta, se repite con el mismo `idToken`.
+ *
  * @returns la cuenta, o `null` si el usuario cerró el selector de cuentas
  * @throws GoogleSignInError si falla del lado de Google; un error de la API
- *         (401, 403, 409, 503) si lo rechaza el servidor
+ *         (401, 403, 409, 428, 503) si lo rechaza el servidor
  */
-export async function signInWithGoogle(): Promise<AccountResponse | null> {
+export async function signInWithGoogle(
+  options: { acceptTerms?: boolean; askTerms?: () => Promise<boolean> } = {},
+): Promise<AccountResponse | null> {
   if (!HAS_GOOGLE_SIGN_IN) throw new GoogleSignInError("notConfigured");
   configure();
 
@@ -70,5 +76,11 @@ export async function signInWithGoogle(): Promise<AccountResponse | null> {
 
   // Ocurre si webClientId no es un cliente web válido del proyecto.
   if (!idToken) throw new GoogleSignInError("failed", "NO_ID_TOKEN");
-  return loginWithGoogle(idToken);
+  try {
+    return await loginWithGoogle(idToken, options.acceptTerms ?? false);
+  } catch (error) {
+    if ((error as { status?: number })?.status !== 428 || !options.askTerms) throw error;
+    if (!(await options.askTerms())) throw error;
+    return loginWithGoogle(idToken, true);
+  }
 }

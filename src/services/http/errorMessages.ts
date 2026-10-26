@@ -37,15 +37,21 @@ export type ApiOperation =
 type OperationStatuses = Partial<Record<number, string>> & { default?: string };
 
 const OPERATIONS: Partial<Record<ApiOperation, OperationStatuses>> = {
-  login: { 401: "login.invalidCredentials", 403: "login.inactive" },
+  login: { 401: "login.invalidCredentials", 403: "login.inactive", 428: "terms.required" },
   googleLogin: {
     401: "googleLogin.rejected",
+    428: "terms.required",
     403: "login.inactive",
     409: "googleLogin.emailTaken",
     503: "googleLogin.unavailable",
   },
   // 400: correo mal formado, con un proveedor mal escrito o cuyo dominio no recibe correo.
-  register: { 400: "register.invalidEmail", 409: "register.emailTaken", 422: "password.policy" },
+  register: {
+    400: "register.invalidEmail",
+    409: "register.emailTaken",
+    422: "password.policy",
+    428: "terms.required",
+  },
   emailVerify: { 400: "emailVerify.invalidCode", 429: "generic.rateLimited" },
   emailResend: { 429: "generic.rateLimited" },
   passwordForgot: { 429: "generic.rateLimited" },

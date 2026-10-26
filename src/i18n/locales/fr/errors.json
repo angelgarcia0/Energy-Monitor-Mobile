@@ -91,5 +91,8 @@
     "failed": "Le profil n'a pas pu être mis à jour. Réessayez.",
     "emailTaken": "Cet e-mail appartient déjà à un autre compte.",
     "invalid": "Les données du profil ne sont pas valides."
+  },
+  "terms": {
+    "required": "Vous devez accepter les conditions générales pour continuer."
   }
 }

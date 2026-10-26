@@ -10,6 +10,8 @@ import {
 export interface LoginCredentials {
   email: string;
   password: string;
+  /** Solo tras aceptar los términos: el servidor responde 428 a una cuenta que nunca lo hizo. */
+  acceptTerms?: boolean;
 }
 
 export interface AccountResponse extends SessionAccount {
@@ -32,8 +34,16 @@ export interface ProfileResponse {
   lastName: string;
 }
 
-export async function login({ email, password }: LoginCredentials): Promise<AccountResponse> {
-  const { data } = await httpClient.post<LoginResponse>("/auth/login", { email, password });
+export async function login({
+  email,
+  password,
+  acceptTerms = false,
+}: LoginCredentials): Promise<AccountResponse> {
+  const { data } = await httpClient.post<LoginResponse>("/auth/login", {
+    email,
+    password,
+    ...(acceptTerms ? { acceptTerms: true } : {}),
+  });
   return openSession(data);
 }
 
@@ -41,9 +51,16 @@ export async function login({ email, password }: LoginCredentials): Promise<Acco
  * `POST /auth/google` con el `idToken` del inicio de sesión nativo de Google. La
  * primera vez el servidor crea la cuenta con el nombre, la foto y el correo de
  * Google (ya verificado), así que no hay paso de verificación como en el registro.
+ * Crear la cuenta exige `acceptTerms`; sin él el servidor responde 428.
  */
-export async function loginWithGoogle(idToken: string): Promise<AccountResponse> {
-  const { data } = await httpClient.post<LoginResponse>("/auth/google", { idToken });
+export async function loginWithGoogle(
+  idToken: string,
+  acceptTerms = false,
+): Promise<AccountResponse> {
+  const { data } = await httpClient.post<LoginResponse>("/auth/google", {
+    idToken,
+    ...(acceptTerms ? { acceptTerms: true } : {}),
+  });
   return openSession(data);
 }
 

@@ -5,13 +5,17 @@ import { useTranslation } from "react-i18next";
 import { GoogleSignInError, signInWithGoogle } from "@/services/auth";
 import { errorMessage } from "@/services/http/errorMessages";
 
+import { askTermsConsent } from "../service/termsConsent";
+
 /**
  * Botón "Continuar con Google" de las pantallas de login y registro: es el mismo
  * flujo en las dos, porque el servidor crea la cuenta la primera vez.
  *
  * `error` es el texto a mostrar; cerrar el selector de cuentas no es un error.
+ * `termsAccepted`: el checkbox de términos del registro ya está marcado; si no,
+ * el servidor pide aceptarlos (428) y se preguntan.
  */
-export function useGoogleSignIn(onSuccess?: () => void) {
+export function useGoogleSignIn(onSuccess?: () => void, termsAccepted = false) {
   const { t } = useTranslation("auth");
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
@@ -21,7 +25,10 @@ export function useGoogleSignIn(onSuccess?: () => void) {
     setSubmitting(true);
     setError("");
     try {
-      const account = await signInWithGoogle();
+      const account = await signInWithGoogle({
+        acceptTerms: termsAccepted,
+        askTerms: () => askTermsConsent(t),
+      });
       if (!account) {
         setSubmitting(false);
         return;
@@ -36,7 +43,7 @@ export function useGoogleSignIn(onSuccess?: () => void) {
       );
       setSubmitting(false);
     }
-  }, [onSuccess, router, t]);
+  }, [onSuccess, router, t, termsAccepted]);
 
   return { signIn, submitting, error };
 }

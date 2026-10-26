@@ -16,6 +16,13 @@
     "invalidCredentials": "Correo o contraseña incorrectos.",
     "inactive": "Tu cuenta está bloqueada o inactiva."
   },
+  "googleLogin": {
+    "rejected": "Google no pudo confirmar tu cuenta. Inténtalo de nuevo.",
+    "emailTaken": "Este correo ya tiene una cuenta con contraseña. Inicia sesión con tu correo y contraseña.",
+    "unavailable": "El inicio de sesión con Google no está disponible en este momento.",
+    "playServices": "Necesitas Google Play Services actualizado para iniciar sesión con Google.",
+    "failed": "No se pudo iniciar sesión con Google. Inténtalo de nuevo."
+  },
   "register": {
     "emailTaken": "Ya existe una cuenta con este correo."
   },

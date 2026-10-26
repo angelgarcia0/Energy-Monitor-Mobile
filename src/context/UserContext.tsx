@@ -73,7 +73,7 @@ export function UserProvider({ children }: UserProviderProps) {
       person
         ? {
             name: person.name,
-            lastName: person.lastName,
+            lastName: person.lastName ?? "",
             email: person.email,
             avatarUri: person.profileImage,
           }
@@ -121,16 +121,18 @@ export function UserProvider({ children }: UserProviderProps) {
   // cambios, así que siempre se envían los dos.
   const updateName = useCallback(
     async (name: string) => {
-      await authApi.updateProfile({ name, lastName: user.lastName });
+      // Solo el nombre: el apellido queda como está (puede no existir en cuentas de Google).
+      await authApi.updateProfile({ name });
     },
-    [user.lastName],
+    [],
   );
 
   const updateLastName = useCallback(
     async (lastName: string) => {
-      await authApi.updateProfile({ name: user.name, lastName });
+      // Solo el apellido; vacío lo borra.
+      await authApi.updateProfile({ lastName });
     },
-    [user.name],
+    [],
   );
 
   const updateEmail = useCallback(async (email: string) => {

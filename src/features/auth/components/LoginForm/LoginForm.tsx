@@ -12,6 +12,7 @@ import { Input } from "@/components/Input/Input";
 import { Theme } from "@/constants/theme";
 import { authApi } from "@/services/auth";
 import { errorMessage } from "@/services/http/errorMessages";
+import { useGoogleSignIn } from "../../hooks/useGoogleSignIn";
 import {
   loginSchema,
   type LoginFormValues,
@@ -29,6 +30,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
   const [remember, setRemember] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
+  const google = useGoogleSignIn(onSuccess);
 
   const {
     control,
@@ -124,8 +126,8 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           </Pressable>
         </View>
 
-        {serverError ? (
-          <Text style={styles.error}>{serverError}</Text>
+        {serverError || google.error ? (
+          <Text style={styles.error}>{serverError || google.error}</Text>
         ) : null}
 
         <View style={styles.buttonsContainer}>
@@ -133,7 +135,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
             variant="primary"
             size="large"
             style={styles.submitButton}
-            disabled={submitting}
+            disabled={submitting || google.submitting}
             onPress={handleSubmit(onSubmit)}
           >
             {submitting ? t("login.submitting") : t("login.submit")}
@@ -157,9 +159,11 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
                 style={styles.googleIcon}
               />
             }
-            onPress={() =>
-              console.log("Iniciar sesión con Google: pendiente de implementar")
-            }
+            disabled={submitting || google.submitting}
+            onPress={() => {
+              setServerError("");
+              void google.signIn();
+            }}
           >
             {t("login.google")}
           </Button>

@@ -12,6 +12,7 @@
 /** Operaciones con clave propia. `default` cubre cualquier otro status. */
 export type ApiOperation =
   | "login"
+  | "googleLogin"
   | "register"
   | "emailVerify"
   | "emailResend"
@@ -36,6 +37,12 @@ type OperationStatuses = Partial<Record<number, string>> & { default?: string };
 
 const OPERATIONS: Partial<Record<ApiOperation, OperationStatuses>> = {
   login: { 401: "login.invalidCredentials", 403: "login.inactive" },
+  googleLogin: {
+    401: "googleLogin.rejected",
+    403: "login.inactive",
+    409: "googleLogin.emailTaken",
+    503: "googleLogin.unavailable",
+  },
   register: { 409: "register.emailTaken", 422: "password.policy" },
   emailVerify: { 400: "emailVerify.invalidCode", 429: "generic.rateLimited" },
   emailResend: { 429: "generic.rateLimited" },

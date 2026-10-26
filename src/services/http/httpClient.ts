@@ -28,7 +28,7 @@ export const httpClient = axios.create({
  * "token vencido".
  */
 const PUBLIC_AUTH =
-  /\/auth\/(login|register|refresh|password\/(forgot|reset)|email\/(verify|verification\/resend))$/;
+  /\/auth\/(login|google|register|refresh|password\/(forgot|reset)|email\/(verify|verification\/resend))$/;
 
 type RetriableConfig = InternalAxiosRequestConfig & { _retry?: boolean };
 

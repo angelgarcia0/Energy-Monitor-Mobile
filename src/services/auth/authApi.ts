@@ -34,6 +34,20 @@ export interface ProfileResponse {
 
 export async function login({ email, password }: LoginCredentials): Promise<AccountResponse> {
   const { data } = await httpClient.post<LoginResponse>("/auth/login", { email, password });
+  return openSession(data);
+}
+
+/**
+ * `POST /auth/google` con el `idToken` del inicio de sesión nativo de Google. La
+ * primera vez el servidor crea la cuenta con el nombre, la foto y el correo de
+ * Google (ya verificado), así que no hay paso de verificación como en el registro.
+ */
+export async function loginWithGoogle(idToken: string): Promise<AccountResponse> {
+  const { data } = await httpClient.post<LoginResponse>("/auth/google", { idToken });
+  return openSession(data);
+}
+
+async function openSession(data: LoginResponse): Promise<AccountResponse> {
   saveSession({
     accessToken: data.accessToken,
     refreshToken: data.refreshToken,

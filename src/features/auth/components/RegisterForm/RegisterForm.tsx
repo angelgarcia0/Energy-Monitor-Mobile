@@ -12,6 +12,7 @@ import { Input } from "@/components/Input/Input";
 import { Theme } from "@/constants/theme";
 import { authApi } from "@/services/auth";
 import { errorMessage } from "@/services/http/errorMessages";
+import { useGoogleSignIn } from "../../hooks/useGoogleSignIn";
 import { toRegisterPayload } from "../../service/registerPayload";
 import {
   registerSchema,
@@ -30,6 +31,9 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
+  // Con Google no hay formulario ni verificación: la cuenta nace con el correo de
+  // Google ya verificado y entra directo, igual que desde el login.
+  const google = useGoogleSignIn(onSuccess);
 
   const {
     control,
@@ -230,8 +234,8 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           <Text style={styles.error}>{errors.terms.message}</Text>
         ) : null}
 
-        {serverError ? (
-          <Text style={styles.error}>{serverError}</Text>
+        {serverError || google.error ? (
+          <Text style={styles.error}>{serverError || google.error}</Text>
         ) : null}
 
         <View style={styles.buttonsContainer}>
@@ -239,7 +243,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
             variant="primary"
             size="large"
             style={styles.submitButton}
-            disabled={submitting}
+            disabled={submitting || google.submitting}
             onPress={handleSubmit(onSubmit)}
           >
             {submitting ? t("register.submitting") : t("register.submit")}
@@ -263,9 +267,11 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                 style={styles.googleIcon}
               />
             }
-            onPress={() =>
-              console.log("Registrarse con Google: pendiente de implementar")
-            }
+            disabled={submitting || google.submitting}
+            onPress={() => {
+              setServerError("");
+              void google.signIn();
+            }}
           >
             {t("register.google")}
           </Button>

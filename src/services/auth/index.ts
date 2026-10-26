@@ -1,4 +1,5 @@
 export * as authApi from "./authApi";
+export { GoogleSignInError, signInWithGoogle } from "./googleSignIn";
 export { useCurrentPerson } from "./useCurrentPerson";
 export {
   clearSession,

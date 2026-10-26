@@ -31,12 +31,9 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
-  // Con Google no hay formulario ni verificación: la cuenta nace con el correo de
-  // Google ya verificado y entra directo, igual que desde el login.
-  const google = useGoogleSignIn(onSuccess);
-
   const {
     control,
+    watch,
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterFormValues>({
@@ -51,6 +48,10 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
       terms: false,
     },
   });
+  // Con Google no hay formulario ni verificación: la cuenta nace con el correo de
+  // Google ya verificado. Los términos sí se exigen: si el checkbox está marcado se
+  // envían aceptados; si no, el servidor responde 428 y se preguntan.
+  const google = useGoogleSignIn(onSuccess, watch("terms") === true);
 
   const onSubmit = async (data: RegisterFormValues) => {
     setSubmitting(true);

@@ -13,6 +13,7 @@ import { Theme } from "@/constants/theme";
 import { authApi } from "@/services/auth";
 import { errorMessage } from "@/services/http/errorMessages";
 import { useGoogleSignIn } from "../../hooks/useGoogleSignIn";
+import { askTermsConsent } from "../../service/termsConsent";
 import {
   loginSchema,
   type LoginFormValues,
@@ -45,7 +46,15 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
     setSubmitting(true);
     setServerError("");
     try {
-      await authApi.login(data);
+      try {
+        await authApi.login(data);
+      } catch (error) {
+        // La cuenta nunca aceptó los términos: se preguntan y se repite aceptándolos.
+        if ((error as { status?: number })?.status !== 428 || !(await askTermsConsent(t))) {
+          throw error;
+        }
+        await authApi.login({ ...data, acceptTerms: true });
+      }
       router.replace("/dashboard");
       onSuccess?.();
     } catch (error) {

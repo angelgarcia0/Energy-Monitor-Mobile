@@ -13,7 +13,7 @@ import { Header } from "@/components/Header/Header";
 import { Theme } from "@/constants/theme";
 import { useUser } from "@/context/UserContext";
 import { authApi } from "@/services/auth";
-import { errorMessage } from "@/services/http/errorMessages";
+import { errorMessage, type ApiOperation } from "@/services/http/errorMessages";
 import { AvatarSection } from "../../components/AvatarSection/AvatarSection";
 import { ChangePasswordModal } from "../../components/ChangePasswordModal/ChangePasswordModal";
 import { DeleteAccountModal } from "../../components/DeleteAccountModal/DeleteAccountModal";
@@ -68,12 +68,12 @@ export function AccountScreen() {
   const showSuccess = (message: string) => setSuccessMessage(message);
 
   /** Envuelve una acción del backend: éxito con mensaje o error visible. */
-  const run = async (action: () => Promise<unknown>, success?: string) => {
+  const run = async (action: () => Promise<unknown>, success?: string, operation?: ApiOperation) => {
     try {
       await action();
       if (success) showSuccess(success);
     } catch (error) {
-      setErrorMessage(errorMessage(t, error));
+      setErrorMessage(errorMessage(t, error, operation));
     }
   };
 
@@ -88,7 +88,7 @@ export function AccountScreen() {
       return;
     }
 
-    await run(() => updateEmail(value), t("success.emailUpdated"));
+    await run(() => updateEmail(value), t("success.emailUpdated"), "emailUpdate");
   };
 
   const handleDeleteAccount = async (password: string) => {

@@ -24,7 +24,8 @@
     "failed": "Could not sign in with Google. Please try again."
   },
   "register": {
-    "emailTaken": "An account with this email already exists."
+    "emailTaken": "An account with this email already exists.",
+    "invalidEmail": "That email address doesn't exist or its domain can't receive mail. Check it's spelled right."
   },
   "passwordReset": {
     "failed": "The password could not be changed. Please try again.",

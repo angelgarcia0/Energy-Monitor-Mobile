@@ -24,7 +24,8 @@
     "failed": "Impossible de se connecter avec Google. Veuillez réessayer."
   },
   "register": {
-    "emailTaken": "Un compte existe déjà avec cet e-mail."
+    "emailTaken": "Un compte existe déjà avec cet e-mail.",
+    "invalidEmail": "Cette adresse e-mail n'existe pas ou son domaine ne reçoit pas de courrier. Vérifiez qu'elle est bien écrite."
   },
   "passwordReset": {
     "failed": "Le mot de passe n'a pas pu être modifié. Réessayez.",

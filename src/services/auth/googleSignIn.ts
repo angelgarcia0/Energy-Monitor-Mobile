@@ -47,7 +47,12 @@ function configure() {
  *         (401, 403, 409, 428, 503) si lo rechaza el servidor
  */
 export async function signInWithGoogle(
-  options: { acceptTerms?: boolean; askTerms?: () => Promise<boolean> } = {},
+  options: {
+    acceptTerms?: boolean;
+    askTerms?: () => Promise<boolean>;
+    /** "Mantener la sesión iniciada"; por defecto, sí. */
+    remember?: boolean;
+  } = {},
 ): Promise<AccountResponse | null> {
   if (!HAS_GOOGLE_SIGN_IN) throw new GoogleSignInError("notConfigured");
   configure();
@@ -77,10 +82,10 @@ export async function signInWithGoogle(
   // Ocurre si webClientId no es un cliente web válido del proyecto.
   if (!idToken) throw new GoogleSignInError("failed", "NO_ID_TOKEN");
   try {
-    return await loginWithGoogle(idToken, options.acceptTerms ?? false);
+    return await loginWithGoogle(idToken, options.acceptTerms ?? false, options.remember);
   } catch (error) {
     if ((error as { status?: number })?.status !== 428 || !options.askTerms) throw error;
     if (!(await options.askTerms())) throw error;
-    return loginWithGoogle(idToken, true);
+    return loginWithGoogle(idToken, true, options.remember);
   }
 }

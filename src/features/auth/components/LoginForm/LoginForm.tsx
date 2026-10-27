@@ -28,10 +28,12 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
   const { t } = useTranslation("auth");
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const [remember, setRemember] = useState(false);
+  // Marcada por defecto: lo esperado en un teléfono es no volver a escribir la
+  // contraseña cada vez que se abre la app.
+  const [remember, setRemember] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
-  const google = useGoogleSignIn(onSuccess);
+  const google = useGoogleSignIn(onSuccess, false, remember);
 
   const {
     control,
@@ -47,13 +49,13 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
     setServerError("");
     try {
       try {
-        await authApi.login(data);
+        await authApi.login({ ...data, remember });
       } catch (error) {
         // La cuenta nunca aceptó los términos: se preguntan y se repite aceptándolos.
         if ((error as { status?: number })?.status !== 428 || !(await askTermsConsent(t))) {
           throw error;
         }
-        await authApi.login({ ...data, acceptTerms: true });
+        await authApi.login({ ...data, remember, acceptTerms: true });
       }
       router.replace("/dashboard");
       onSuccess?.();
@@ -117,6 +119,8 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           <Pressable
             style={styles.remember}
             onPress={() => setRemember((prev) => !prev)}
+            accessibilityRole="checkbox"
+            accessibilityState={{ checked: remember }}
           >
             <View style={[styles.checkbox, remember && styles.checkboxChecked]}>
               {remember ? (

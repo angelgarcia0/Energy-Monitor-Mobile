@@ -35,6 +35,8 @@ export interface Session {
    * petición en vez de descubrir que ya venció cuando responde 401.
    */
   expiresAt?: number;
+  /** Id de la sesión del backend que contestó el login (lo pide POST /auth/logout). */
+  idUserSession?: string;
   account?: SessionAccount;
   profile?: SessionProfile;
 }
@@ -51,6 +53,11 @@ export interface CurrentPerson {
 let cache: Session | null = null;
 let hydrated = false;
 let snapshot = "null";
+/**
+ * `false` cuando el usuario desmarcó "Mantener la sesión iniciada": la sesión
+ * vive solo en memoria y cerrar la app la termina. Lo fija cada login.
+ */
+let persistent = true;
 
 const listeners = new Set<() => void>();
 const notify = () => {
@@ -75,6 +82,8 @@ export async function hydrateSession(): Promise<void> {
   } catch {
     cache = null;
   }
+  // Lo que está en disco se guardó porque el usuario pidió mantener la sesión.
+  persistent = true;
   hydrated = true;
   notify();
 }
@@ -122,13 +131,30 @@ export function saveSession(patch: Partial<Session>): void {
   cache = next;
   notify();
 
+  const persist = persistent;
   void enqueue(async () => {
     try {
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      if (persist) {
+        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      } else {
+        // Una sesión anterior que sí se guardó no debe revivir al reabrir la app.
+        await AsyncStorage.removeItem(STORAGE_KEY);
+      }
     } catch {
       // Sin persistencia la sesión sigue viva en memoria hasta cerrar la app.
     }
   });
+}
+
+/**
+ * Abre la sesión de un login. `persist` es la casilla "Mantener la sesión
+ * iniciada": con ella la sesión se guarda en disco y la app la recupera al
+ * abrirse; sin ella, dura hasta cerrar la app. Las renovaciones del token
+ * siguen la misma elección.
+ */
+export function startSession(session: Session, persist: boolean): void {
+  persistent = persist;
+  saveSession(session);
 }
 
 export function clearSession(): void {
@@ -213,10 +239,12 @@ function expiryFromToken(token: string | undefined): number | undefined {
 }
 
 /**
- * El `sub` del access token es el id de la sesión (lo pide POST /auth/logout).
+ * Id de la sesión del backend (lo pide POST /auth/logout). No es el `sub` del
+ * access token: ese es el id de la cuenta, y el backend responde 404 a él. Una
+ * sesión guardada antes de existir el campo no lo tiene.
  */
 export function getSessionId(): string | null {
-  return readClaims(cache?.accessToken)?.sub ?? null;
+  return cache?.idUserSession ?? null;
 }
 
 /** Datos del usuario en sesión (el backend no devuelve nombre en el login). */

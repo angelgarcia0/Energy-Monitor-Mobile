@@ -9,8 +9,9 @@ export interface ProfileFieldProps {
   label: string;
   value: string;
   /** Texto ya traducido para el accessibilityLabel del botón de edición. */
-  editAccessibilityLabel: string;
-  onEdit: () => void;
+  editAccessibilityLabel?: string;
+  /** Sin él el campo es de solo lectura y no muestra el botón de edición. */
+  onEdit?: () => void;
 }
 
 export function ProfileField({
@@ -28,18 +29,20 @@ export function ProfileField({
         </Text>
       </View>
 
-      <Pressable
-        onPress={onEdit}
-        accessibilityRole="button"
-        accessibilityLabel={editAccessibilityLabel}
-        style={({ pressed }) => [styles.editButton, pressed && styles.editButtonPressed]}
-      >
-        <Ionicons
-          name="create-outline"
-          size={Theme.typography.size.md}
-          color={Theme.colors.primary}
-        />
-      </Pressable>
+      {onEdit ? (
+        <Pressable
+          onPress={onEdit}
+          accessibilityRole="button"
+          accessibilityLabel={editAccessibilityLabel}
+          style={({ pressed }) => [styles.editButton, pressed && styles.editButtonPressed]}
+        >
+          <Ionicons
+            name="create-outline"
+            size={Theme.typography.size.md}
+            color={Theme.colors.primary}
+          />
+        </Pressable>
+      ) : null}
     </View>
   );
 }

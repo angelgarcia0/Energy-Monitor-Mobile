@@ -61,6 +61,12 @@ const SUBFILTERS: Record<FilterKey, SubFilter[] | null> = {
   ],
 };
 
+/** Mes y año muestran el rango real del periodo; día y semana, un texto relativo. */
+const RANGE_OPTIONS: Partial<Record<FilterKey, Intl.DateTimeFormatOptions>> = {
+  month: { day: "numeric", month: "long", year: "numeric" },
+  year: { month: "long", year: "numeric" },
+};
+
 /**
  * Las claves del bucket son neutras a propósito (`day` → "0".."23",
  * `week`/`month` → "YYYY-MM-DD", `year` → "YYYY-MM"): la etiqueta se genera al
@@ -69,15 +75,18 @@ const SUBFILTERS: Record<FilterKey, SubFilter[] | null> = {
  * `new Date("2026-10-01")` se interpreta como UTC y en zonas negativas se
  * atrasa un día, así que la fecha se arma por partes en hora local.
  */
+function keyToDate(key: string): Date {
+  const [year, month, day = "1"] = key.split("-");
+  return new Date(Number(year), Number(month) - 1, Number(day));
+}
+
 function bucketLabel(key: string, period: FilterKey, locale: string): string {
   if (period === "day") {
     const hour = Number(key);
     return `${String(hour).padStart(2, "0")}:00`;
   }
 
-  const [year, month, day = "1"] = key.split("-");
-  const date = new Date(Number(year), Number(month) - 1, Number(day));
-
+  const date = keyToDate(key);
   if (period === "week") {
     return date.toLocaleDateString(locale, { weekday: "short" });
   }
@@ -97,6 +106,8 @@ export function ConsumptionHistoryTab({ homeId, devices }: ConsumptionHistoryTab
 
   const [activeFilter, setActiveFilter] = useState<FilterKey>("month");
   const [activeSubFilter, setActiveSubFilter] = useState<string | null>(null);
+  // `null` sigue al electrodoméstico que más consumió en el periodo.
+  const [manualType, setManualType] = useState<string | null>(null);
   const { history, loading, error, reload } = useConsumptionHistory(
     homeId,
     activeFilter,
@@ -106,9 +117,8 @@ export function ConsumptionHistoryTab({ homeId, devices }: ConsumptionHistoryTab
   const selectedSub = subFilters?.find((sf) => sf.key === activeSubFilter);
 
   // El bucket trae `{deviceId, energy}`; el tipo de electrodoméstico sale del
-  // listado de dispositivos. Un `deviceId` que ya no está en la lista (desvinculado
-  // durante el periodo) no se cuela en ningún tipo: su energía se suma al total
-  // del hogar pero no aparece en el ranking, que es lo que se ve.
+  // listado de dispositivos. Un `deviceId` que ya no está en la lista
+  // (desvinculado durante el periodo) no cuenta en ningún tipo, igual que en la Web.
   const typeByDevice = useMemo(
     () => new Map(devices.map((device) => [device.id, device.applianceType])),
     [devices],
@@ -120,14 +130,13 @@ export function ConsumptionHistoryTab({ homeId, devices }: ConsumptionHistoryTab
     return APPLIANCE_TYPE_IDS.filter((type) => present.has(type));
   }, [devices]);
 
-  const [manualType, setManualType] = useState<string | null>(null);
+  const allBuckets = useMemo(() => history?.buckets ?? [], [history]);
 
   const rows = useMemo(() => {
-    const buckets = history?.buckets ?? [];
-    if (!selectedSub) return buckets;
+    if (!selectedSub) return allBuckets;
     const [start, end] = selectedSub.range;
-    return buckets.slice(start, Math.min(end, buckets.length));
-  }, [history, selectedSub]);
+    return allBuckets.slice(start, Math.min(end, allBuckets.length));
+  }, [allBuckets, selectedSub]);
 
   const series = useMemo(
     () =>
@@ -140,19 +149,10 @@ export function ConsumptionHistoryTab({ homeId, devices }: ConsumptionHistoryTab
         return {
           label: bucketLabel(bucket.key, activeFilter, i18n.language),
           perType,
-          total: Number(bucket.devices.reduce((sum, d) => sum + d.energy, 0).toFixed(3)),
         };
       }),
     [rows, typeByDevice, activeFilter, i18n.language],
   );
-
-  const totalPeriod = useMemo(
-    () => series.reduce((sum, point) => sum + point.total, 0),
-    [series],
-  );
-
-  const average = series.length ? totalPeriod / series.length : 0;
-  const previousTotal = history?.previousTotal ?? null;
 
   const ranking = useMemo(
     () =>
@@ -166,27 +166,52 @@ export function ConsumptionHistoryTab({ homeId, devices }: ConsumptionHistoryTab
     [categoryTypes, series, t],
   );
 
-  // Sin selección manual sigue al electrodoméstico que más consumió.
+  const totalPeriod = ranking.reduce((sum, item) => sum + item.total, 0);
+  const averagePerType = totalPeriod / (ranking.length || 1);
+
   const selectedType = manualType ?? ranking[0]?.type ?? null;
   const chartValues = selectedType
     ? series.map((point) => Number((point.perType[selectedType] ?? 0).toFixed(3)))
     : [];
 
-  // La comparación solo tiene sentido sobre el periodo completo: con un
-  // subfiltro, `previousTotal` es de todo el periodo y no de laportion elegida.
-  const comparison = useMemo(() => {
-    if (activeSubFilter || previousTotal === null) return t("history:stats.periodTotal");
-    if (previousTotal === 0) return t("history:stats.noPrevious");
+  // Encabezado del gráfico: mes y año se calculan del primer y último punto del
+  // periodo; día y semana usan los textos relativos traducidos.
+  const dateRangeText = useMemo(() => {
+    const options = RANGE_OPTIONS[activeFilter];
+    if (!options || allBuckets.length === 0) return t(`history:dates.${activeFilter}`);
+    const format = (key: string) => keyToDate(key).toLocaleDateString(i18n.language, options);
+    const first = format(allBuckets[0].key);
+    const last = format(allBuckets[allBuckets.length - 1].key);
+    return first === last ? first : `${first} – ${last}`;
+  }, [activeFilter, allBuckets, t, i18n.language]);
+
+  // Comparación con el periodo anterior completo. Con un subfiltro no aplica:
+  // `previousTotal` es de todo el periodo, no de la porción elegida.
+  // trend: "up" (consume más, en rojo), "down" (consume menos, en verde) o null.
+  const previousTotal = history?.previousTotal ?? null;
+  const comparison = useMemo((): { text: string; trend: "up" | "down" | null } | null => {
+    if (activeSubFilter) return { text: t("history:stats.intervalOnly"), trend: null };
+    if (previousTotal === null) return null;
+    if (previousTotal === 0) return { text: t("history:stats.noPrevious"), trend: null };
     const pct = Math.round(((totalPeriod - previousTotal) / previousTotal) * 100);
-    return t("history:stats.vsPrevious", {
-      sign: pct > 0 ? "↑" : pct < 0 ? "↓" : "=",
-      pct: Math.abs(pct),
-    });
+    return {
+      text: t("history:stats.vsPrevious", {
+        sign: pct > 0 ? "↑" : pct < 0 ? "↓" : "=",
+        pct: Math.abs(pct),
+      }),
+      trend: pct > 0 ? "up" : pct < 0 ? "down" : null,
+    };
   }, [activeSubFilter, previousTotal, totalPeriod, t]);
 
-  const handleFilter = (filter: FilterKey) => {
+  // Al cambiar de periodo o de intervalo se vuelve a seguir al mayor consumidor.
+  const selectFilter = (filter: FilterKey) => {
     setActiveFilter(filter);
     setActiveSubFilter(null);
+    setManualType(null);
+  };
+  const selectSubFilter = (subFilter: string | null) => {
+    setActiveSubFilter(subFilter);
+    setManualType(null);
   };
 
   const needsScroll = series.length > 8;
@@ -194,13 +219,17 @@ export function ConsumptionHistoryTab({ homeId, devices }: ConsumptionHistoryTab
     ? series.length * BAR_SLOT_WIDTH
     : width - Theme.spacing.md * 4;
 
+  const ready = !loading && !error && history !== null;
+
   return (
     <ScrollView contentContainerStyle={styles.content}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipRow}>
         {FILTERS.map((filter) => (
           <Pressable
             key={filter}
-            onPress={() => handleFilter(filter)}
+            onPress={() => selectFilter(filter)}
+            accessibilityRole="button"
+            accessibilityState={{ selected: activeFilter === filter }}
             style={[styles.chip, activeFilter === filter && styles.chipActive]}
           >
             <Text style={[styles.chipText, activeFilter === filter && styles.chipTextActive]}>
@@ -209,35 +238,50 @@ export function ConsumptionHistoryTab({ homeId, devices }: ConsumptionHistoryTab
           </Pressable>
         ))}
       </ScrollView>
-      <Text style={styles.date}>
-        {t(`history:dates.${activeFilter}`)}
-      </Text>
 
       {subFilters ? (
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipRow}>
-          {subFilters.map((sf) => (
+          {/* "Todo" siempre visible: cambiar de intervalo no mueve los botones. */}
+          {[null, ...subFilters.map((sf) => sf.key)].map((key) => (
             <Pressable
-              key={sf.key}
-              onPress={() => setActiveSubFilter(sf.key)}
-              style={[styles.chip, activeSubFilter === sf.key && styles.chipSoftActive]}
+              key={key ?? "all"}
+              onPress={() => selectSubFilter(key)}
+              accessibilityRole="button"
+              accessibilityState={{ selected: activeSubFilter === key }}
+              style={[styles.chip, activeSubFilter === key && styles.chipSoftActive]}
             >
-              <Text style={[styles.chipText, activeSubFilter === sf.key && styles.chipSoftActiveText]}>
-                {t(`history:subfilters.${activeFilter}.${sf.key}`)}
+              <Text style={[styles.chipText, activeSubFilter === key && styles.chipSoftActiveText]}>
+                {key
+                  ? t(`history:subfilters.${activeFilter}.${key}`)
+                  : t("history:subfilters.showAll")}
               </Text>
             </Pressable>
           ))}
-          {activeSubFilter ? (
-            <Pressable onPress={() => setActiveSubFilter(null)} style={styles.chip}>
-              <Text style={styles.clearText}>
-                {t("history:subfilters.showAll")}
-              </Text>
-            </Pressable>
-          ) : null}
         </ScrollView>
       ) : null}
 
       <Card>
-        <Text style={styles.title}>{t("history:chart.title")}</Text>
+        <Text style={styles.title}>{t(`history:chart.title.${activeFilter}`)}</Text>
+        <Text style={styles.date}>{dateRangeText}</Text>
+
+        {categoryTypes.length > 0 ? (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipRow}>
+            {categoryTypes.map((type) => (
+              <Pressable
+                key={type}
+                onPress={() => setManualType(type)}
+                accessibilityRole="button"
+                accessibilityState={{ selected: selectedType === type }}
+                style={[styles.chip, selectedType === type && styles.chipSoftActive]}
+              >
+                <View style={[styles.dot, { backgroundColor: getDeviceColor(type, mode) }]} />
+                <Text style={[styles.chipText, selectedType === type && styles.chipSoftActiveText]}>
+                  {getApplianceLabel(t, type)}
+                </Text>
+              </Pressable>
+            ))}
+          </ScrollView>
+        ) : null}
 
         {loading ? <Loader text={t("history:state.loading")} /> : null}
 
@@ -252,34 +296,16 @@ export function ConsumptionHistoryTab({ homeId, devices }: ConsumptionHistoryTab
           </View>
         ) : null}
 
-        {!loading && !error && series.length > 0 && categoryTypes.length > 0 ? (
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipRow}>
-            {categoryTypes.map((type) => (
-              <Pressable
-                key={type}
-                onPress={() => setManualType(type)}
-                style={[styles.chip, selectedType === type && styles.chipSoftActive]}
-              >
-                <View style={[styles.dot, { backgroundColor: getDeviceColor(type, mode) }]} />
-                <Text style={[styles.chipText, selectedType === type && styles.chipSoftActiveText]}>
-                  {getApplianceLabel(t, type)}
-                </Text>
-              </Pressable>
-            ))}
-          </ScrollView>
-        ) : null}
-
-        {!loading && !error && series.length === 0 ? (
-          <Text style={styles.empty}>{t("history:chart.empty")}</Text>
-        ) : null}
-
-        {!loading && !error && chartValues.length > 0 ? (
+        {ready && chartValues.length > 0 ? (
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <Chart
               type="bar"
               width={chartWidth}
               height={300}
               style={styles.chart}
+              decimalPlaces={2}
+              // Con muchas barras los valores se encimarían; el eje Y da la escala.
+              showValues={false}
               data={{
                 labels: series.map((point) => point.label),
                 datasets: [{ data: chartValues }],
@@ -288,33 +314,53 @@ export function ConsumptionHistoryTab({ homeId, devices }: ConsumptionHistoryTab
           </ScrollView>
         ) : null}
 
-        {!loading && !error && chartValues.length === 0 && series.length > 0 ? (
-          <Text style={styles.empty}>{t("history:chart.noData")}</Text>
+        {ready && chartValues.length === 0 ? (
+          <Text style={styles.empty}>
+            {t(devices.length ? "history:chart.noData" : "history:chart.empty")}
+          </Text>
         ) : null}
       </Card>
 
-      {!loading && !error && series.length > 0 ? (
-        <>
-          <Card>
-            <Text style={styles.statLabel}>
-              {t("history:stats.totalConsumption")}
-            </Text>
-            <Text style={styles.statValue}>{totalPeriod.toFixed(2)} kWh</Text>
-            <Text style={styles.statSub}>{comparison}</Text>
-          </Card>
-          <Card>
-            <Text style={styles.statLabel}>{t("history:stats.average")}</Text>
-            <Text style={styles.statValue}>{average.toFixed(2)} kWh</Text>
-            <Text style={styles.statSub}>{t("history:stats.periodAverage")}</Text>
-          </Card>
-        </>
-      ) : null}
-
-      {!loading && !error && ranking.length > 0 ? (
+      {ready && ranking.length > 0 ? (
         <Card>
-          <Text style={styles.title}>{t("history:ranking.title")}</Text>
+          <Text style={styles.title}>{t("history:summary.title")}</Text>
+
+          <View style={styles.statMain}>
+            <Text style={styles.statLabel}>{t("history:stats.totalConsumption")}</Text>
+            <Text style={styles.statValue}>{totalPeriod.toFixed(2)} kWh</Text>
+            {comparison ? (
+              <Text
+                style={[
+                  styles.statSub,
+                  comparison.trend === "up" && styles.trendUp,
+                  comparison.trend === "down" && styles.trendDown,
+                ]}
+              >
+                {comparison.text}
+              </Text>
+            ) : null}
+          </View>
+
+          <View style={styles.statRow}>
+            <View style={styles.stat}>
+              <Text style={styles.statLabel}>{t("history:stats.periodAverage")}</Text>
+              <Text style={styles.statSmallValue}>{averagePerType.toFixed(2)} kWh</Text>
+            </View>
+            <View style={styles.stat}>
+              <Text style={styles.statLabel}>{t("history:stats.topConsumer")}</Text>
+              <Text style={styles.statSmallValue} numberOfLines={1}>
+                {ranking[0].name}
+              </Text>
+            </View>
+          </View>
+
+          <Text style={[styles.title, styles.rankingTitle]}>
+            {t("history:ranking.title")}
+          </Text>
           <View style={styles.tableHeader}>
-            <Text style={[styles.headerText, styles.colPosition]}>#</Text>
+            <Text style={[styles.headerText, styles.colPosition]}>
+              {t("history:ranking.headers.position")}
+            </Text>
             <Text style={[styles.headerText, styles.colName]}>
               {t("history:ranking.headers.device")}
             </Text>
@@ -350,14 +396,6 @@ export function ConsumptionHistoryTab({ homeId, devices }: ConsumptionHistoryTab
               </View>
             );
           })}
-        </Card>
-      ) : null}
-
-      {!loading && !error && ranking.length > 0 ? (
-        <Card>
-          <Text style={styles.statLabel}>{t("history:stats.topConsumer")}</Text>
-          <Text style={styles.statValue}>{ranking[0].name}</Text>
-          <Text style={styles.statSub}>{ranking[0].total.toFixed(2)} kWh</Text>
         </Card>
       ) : null}
     </ScrollView>

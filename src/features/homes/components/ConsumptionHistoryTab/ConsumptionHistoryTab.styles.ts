@@ -46,16 +46,11 @@ export const styles = createThemeStyles(() => StyleSheet.create({
   chipSoftActiveText: {
     color: Theme.colors.primary,
   },
-  clearText: {
-    fontFamily: Theme.typography.fontPrimary,
-    fontSize: Theme.typography.size.sm,
-    fontWeight: Theme.typography.weight.medium,
-    color: Theme.colors.danger,
-  },
   date: {
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.xs,
     color: Theme.colors.textSecondary,
+    marginBottom: Theme.spacing.sm,
   },
   dot: {
     width: DOT_SIZE,
@@ -68,6 +63,10 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     fontWeight: Theme.typography.weight.bold,
     letterSpacing: 0.5,
     color: Theme.colors.textPrimary,
+    marginBottom: Theme.spacing.xs,
+  },
+  rankingTitle: {
+    marginTop: Theme.spacing.lg,
     marginBottom: Theme.spacing.sm,
   },
   chart: {
@@ -149,5 +148,33 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.xs,
     color: Theme.colors.textSecondary,
+  },
+  statMain: {
+    marginTop: Theme.spacing.sm,
+    paddingBottom: Theme.spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: Theme.colors.border,
+  },
+  statRow: {
+    flexDirection: "row",
+    gap: Theme.spacing.md,
+    paddingTop: Theme.spacing.md,
+  },
+  stat: {
+    flex: 1,
+    gap: Theme.spacing.xs,
+  },
+  statSmallValue: {
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.md,
+    fontWeight: Theme.typography.weight.bold,
+    color: Theme.colors.textPrimary,
+  },
+  // Consumir más que el periodo anterior es malo (rojo); menos, bueno (verde).
+  trendUp: {
+    color: Theme.colors.dangerText,
+  },
+  trendDown: {
+    color: Theme.colors.successText,
   },
 }));

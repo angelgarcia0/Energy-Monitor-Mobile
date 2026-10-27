@@ -30,6 +30,10 @@ export type ChartProps =
       height?: number;
       width?: number;
       style?: StyleProp<ViewStyle>;
+      /** Decimales del eje Y; por defecto 0. Los kWh pequeños necesitan más. */
+      decimalPlaces?: number;
+      /** Solo `bar`: el valor encima de cada barra. Por defecto se muestra. */
+      showValues?: boolean;
     }
   | {
       type: "pie";
@@ -61,7 +65,7 @@ export function Chart(props: ChartProps) {
     backgroundColor: Theme.colors.surface,
     backgroundGradientFrom: Theme.colors.surface,
     backgroundGradientTo: Theme.colors.surface,
-    decimalPlaces: 0,
+    decimalPlaces: props.type === "pie" ? 0 : (props.decimalPlaces ?? 0),
     color: (opacity = 1) => hexToRgba(Theme.colors.primary, opacity),
     labelColor: (opacity = 1) => hexToRgba(Theme.colors.textSecondary, opacity),
     propsForBackgroundLines: {
@@ -99,7 +103,7 @@ export function Chart(props: ChartProps) {
           height={height}
           chartConfig={baseChartConfig}
           fromZero
-          showValuesOnTopOfBars
+          showValuesOnTopOfBars={props.showValues ?? true}
           yAxisLabel=""
           yAxisSuffix=""
         />

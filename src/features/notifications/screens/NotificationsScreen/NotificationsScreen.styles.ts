@@ -53,12 +53,15 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Theme.colors.border,
   },
+  // Cuatro pestañas no caben en una fila de teléfono: van de dos en dos.
   tabs: {
     flexDirection: "row",
+    flexWrap: "wrap",
     gap: Theme.spacing.xs,
   },
   tab: {
-    flex: 1,
+    flexGrow: 1,
+    flexBasis: "45%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
@@ -96,6 +99,44 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     fontSize: Theme.typography.size.xs,
     fontWeight: Theme.typography.weight.bold,
     color: Theme.colors.onBrand,
+  },
+  scopeChips: {
+    flexDirection: "row",
+    gap: Theme.spacing.xs,
+    paddingVertical: Theme.spacing.xs / 2,
+  },
+  scopeChip: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Theme.spacing.xs,
+    maxWidth: 200,
+    paddingVertical: Theme.spacing.xs,
+    paddingHorizontal: Theme.spacing.sm,
+    borderWidth: 1,
+    borderColor: Theme.colors.border,
+    borderRadius: Theme.radius.lg,
+    backgroundColor: Theme.colors.surface,
+  },
+  scopeChipActive: {
+    borderColor: Theme.colors.primary,
+    backgroundColor: Theme.colors.primarySoft,
+  },
+  scopeChipLabel: {
+    flexShrink: 1,
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.xs,
+    fontWeight: Theme.typography.weight.medium,
+    color: Theme.colors.textSecondary,
+  },
+  scopeChipLabelActive: {
+    fontWeight: Theme.typography.weight.bold,
+    color: Theme.colors.primary,
+  },
+  scopeChipCount: {
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.xs,
+    fontWeight: Theme.typography.weight.bold,
+    color: Theme.colors.textSecondary,
   },
   markAllButton: {
     flexDirection: "row",

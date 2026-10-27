@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 
 import { Theme } from "@/constants/theme";
+import { activityIcon, activityText, type UiActivity } from "../../data/activityTypes";
 import type { UiAlert } from "../../data/alertTypes";
 import type { UiRecommendation } from "../../data/recommendationTypes";
 import { styles } from "./NotificationRow.styles";
@@ -226,6 +227,95 @@ export function RecommendationRow({
               disabled={busy}
               accessibilityRole="button"
               accessibilityLabel={t("deleteRecommendationLabel", { title })}
+              style={styles.markReadButton}
+            >
+              <Ionicons
+                name="trash-outline"
+                size={Theme.typography.size.sm}
+                color={Theme.colors.danger}
+              />
+              <Text style={styles.markReadLabel}>{t("actions.delete")}</Text>
+            </Pressable>
+          ) : null}
+        </View>
+      </View>
+    </View>
+  );
+}
+export interface ActivityRowProps {
+  activity: UiActivity;
+  formatDate: (isoDate: string) => string;
+  onMarkRead: (id: string) => void;
+  /** Solo las ya leídas, como en las recomendaciones. */
+  onRemove?: (id: string) => void;
+  busy?: boolean;
+}
+
+/**
+ * Lo que pasó en la cuenta, los hogares y los dispositivos: bienvenida, hogar
+ * creado, miembros que entran o salen, umbrales, propietario, hogar eliminado,
+ * dispositivos.
+ */
+export function ActivityRow({
+  activity,
+  formatDate,
+  onMarkRead,
+  onRemove,
+  busy = false,
+}: ActivityRowProps) {
+  const { t } = useTranslation("notifications");
+  const { title, message } = activityText(activity, t);
+
+  return (
+    <View style={[styles.row, activity.read && styles.rowMuted]}>
+      <View style={[styles.icon, styles.iconInfo]}>
+        <Ionicons
+          name={activityIcon(activity.key)}
+          size={Theme.typography.size.lg}
+          color={Theme.colors.infoText}
+        />
+      </View>
+
+      <View style={styles.body}>
+        <View style={styles.top}>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={[styles.badge, activity.read ? styles.badgeRead : styles.badgeNew]}>
+            {activity.read ? t("status.read") : t("status.new")}
+          </Text>
+        </View>
+
+        <Text style={styles.message}>{message}</Text>
+
+        <View style={styles.meta}>
+          <Text style={styles.metaText}>{activity.home ?? t("filter.account")}</Text>
+          <View style={styles.metaDot} />
+          <Text style={styles.metaText}>{formatDate(activity.date)}</Text>
+        </View>
+
+        <View style={styles.actions}>
+          {!activity.read ? (
+            <Pressable
+              onPress={() => onMarkRead(activity.id)}
+              disabled={busy}
+              accessibilityRole="button"
+              accessibilityLabel={t("markReadLabel", { title })}
+              style={styles.markReadButton}
+            >
+              <Ionicons
+                name="checkmark"
+                size={Theme.typography.size.sm}
+                color={Theme.colors.primary}
+              />
+              <Text style={styles.markReadLabel}>{t("actions.markRead")}</Text>
+            </Pressable>
+          ) : null}
+
+          {activity.read && onRemove ? (
+            <Pressable
+              onPress={() => onRemove(activity.id)}
+              disabled={busy}
+              accessibilityRole="button"
+              accessibilityLabel={t("deleteActivityLabel", { title })}
               style={styles.markReadButton}
             >
               <Ionicons

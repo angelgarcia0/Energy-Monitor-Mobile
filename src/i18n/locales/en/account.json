@@ -14,7 +14,12 @@
     "message": "This action is permanent. You will lose access to your homes and your consumption data.",
     "confirm": "Delete",
     "cancel": "Cancel",
-    "passwordLabel": "Password"
+    "passwordLabel": "Password",
+    "googleMessage": "Your account uses Google, so it has no password. To confirm, we'll send a code to {{email}}.",
+    "sendCode": "Send me the code",
+    "resendCode": "Send another code",
+    "codeLabel": "6-digit code",
+    "codeSent": "We sent a code to {{email}}. It expires in 15 minutes."
   },
   "breadcrumb": {
     "home": "Home",
@@ -55,5 +60,6 @@
   },
   "permissions": {
     "photoDenied": "We need permission to access your photos to add one."
-  }
+  },
+  "passwordGoogle": "Managed by Google"
 }

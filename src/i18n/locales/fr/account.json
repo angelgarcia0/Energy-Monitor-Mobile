@@ -14,7 +14,12 @@
     "message": "Cette action est définitive. Vous perdrez l'accès à vos foyers et à vos données de consommation.",
     "confirm": "Supprimer",
     "cancel": "Annuler",
-    "passwordLabel": "Mot de passe"
+    "passwordLabel": "Mot de passe",
+    "googleMessage": "Votre compte utilise Google, il n'a donc pas de mot de passe. Pour confirmer, nous enverrons un code à {{email}}.",
+    "sendCode": "M'envoyer le code",
+    "resendCode": "Envoyer un autre code",
+    "codeLabel": "Code à 6 chiffres",
+    "codeSent": "Nous avons envoyé un code à {{email}}. Il expire dans 15 minutes."
   },
   "breadcrumb": {
     "home": "Accueil",
@@ -55,5 +60,6 @@
   },
   "permissions": {
     "photoDenied": "Nous avons besoin de l'accès à vos photos pour en ajouter une."
-  }
+  },
+  "passwordGoogle": "Géré par Google"
 }

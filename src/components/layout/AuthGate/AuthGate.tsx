@@ -43,6 +43,11 @@ export function AuthGate({ children }: { children: ReactNode }) {
     if (!isAuthenticated && !PUBLIC_ROUTES.has(pathname)) {
       router.replace("/");
     }
+    // La app abre en el login (`/`): con una sesión guardada se pasa directo al
+    // dashboard, en vez de pedir de nuevo la contraseña en cada arranque.
+    if (isAuthenticated && pathname === "/") {
+      router.replace("/dashboard");
+    }
   }, [isAuthenticated, isRestoring, pathname, router]);
 
   useEffect(() => {

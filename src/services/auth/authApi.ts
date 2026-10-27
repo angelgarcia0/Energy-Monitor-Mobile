@@ -4,6 +4,7 @@ import {
   getSession,
   getSessionId,
   saveSession,
+  startSession,
   type SessionAccount,
 } from "./session";
 
@@ -12,6 +13,8 @@ export interface LoginCredentials {
   password: string;
   /** Solo tras aceptar los términos: el servidor responde 428 a una cuenta que nunca lo hizo. */
   acceptTerms?: boolean;
+  /** "Mantener la sesión iniciada"; sin ella la sesión dura hasta cerrar la app. */
+  remember?: boolean;
 }
 
 export interface AccountResponse extends SessionAccount {
@@ -25,6 +28,7 @@ export interface LoginResponse {
   tokenType: string;
   expiresIn: number;
   account: AccountResponse;
+  idUserSession: string;
 }
 
 /** `GET /auth/account` y `PUT /auth/profile` devuelven la persona persistida. */
@@ -39,13 +43,14 @@ export async function login({
   email,
   password,
   acceptTerms = false,
+  remember = true,
 }: LoginCredentials): Promise<AccountResponse> {
   const { data } = await httpClient.post<LoginResponse>("/auth/login", {
     email,
     password,
     ...(acceptTerms ? { acceptTerms: true } : {}),
   });
-  return openSession(data);
+  return openSession(data, remember);
 }
 
 /**
@@ -57,28 +62,36 @@ export async function login({
 export async function loginWithGoogle(
   idToken: string,
   acceptTerms = false,
+  remember = true,
 ): Promise<AccountResponse> {
   const { data } = await httpClient.post<LoginResponse>("/auth/google", {
     idToken,
     ...(acceptTerms ? { acceptTerms: true } : {}),
   });
-  return openSession(data);
+  return openSession(data, remember);
 }
 
-async function openSession(data: LoginResponse): Promise<AccountResponse> {
-  saveSession({
-    accessToken: data.accessToken,
-    refreshToken: data.refreshToken,
-    // El backend declara cuánto vive el token; sin esto el cliente descubre que
-    // venció cuando el backend le responde 401.
-    expiresAt: Date.now() + data.expiresIn * 1000,
-    account: data.account,
-    profile: {
-      name: data.account.name ?? "",
-      lastName: data.account.lastName ?? "",
-      profileImage: data.account.profileImage ?? null,
+async function openSession(
+  data: LoginResponse,
+  remember: boolean,
+): Promise<AccountResponse> {
+  startSession(
+    {
+      accessToken: data.accessToken,
+      refreshToken: data.refreshToken,
+      // El backend declara cuánto vive el token; sin esto el cliente descubre que
+      // venció cuando el backend le responde 401.
+      expiresAt: Date.now() + data.expiresIn * 1000,
+      idUserSession: data.idUserSession,
+      account: data.account,
+      profile: {
+        name: data.account.name ?? "",
+        lastName: data.account.lastName ?? "",
+        profileImage: data.account.profileImage ?? null,
+      },
     },
-  });
+    remember,
+  );
   // Nombre y foto; el login ya es válido sin ellos.
   await refreshProfile().catch(() => {});
   return data.account;

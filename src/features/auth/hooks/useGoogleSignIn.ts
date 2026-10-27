@@ -14,8 +14,14 @@ import { askTermsConsent } from "../service/termsConsent";
  * `error` es el texto a mostrar; cerrar el selector de cuentas no es un error.
  * `termsAccepted`: el checkbox de términos del registro ya está marcado; si no,
  * el servidor pide aceptarlos (428) y se preguntan.
+ * `remember`: la casilla "Mantener la sesión iniciada" del login; el registro
+ * siempre la mantiene.
  */
-export function useGoogleSignIn(onSuccess?: () => void, termsAccepted = false) {
+export function useGoogleSignIn(
+  onSuccess?: () => void,
+  termsAccepted = false,
+  remember = true,
+) {
   const { t } = useTranslation("auth");
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
@@ -28,6 +34,7 @@ export function useGoogleSignIn(onSuccess?: () => void, termsAccepted = false) {
       const account = await signInWithGoogle({
         acceptTerms: termsAccepted,
         askTerms: () => askTermsConsent(t),
+        remember,
       });
       if (!account) {
         setSubmitting(false);
@@ -43,7 +50,7 @@ export function useGoogleSignIn(onSuccess?: () => void, termsAccepted = false) {
       );
       setSubmitting(false);
     }
-  }, [onSuccess, router, t, termsAccepted]);
+  }, [onSuccess, router, t, termsAccepted, remember]);
 
   return { signIn, submitting, error };
 }

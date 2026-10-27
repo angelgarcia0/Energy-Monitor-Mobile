@@ -198,6 +198,7 @@ export async function getAccount(): Promise<AccountResponse> {
       idUser: data.idUser ?? previous?.account?.idUser,
       email: data.email,
       profileImage: data.profileImage ?? null,
+      googleAccount: data.googleAccount === true,
     },
     profile: {
       ...previous?.profile,
@@ -213,10 +214,20 @@ export async function refreshProfile(): Promise<void> {
   await getAccount();
 }
 
-/** Elimina la cuenta tras confirmar con la contraseña; cierra la sesión local. */
-export async function deleteAccount(password: string): Promise<void> {
-  await httpClient.post("/auth/account/delete", { password });
+/**
+ * Elimina la cuenta y cierra la sesión local. Se confirma con `{ password }` o, si la
+ * cuenta se creó con Google, con `{ code }` (el que envía `requestAccountDeletionCode`).
+ */
+export async function deleteAccount(
+  confirmation: { password: string } | { code: string },
+): Promise<void> {
+  await httpClient.post("/auth/account/delete", confirmation);
   clearSession();
+}
+
+/** Envía al correo de una cuenta creada con Google el código que confirma su borrado. */
+export async function requestAccountDeletionCode(): Promise<void> {
+  await httpClient.post("/auth/account/delete/code");
 }
 
 /**

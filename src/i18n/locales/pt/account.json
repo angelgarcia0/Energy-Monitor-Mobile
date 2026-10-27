@@ -14,7 +14,12 @@
     "message": "Esta ação é permanente. Você perderá o acesso às suas casas e aos seus dados de consumo.",
     "confirm": "Excluir",
     "cancel": "Cancelar",
-    "passwordLabel": "Senha"
+    "passwordLabel": "Senha",
+    "googleMessage": "Sua conta usa o Google, então não tem senha. Para confirmar, enviaremos um código para {{email}}.",
+    "sendCode": "Enviar o código",
+    "resendCode": "Enviar outro código",
+    "codeLabel": "Código de 6 dígitos",
+    "codeSent": "Enviamos um código para {{email}}. Ele vence em 15 minutos."
   },
   "breadcrumb": {
     "home": "Início",
@@ -55,5 +60,6 @@
   },
   "permissions": {
     "photoDenied": "Precisamos de permissão para acessar suas fotos para adicionar uma."
-  }
+  },
+  "passwordGoogle": "Gerenciada pelo Google"
 }

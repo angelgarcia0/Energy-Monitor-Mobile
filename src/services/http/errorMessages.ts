@@ -20,6 +20,7 @@ export type ApiOperation =
   | "passwordReset"
   | "passwordChange"
   | "accountDelete"
+  | "accountDeleteCode"
   | "accountUpdate"
   | "emailUpdate"
   | "homeCreate"
@@ -67,9 +68,16 @@ const OPERATIONS: Partial<Record<ApiOperation, OperationStatuses>> = {
     default: "passwordChange.failed",
   },
   accountDelete: {
+    400: "accountDelete.wrongCode",
     401: "accountDelete.wrongPassword",
     409: "accountDelete.lastOwner",
+    429: "generic.rateLimited",
     default: "accountDelete.failed",
+  },
+  // 503: el correo con el código aún no se puede enviar (lo hará el servicio de notificaciones).
+  accountDeleteCode: {
+    503: "accountDeleteCode.unavailable",
+    default: "accountDeleteCode.failed",
   },
   accountUpdate: {
     400: "accountUpdate.invalid",

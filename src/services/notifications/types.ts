@@ -77,3 +77,30 @@ export interface RegisterPushDevice {
 export interface PushDeviceAvailabilityResponse {
   available: boolean;
 }
+/** De dónde viene una notificación de actividad. */
+export type ActivitySource = "ACCOUNT" | "HOME" | "DEVICE";
+
+/**
+ * Lo que devuelve `GET /notifications/activity`: lo que pasó en la cuenta, los
+ * hogares y los dispositivos del usuario.
+ *
+ * Fuente de verdad: `ActivityNotificationsController` del backend. El texto no
+ * viene armado: llega la clave (`activity.home.member-joined.v1`) y los nombres
+ * que había cuando ocurrió, para traducirlo aquí.
+ */
+export interface ActivityNotification {
+  id: string;
+  source: ActivitySource;
+  messageKey: string;
+  /** `null` en lo que es de la cuenta, como la bienvenida. */
+  homeId: string | null;
+  params: {
+    homeName?: string;
+    actorName?: string;
+    subjectName?: string;
+    deviceName?: string;
+  } | null;
+  /** ISO-8601. */
+  createdAt: string;
+  read: boolean;
+}

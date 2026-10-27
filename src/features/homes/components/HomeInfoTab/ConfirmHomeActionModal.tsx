@@ -9,10 +9,8 @@ import { Theme } from "@/constants/theme";
 import { styles } from "./ConfirmHomeActionModal.styles";
 
 /**
- * Confirmación de salir del hogar.
- *
- * Solo hay una acción: el backend expone `DELETE /homes/{id}/members/me` y
- * ningún endpoint para eliminar el hogar, así que el dueño también abandona.
+ * Confirmación de salir del hogar (`DELETE /homes/{id}/members/me`). Eliminar
+ * el hogar tiene su propia confirmación: `ConfirmDeleteHomeModal`.
  */
 export interface ConfirmHomeActionModalProps {
   visible: boolean;

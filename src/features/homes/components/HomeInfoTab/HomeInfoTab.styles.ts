@@ -123,6 +123,7 @@ export const styles = createThemeStyles(() => StyleSheet.create({
   },
   actionRow: {
     marginTop: Theme.spacing.md,
+    gap: Theme.spacing.sm,
   },
   ownerRow: {
     flexDirection: "row",

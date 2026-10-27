@@ -49,6 +49,14 @@ export async function toggleFavorite(homeId: string): Promise<UserHome> {
   return data;
 }
 
+/**
+ * `DELETE /homes/{id}` — solo el dueño; responde 204. El hogar desaparece para
+ * todos sus miembros y sus dispositivos quedan desvinculados.
+ */
+export async function deleteHome(homeId: string): Promise<void> {
+  await httpClient.delete(`/homes/${encodeURIComponent(homeId)}`);
+}
+
 /** `DELETE /homes/{id}/members/{userId}` — solo el dueño; responde 204. */
 export async function removeMember(
   homeId: string,

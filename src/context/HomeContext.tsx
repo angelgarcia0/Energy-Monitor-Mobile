@@ -37,6 +37,7 @@ export interface HomeContextValue {
   joinHome: (accessCode: string) => Promise<ApiError | null>;
   setFavorite: (homeId: string) => Promise<ApiError | null>;
   leaveHome: (homeId: string) => Promise<ApiError | null>;
+  deleteHome: (homeId: string) => Promise<ApiError | null>;
   removeMember: (homeId: string, userId: string) => Promise<ApiError | null>;
   transferOwnership: (
     homeId: string,
@@ -161,6 +162,20 @@ export function HomeProvider({ children }: HomeProviderProps) {
     [loadHomes],
   );
 
+  /** `DELETE /homes/{id}` — solo el dueño; el hogar sale del listado. */
+  const deleteHome = useCallback(
+    async (homeId: string) => {
+      try {
+        await homeApi.deleteHome(homeId);
+        await loadHomes();
+        return null;
+      } catch (err) {
+        return err as ApiError;
+      }
+    },
+    [loadHomes],
+  );
+
   /** `DELETE /homes/{id}/members/{userId}` */
   const removeMember = useCallback(
     async (homeId: string, userId: string) => {
@@ -203,6 +218,7 @@ export function HomeProvider({ children }: HomeProviderProps) {
       joinHome,
       setFavorite,
       leaveHome,
+      deleteHome,
       removeMember,
       transferOwnership,
     }),
@@ -216,6 +232,7 @@ export function HomeProvider({ children }: HomeProviderProps) {
       joinHome,
       setFavorite,
       leaveHome,
+      deleteHome,
       removeMember,
       transferOwnership,
     ],

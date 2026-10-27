@@ -23,7 +23,8 @@
     "copy": "Copier le code d'accès",
     "deleteHome": "Supprimer la maison",
     "leaveHome": "Quitter la maison",
-    "leaving": "Sortie..."
+    "leaving": "Sortie...",
+    "deleting": "Suppression..."
   },
   "status": {
     "responsible": "Responsable"
@@ -32,8 +33,9 @@
     "leaveTitle": "Quitter la maison ?",
     "leave": "Êtes-vous sûr de vouloir quitter cette maison ?",
     "deleteTitle": "Supprimer la maison ?",
-    "delete": "Supprimer cette maison ? Cette action est irréversible.",
-    "cancel": "Annuler"
+    "delete": "Le foyer disparaîtra pour tous ses membres et ses appareils seront dissociés, prêts à être liés à un autre foyer. Cette action est irréversible.",
+    "cancel": "Annuler",
+    "deleteTypeName": "Saisissez « {{name}} » pour confirmer"
   },
   "copyLabel": "Copier le code d'accès"
 }

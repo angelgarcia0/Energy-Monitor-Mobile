@@ -52,6 +52,11 @@
     "lastOwner": "Você é o único responsável: não pode sair da casa.",
     "notMember": "Você não é mais membro desta casa."
   },
+  "homeDelete": {
+    "notOwner": "Só o responsável pela casa pode excluí-la.",
+    "notFound": "Esta casa não existe mais ou você não faz parte dela.",
+    "failed": "Não foi possível excluir a casa."
+  },
   "memberRemove": {
     "notOwner": "Somente o responsável pela casa pode remover membros.",
     "notFound": "Este usuário não é mais membro da casa.",

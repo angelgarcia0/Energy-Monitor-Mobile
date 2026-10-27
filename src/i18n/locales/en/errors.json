@@ -52,6 +52,11 @@
     "lastOwner": "You are the only owner: you cannot leave the home.",
     "notMember": "You are no longer a member of this home."
   },
+  "homeDelete": {
+    "notOwner": "Only the person responsible for the home can delete it.",
+    "notFound": "This home no longer exists or you are not part of it.",
+    "failed": "The home could not be deleted."
+  },
   "memberRemove": {
     "notOwner": "Only the home's owner can remove members.",
     "notFound": "This user is no longer a member of the home.",

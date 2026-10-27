@@ -52,6 +52,11 @@
     "lastOwner": "Eres el único responsable: no puedes abandonar el hogar.",
     "notMember": "Ya no eres miembro de este hogar."
   },
+  "homeDelete": {
+    "notOwner": "Solo el responsable del hogar puede eliminarlo.",
+    "notFound": "Este hogar ya no existe o no perteneces a él.",
+    "failed": "No se pudo eliminar el hogar."
+  },
   "memberRemove": {
     "notOwner": "Solo el responsable del hogar puede eliminar miembros.",
     "notFound": "Este usuario ya no es miembro del hogar.",

@@ -52,6 +52,11 @@
     "lastOwner": "Vous êtes le seul responsable : vous ne pouvez pas quitter le foyer.",
     "notMember": "Vous n'êtes plus membre de ce foyer."
   },
+  "homeDelete": {
+    "notOwner": "Seul le responsable du foyer peut le supprimer.",
+    "notFound": "Ce foyer n’existe plus ou vous n’en faites pas partie.",
+    "failed": "Le foyer n’a pas pu être supprimé."
+  },
   "memberRemove": {
     "notOwner": "Seul le responsable du foyer peut retirer des membres.",
     "notFound": "Cet utilisateur n'est plus membre du foyer.",

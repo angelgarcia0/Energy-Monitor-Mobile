@@ -14,6 +14,7 @@ import { errorMessage } from "@/services/http";
 import type { HomeMembership } from "@/services/home";
 import { getInitials } from "../../data/initials";
 import { getRoleBadgeColor } from "../../data/userAvatarColors";
+import { ConfirmDeleteHomeModal } from "./ConfirmDeleteHomeModal";
 import { ConfirmHomeActionModal } from "./ConfirmHomeActionModal";
 import { styles } from "./HomeInfoTab.styles";
 
@@ -50,11 +51,13 @@ function formatDate(iso: string | null): string {
 
 export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
   const { t } = useTranslation("home");
-  const { homeTypes, leaveHome } = useHomes();
+  const { homeTypes, leaveHome, deleteHome } = useHomes();
   const router = useRouter();
   const [confirming, setConfirming] = useState(false);
   const [leaving, setLeaving] = useState(false);
   const [leaveError, setLeaveError] = useState<string | null>(null);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [copied, setCopied] = useState(false);
 
   /** Copia el código de acceso y lo confirma con el ✓ durante 2 segundos. */
@@ -91,6 +94,20 @@ export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
     } finally {
       setLeaving(false);
     }
+  };
+
+  // El error se muestra en la pestaña, como el de salir, y no dentro del modal.
+  const handleConfirmDelete = async () => {
+    setDeleting(true);
+    setLeaveError(null);
+    const err = await deleteHome(home.idHome);
+    setDeleting(false);
+    setConfirmingDelete(false);
+    if (err) {
+      setLeaveError(errorMessage(t, err, "homeDelete"));
+      return;
+    }
+    router.replace("/dashboard");
   };
 
   return (
@@ -208,6 +225,22 @@ export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
             >
               {leaving ? t("buttons.leaving") : t("buttons.leaveHome")}
             </Button>
+            {isOwner ? (
+              <Button
+                variant="danger"
+                onPress={() => setConfirmingDelete(true)}
+                disabled={deleting}
+                icon={
+                  <Ionicons
+                    name="trash-outline"
+                    size={Theme.typography.size.md}
+                    color={Theme.colors.danger}
+                  />
+                }
+              >
+                {deleting ? t("buttons.deleting") : t("buttons.deleteHome")}
+              </Button>
+            ) : null}
           </View>
         </Card>
 
@@ -265,6 +298,16 @@ export function HomeInfoTab({ home, isOwner }: HomeInfoTabProps) {
           visible
           onCancel={() => setConfirming(false)}
           onConfirm={handleConfirmLeave}
+        />
+      ) : null}
+
+      {confirmingDelete ? (
+        <ConfirmDeleteHomeModal
+          visible
+          homeName={home.name}
+          deleting={deleting}
+          onCancel={() => setConfirmingDelete(false)}
+          onConfirm={() => void handleConfirmDelete()}
         />
       ) : null}
     </>

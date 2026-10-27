@@ -175,7 +175,7 @@ function UserRow({
  */
 export function UsersTab({ homeId, isOwner }: UsersTabProps) {
   const { t } = useTranslation("users");
-  const { removeMember, transferOwnership } = useHomes();
+  const { removeMember, transferOwnership, syncCount } = useHomes();
   const me = useCurrentPerson();
 
   const [members, setMembers] = useState<UserHome[]>([]);
@@ -205,6 +205,23 @@ export function UsersTab({ homeId, isOwner }: UsersTabProps) {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- carga inicial de datos estándar
     void load();
   }, [load]);
+
+  // En cada sincronización de los hogares, sin indicador de carga: así quien
+  // entra, sale o recibe el hogar aparece sin salir de la pantalla. Un fallo en
+  // segundo plano deja la lista anterior.
+  useEffect(() => {
+    if (!syncCount) return;
+    let cancelled = false;
+    homeApi
+      .listMembers(homeId)
+      .then((list) => {
+        if (!cancelled) setMembers(list);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [homeId, syncCount]);
 
   const rows = toRows(members, me, isOwner);
   const membersCount = t("header.membersCount", { count: rows.length });

@@ -4,11 +4,13 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
 
 import { useUser } from "@/context/UserContext";
+import { useIsAppActive } from "@/features/homes/hooks/useIsAppActive";
 import { HOME_TYPES } from "@/features/shared/homeTypes";
 import type { ApiError } from "@/services/http";
 import {
@@ -25,6 +27,10 @@ import {
  * cliente de API. Cada operación devuelve `null` si salió bien o el `ApiError`
  * si falló, para que quien la llama decida cómo mostrarlo en vez de tener que
  * distinguir excepciones.
+ *
+ * Lo que hacen los demás miembros (expulsarte, salirse, entregarte el hogar,
+ * eliminarlo) no llega por ningún canal en vivo: la lista se vuelve a pedir
+ * cada `SYNC_MS` con la app en primer plano y al volver a ella.
  */
 export interface HomeContextValue {
   homes: HomeMembership[];
@@ -32,6 +38,8 @@ export interface HomeContextValue {
   homeTypes: HomeType[];
   loading: boolean;
   error: ApiError | null;
+  /** Sube en cada sincronización, para que los miembros del hogar se pongan al día a la vez. */
+  syncCount: number;
   reload: () => Promise<void>;
   addHome: (request: CreateHomeRequest) => Promise<ApiError | null>;
   joinHome: (accessCode: string) => Promise<ApiError | null>;
@@ -46,6 +54,13 @@ export interface HomeContextValue {
 
 const HomeContext = createContext<HomeContextValue | null>(null);
 
+const SYNC_MS = 15_000;
+
+// Misma lista que la anterior: se conserva la referencia para no repintar ni
+// volver a pedir lo que depende de `homes` cada 15 segundos.
+const sameHomes = (a: HomeMembership[], b: HomeMembership[]) =>
+  JSON.stringify(a) === JSON.stringify(b);
+
 export interface HomeProviderProps {
   children: ReactNode;
 }
@@ -53,11 +68,13 @@ export interface HomeProviderProps {
 export function HomeProvider({ children }: HomeProviderProps) {
   // El catálogo no depende de la sesión: se puede leer aunque los hogares fallen.
   const { isAuthenticated, isRestoring } = useUser();
+  const isActive = useIsAppActive();
 
   const [homes, setHomes] = useState<HomeMembership[]>([]);
   const [homeTypes, setHomeTypes] = useState<HomeType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<ApiError | null>(null);
+  const [syncCount, setSyncCount] = useState(0);
 
   const loadHomes = useCallback(async () => {
     setLoading(true);
@@ -97,6 +114,39 @@ export function HomeProvider({ children }: HomeProviderProps) {
     void loadHomes();
     void loadHomeTypes();
   }, [isAuthenticated, isRestoring, loadHomes, loadHomeTypes]);
+
+  /**
+   * Recarga en segundo plano: sin `loading`, que cambiaría la pantalla por el
+   * indicador de carga, y un fallo deja la lista anterior (la siguiente vuelta
+   * lo reintenta).
+   */
+  const syncHomes = useCallback(async () => {
+    try {
+      const next = await homeApi.listHomes();
+      setHomes((prev) => (sameHomes(prev, next) ? prev : next));
+      setError(null);
+    } catch {
+      // Red o backend caídos: se sigue mostrando lo último que se supo.
+    }
+    setSyncCount((n) => n + 1);
+  }, []);
+
+  // Cada SYNC_MS en primer plano; en segundo plano no se consulta. Al volver a
+  // primer plano se pone al día enseguida (al arrancar no: ya carga `loadHomes`).
+  const wasInBackground = useRef(false);
+  useEffect(() => {
+    if (!isActive) {
+      wasInBackground.current = true;
+      return;
+    }
+    if (isRestoring || !isAuthenticated) return;
+    if (wasInBackground.current) {
+      wasInBackground.current = false;
+      void syncHomes();
+    }
+    const timer = setInterval(() => void syncHomes(), SYNC_MS);
+    return () => clearInterval(timer);
+  }, [isAuthenticated, isRestoring, isActive, syncHomes]);
 
   /** `POST /homes` — el hogar nuevo entra al listado. */
   const addHome = useCallback(
@@ -198,6 +248,7 @@ export function HomeProvider({ children }: HomeProviderProps) {
       homeTypes,
       loading,
       error,
+      syncCount,
       reload: loadHomes,
       addHome,
       joinHome,
@@ -211,6 +262,7 @@ export function HomeProvider({ children }: HomeProviderProps) {
       homeTypes,
       loading,
       error,
+      syncCount,
       loadHomes,
       addHome,
       joinHome,

@@ -18,6 +18,8 @@ export interface SessionAccount {
   status?: string;
   lastLogin?: string | null;
   profileImage?: string | null;
+  /** Creada con Google: no tiene contraseña que cambiar y su borrado se confirma con un código. */
+  googleAccount?: boolean;
 }
 
 export interface SessionProfile {
@@ -48,6 +50,7 @@ export interface CurrentPerson {
   lastName: string;
   email: string;
   profileImage: string | null;
+  googleAccount: boolean;
 }
 
 let cache: Session | null = null;
@@ -257,5 +260,6 @@ export function getCurrentPerson(): CurrentPerson | null {
     lastName: session.profile?.lastName ?? "",
     email: session.account.email ?? "",
     profileImage: session.profile?.profileImage ?? null,
+    googleAccount: session.account.googleAccount === true,
   };
 }

@@ -13,10 +13,14 @@ import { Header } from "@/components/Header/Header";
 import { Theme } from "@/constants/theme";
 import { useUser } from "@/context/UserContext";
 import { authApi } from "@/services/auth";
+import { useCurrentPerson } from "@/services/auth/useCurrentPerson";
 import { errorMessage, type ApiOperation } from "@/services/http/errorMessages";
 import { AvatarSection } from "../../components/AvatarSection/AvatarSection";
 import { ChangePasswordModal } from "../../components/ChangePasswordModal/ChangePasswordModal";
-import { DeleteAccountModal } from "../../components/DeleteAccountModal/DeleteAccountModal";
+import {
+  DeleteAccountModal,
+  type DeleteConfirmation,
+} from "../../components/DeleteAccountModal/DeleteAccountModal";
 import {
   EditProfileModal,
   type EditableField,
@@ -40,6 +44,8 @@ export function AccountScreen() {
     updateEmail,
     updateAvatar,
   } = useUser();
+  // Solo para saber si la cuenta se creó con Google (sin contraseña que cambiar).
+  const person = useCurrentPerson();
 
   const [editingField, setEditingField] = useState<EditableField | null>(null);
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
@@ -91,13 +97,24 @@ export function AccountScreen() {
     await run(() => updateEmail(value), t("success.emailUpdated"), "emailUpdate");
   };
 
-  const handleDeleteAccount = async (password: string) => {
+  const handleDeleteAccount = async (confirmation: DeleteConfirmation) => {
     try {
-      await authApi.deleteAccount(password);
+      await authApi.deleteAccount(confirmation);
       setDeleteModalOpen(false);
       router.replace("/" as Href);
     } catch (error) {
       setErrorMessage(errorMessage(t, error, "accountDelete"));
+    }
+  };
+
+  /** Envía el código de borrado de una cuenta de Google; devuelve si se envió. */
+  const handleRequestDeletionCode = async () => {
+    try {
+      await authApi.requestAccountDeletionCode();
+      return true;
+    } catch (error) {
+      setErrorMessage(errorMessage(t, error, "accountDeleteCode"));
+      return false;
     }
   };
 
@@ -217,12 +234,17 @@ export function AccountScreen() {
             />
             <View style={styles.divider} />
 
-            <ProfileField
-              label={t("password")}
-              value={MASKED_PASSWORD}
-              editAccessibilityLabel={t("edit", { label: t("password").toLowerCase() })}
-              onEdit={() => setPasswordModalOpen(true)}
-            />
+            {/* Creada con Google: no hay contraseña que la persona conozca ni pueda cambiar. */}
+            {person?.googleAccount ? (
+              <ProfileField label={t("password")} value={t("passwordGoogle")} />
+            ) : (
+              <ProfileField
+                label={t("password")}
+                value={MASKED_PASSWORD}
+                editAccessibilityLabel={t("edit", { label: t("password").toLowerCase() })}
+                onEdit={() => setPasswordModalOpen(true)}
+              />
+            )}
           </View>
 
           <View style={styles.divider} />
@@ -266,6 +288,9 @@ export function AccountScreen() {
           visible
           onCancel={() => setDeleteModalOpen(false)}
           onConfirm={handleDeleteAccount}
+          googleAccount={person?.googleAccount === true}
+          email={user.email}
+          onRequestCode={handleRequestDeletionCode}
         />
       ) : null}
     </View>

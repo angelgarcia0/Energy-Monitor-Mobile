@@ -316,6 +316,7 @@ export function NotificationsScreen() {
                 return (
                   <Pressable
                     key={option.value}
+                    hitSlop={{ top: 8, bottom: 8 }}
                     onPress={() => chooseScope(option.value)}
                     accessibilityRole="button"
                     accessibilityState={{ selected }}

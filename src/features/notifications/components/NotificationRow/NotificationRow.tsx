@@ -98,6 +98,7 @@ export function AlertRow({
               disabled={busy}
               accessibilityRole="button"
               accessibilityLabel={t("markReadLabel", { title })}
+              hitSlop={10}
               style={styles.markReadButton}
             >
               <Ionicons
@@ -115,6 +116,7 @@ export function AlertRow({
               disabled={busy}
               accessibilityRole="button"
               accessibilityLabel={t("deleteLabel", { title })}
+              hitSlop={10}
               style={styles.markReadButton}
             >
               <Ionicons
@@ -210,6 +212,7 @@ export function RecommendationRow({
               disabled={busy}
               accessibilityRole="button"
               accessibilityLabel={t("markReadLabel", { title })}
+              hitSlop={10}
               style={styles.markReadButton}
             >
               <Ionicons
@@ -227,6 +230,7 @@ export function RecommendationRow({
               disabled={busy}
               accessibilityRole="button"
               accessibilityLabel={t("deleteRecommendationLabel", { title })}
+              hitSlop={10}
               style={styles.markReadButton}
             >
               <Ionicons
@@ -299,6 +303,7 @@ export function ActivityRow({
               disabled={busy}
               accessibilityRole="button"
               accessibilityLabel={t("markReadLabel", { title })}
+              hitSlop={10}
               style={styles.markReadButton}
             >
               <Ionicons
@@ -316,6 +321,7 @@ export function ActivityRow({
               disabled={busy}
               accessibilityRole="button"
               accessibilityLabel={t("deleteActivityLabel", { title })}
+              hitSlop={10}
               style={styles.markReadButton}
             >
               <Ionicons

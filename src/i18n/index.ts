@@ -30,6 +30,7 @@ import enHomes from "./locales/en/homes.json";
 import enHomeCard from "./locales/en/homeCard.json";
 import enHomeNotFound from "./locales/en/homeNotFound.json";
 import enJoinHomeModal from "./locales/en/joinHomeModal.json";
+import enLegalModal from "./locales/en/legalModal.json";
 import enLanguageSwitcher from "./locales/en/languageSwitcher.json";
 import enLinkDeviceModal from "./locales/en/linkDeviceModal.json";
 import enNotifications from "./locales/en/notifications.json";
@@ -56,6 +57,7 @@ import esHomes from "./locales/es/homes.json";
 import esHomeCard from "./locales/es/homeCard.json";
 import esHomeNotFound from "./locales/es/homeNotFound.json";
 import esJoinHomeModal from "./locales/es/joinHomeModal.json";
+import esLegalModal from "./locales/es/legalModal.json";
 import esLanguageSwitcher from "./locales/es/languageSwitcher.json";
 import esLinkDeviceModal from "./locales/es/linkDeviceModal.json";
 import esNotifications from "./locales/es/notifications.json";
@@ -82,6 +84,7 @@ import frHomes from "./locales/fr/homes.json";
 import frHomeCard from "./locales/fr/homeCard.json";
 import frHomeNotFound from "./locales/fr/homeNotFound.json";
 import frJoinHomeModal from "./locales/fr/joinHomeModal.json";
+import frLegalModal from "./locales/fr/legalModal.json";
 import frLanguageSwitcher from "./locales/fr/languageSwitcher.json";
 import frLinkDeviceModal from "./locales/fr/linkDeviceModal.json";
 import frNotifications from "./locales/fr/notifications.json";
@@ -108,6 +111,7 @@ import ptHomes from "./locales/pt/homes.json";
 import ptHomeCard from "./locales/pt/homeCard.json";
 import ptHomeNotFound from "./locales/pt/homeNotFound.json";
 import ptJoinHomeModal from "./locales/pt/joinHomeModal.json";
+import ptLegalModal from "./locales/pt/legalModal.json";
 import ptLanguageSwitcher from "./locales/pt/languageSwitcher.json";
 import ptLinkDeviceModal from "./locales/pt/linkDeviceModal.json";
 import ptNotifications from "./locales/pt/notifications.json";
@@ -136,6 +140,7 @@ const esResources = {
   homes: esHomes,
   homeNotFound: esHomeNotFound,
   joinHomeModal: esJoinHomeModal,
+  legalModal: esLegalModal,
   languageSwitcher: esLanguageSwitcher,
   linkDeviceModal: esLinkDeviceModal,
   notifications: esNotifications,
@@ -165,6 +170,7 @@ const enResources = {
   homes: enHomes,
   homeNotFound: enHomeNotFound,
   joinHomeModal: enJoinHomeModal,
+  legalModal: enLegalModal,
   languageSwitcher: enLanguageSwitcher,
   linkDeviceModal: enLinkDeviceModal,
   notifications: enNotifications,
@@ -194,6 +200,7 @@ const frResources = {
   homes: frHomes,
   homeNotFound: frHomeNotFound,
   joinHomeModal: frJoinHomeModal,
+  legalModal: frLegalModal,
   languageSwitcher: frLanguageSwitcher,
   linkDeviceModal: frLinkDeviceModal,
   notifications: frNotifications,
@@ -223,6 +230,7 @@ const ptResources = {
   homes: ptHomes,
   homeNotFound: ptHomeNotFound,
   joinHomeModal: ptJoinHomeModal,
+  legalModal: ptLegalModal,
   languageSwitcher: ptLanguageSwitcher,
   linkDeviceModal: ptLinkDeviceModal,
   notifications: ptNotifications,

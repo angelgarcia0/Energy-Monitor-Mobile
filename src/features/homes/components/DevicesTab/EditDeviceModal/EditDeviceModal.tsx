@@ -156,7 +156,6 @@ export function EditDeviceModal({
             label={t("done.nameLabel")}
             value={name}
             onChangeText={setName}
-            placeholder={t("done.nameLabel")}
             maxLength={50}
             autoCapitalize="sentences"
             accessibilityLabel={t("done.nameLabel")}

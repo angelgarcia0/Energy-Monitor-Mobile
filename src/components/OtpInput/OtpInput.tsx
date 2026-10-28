@@ -22,7 +22,7 @@ export function OtpInput({
   style,
 }: OtpInputProps) {
   const { t } = useTranslation("common");
-  const refs = useRef<Array<TextInput | null>>([]);
+  const refs = useRef<(TextInput | null)[]>([]);
   const [focusedIndex, setFocusedIndex] = useState(-1);
 
   const handleChange = (text: string, index: number) => {

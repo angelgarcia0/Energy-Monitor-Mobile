@@ -1,4 +1,4 @@
-import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
+import axios, { create, type AxiosError, type InternalAxiosRequestConfig } from "axios";
 
 import { API_BASE_URL } from "@/config/env";
 import {
@@ -16,7 +16,7 @@ import { normalizeError } from "./errors";
  * - Interceptor de response: renueva el access token (una sola vez a la vez)
  *   y traduce errores al modelo común.
  */
-export const httpClient = axios.create({
+export const httpClient = create({
   baseURL: API_BASE_URL,
   headers: { "Content-Type": "application/json" },
 });

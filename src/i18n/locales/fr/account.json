@@ -45,7 +45,6 @@
     "currentLabel": "Mot de passe actuel",
     "newLabel": "Nouveau mot de passe",
     "confirmLabel": "Confirmer le mot de passe",
-    "newPlaceholder": "Minimum 8 caractères",
     "confirmPlaceholder": "Répétez le nouveau mot de passe",
     "save": "Enregistrer",
     "saving": "Enregistrement..."

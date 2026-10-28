@@ -11,6 +11,8 @@ export interface InputProps extends TextInputProps {
   onIconPress?: () => void;
   /** Lo que hace el botón del ícono (p. ej. "Mostrar contraseña"); el ícono solo no se lee. */
   iconAccessibilityLabel?: string;
+  /** Ayuda que sigue visible al escribir (p. ej. las reglas de la contraseña), a diferencia del placeholder. */
+  hint?: string;
 }
 
 export function Input({
@@ -19,6 +21,7 @@ export function Input({
   icon,
   onIconPress,
   iconAccessibilityLabel,
+  hint,
   style,
   onFocus,
   onBlur,
@@ -56,7 +59,7 @@ export function Input({
           autoCorrect={false}
           autoCapitalize="none"
           accessibilityLabel={accessibilityLabel ?? label}
-          accessibilityHint={accessibilityHint}
+          accessibilityHint={hint ?? accessibilityHint}
           onFocus={(e) => {
             setFocused(true);
             onFocus?.(e);
@@ -80,6 +83,12 @@ export function Input({
           </Pressable>
         ) : null}
       </View>
+
+      {hint ? (
+        <Text style={styles.hint} importantForAccessibility="no" accessibilityElementsHidden>
+          {hint}
+        </Text>
+      ) : null}
     </View>
   );
 }

@@ -18,5 +18,8 @@
     "networkPassword": "Enter the network password",
     "nameMax": "Maximum 100 characters",
     "passwordMax": "Maximum 64 characters"
+  },
+  "hints": {
+    "password": "8 to 64 characters, with one uppercase letter, 3 lowercase letters, 3 numbers and a special character."
   }
 }

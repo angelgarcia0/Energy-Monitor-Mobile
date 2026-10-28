@@ -142,6 +142,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           render={({ field: { value, onChange, onBlur } }) => (
             <Input
               label={t("register.password")}
+              hint={t("validations:hints.password")}
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}

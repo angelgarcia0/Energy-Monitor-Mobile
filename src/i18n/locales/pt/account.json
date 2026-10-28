@@ -45,7 +45,6 @@
     "currentLabel": "Senha atual",
     "newLabel": "Nova senha",
     "confirmLabel": "Confirmar senha",
-    "newPlaceholder": "Mínimo 8 caracteres",
     "confirmPlaceholder": "Repita a nova senha",
     "save": "Salvar",
     "saving": "Salvando..."

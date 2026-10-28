@@ -45,7 +45,6 @@
     "currentLabel": "Contraseña actual",
     "newLabel": "Nueva contraseña",
     "confirmLabel": "Confirmar contraseña",
-    "newPlaceholder": "Mínimo 8 caracteres",
     "confirmPlaceholder": "Repite la nueva contraseña",
     "save": "Guardar",
     "saving": "Guardando..."

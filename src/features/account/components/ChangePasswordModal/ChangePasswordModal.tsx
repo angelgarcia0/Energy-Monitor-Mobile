@@ -132,7 +132,8 @@ export function ChangePasswordModal({
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
-                placeholder={t("changePassword.newPlaceholder")}
+                placeholder="••••••••"
+                hint={t("validations:hints.password")}
                 secureTextEntry={!showPasswords}
               />
             )}

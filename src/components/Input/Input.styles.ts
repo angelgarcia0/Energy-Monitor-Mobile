@@ -54,6 +54,11 @@ export const styles = createThemeStyles(() => StyleSheet.create({
   icon: {
     marginLeft: Theme.spacing.sm,
   },
+  hint: {
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.xs,
+    color: Theme.colors.textSecondary,
+  },
   placeholder: {
     color: Theme.colors.textSecondary,
   },

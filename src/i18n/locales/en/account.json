@@ -45,7 +45,6 @@
     "currentLabel": "Current password",
     "newLabel": "New password",
     "confirmLabel": "Confirm password",
-    "newPlaceholder": "Minimum 8 characters",
     "confirmPlaceholder": "Repeat the new password",
     "save": "Save",
     "saving": "Saving..."

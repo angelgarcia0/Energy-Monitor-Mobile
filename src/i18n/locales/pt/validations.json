@@ -18,5 +18,8 @@
     "networkPassword": "Digite a senha da rede",
     "nameMax": "Máximo 100 caracteres",
     "passwordMax": "Máximo 64 caracteres"
+  },
+  "hints": {
+    "password": "De 8 a 64 caracteres, com uma letra maiúscula, 3 minúsculas, 3 números e um caractere especial."
   }
 }

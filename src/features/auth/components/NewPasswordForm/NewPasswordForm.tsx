@@ -79,6 +79,7 @@ export function NewPasswordForm({ onSuccess }: NewPasswordFormProps) {
           render={({ field: { value, onChange, onBlur } }) => (
             <Input
               label={t("newPassword.password")}
+              hint={t("validations:hints.password")}
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}

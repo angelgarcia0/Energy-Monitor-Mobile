@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
 import { Button } from "@/components/Button/Button";
+import { Loader } from "@/components/Loader/Loader";
 import { Theme } from "@/constants/theme";
 import { useHomes } from "@/context/HomeContext";
 import { useTheme } from "@/context/ThemeContext";
@@ -14,9 +15,19 @@ export default function HomeDetail() {
   const { t } = useTranslation("homeNotFound");
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { homes } = useHomes();
+  const { homes, loading } = useHomes();
 
   const home = homes.find((h) => h.idHome === id) ?? null;
+
+  // Al abrir la app desde una notificación los hogares todavía se están cargando: "no
+  // encontrado" sería falso mientras tanto.
+  if (!home && loading) {
+    return (
+      <View key={currentTheme.id} style={{ flex: 1, backgroundColor: Theme.colors.background }}>
+        <Loader style={{ flex: 1 }} />
+      </View>
+    );
+  }
 
   // La key remonta la pantalla al cambiar de paleta para que los estilos
   // reconstruidos se apliquen (ver useTheme).

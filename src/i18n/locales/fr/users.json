@@ -1,0 +1,57 @@
+{
+  "header": {
+    "title": "Utilisateurs",
+    "membersCount_one": "{{count}} membre dans ce projet",
+    "membersCount_other": "{{count}} membres dans ce projet"
+  },
+  "roles": {
+    "owner": "Responsable",
+    "member": "Membre"
+  },
+  "members": {
+    "title": "Membres du projet",
+    "onlyOwnerTitle": "Aucun autre utilisateur pour l'instant",
+    "onlyOwnerDescription": "Partagez le code d'accès du domicile pour que d'autres personnes le rejoignent."
+  },
+  "invite": {
+    "title": "Inviter un utilisateur par e-mail",
+    "placeholder": "email@exemple.com",
+    "button": "Inviter",
+    "errors": {
+      "empty": "Saisissez un e-mail.",
+      "invalid": "E-mail invalide.",
+      "alreadyMember": "Cet utilisateur est déjà membre.",
+      "alreadyInvited": "Une invitation a déjà été envoyée à cet e-mail."
+    }
+  },
+  "pending": {
+    "title": "Invitations en attente",
+    "empty": "Aucune invitation en attente",
+    "sent": "Invitation envoyée",
+    "cancel": "Annuler"
+  },
+  "actions": {
+    "removeUser": "Supprimer {{name}}",
+    "transferOwnership": "Nommer {{name}} responsable"
+  },
+  "confirmRemove": {
+    "title": "Retirer le membre ?",
+    "message": "Vous êtes sur le point de retirer « {{name}} » du projet. Il ne recevra plus les données de consommation du foyer et vous devrez le réinviter si vous souhaitez qu'il participe.",
+    "confirm": "Retirer",
+    "cancel": "Annuler",
+    "removing": "Suppression..."
+  },
+  "confirmTransfer": {
+    "title": "Transférer le foyer ?",
+    "message": "« {{name}} » deviendra le responsable de ce foyer et vous resterez membre : vous ne pourrez plus gérer les appareils, les seuils ni les membres. Les appareils, les seuils et l’historique ne changent pas.",
+    "acknowledge": "Je comprends que je ne serai plus le responsable",
+    "confirm": "Transférer",
+    "transferring": "Transfert...",
+    "cancel": "Annuler",
+    "done": "« {{name}} » est désormais le responsable du foyer."
+  },
+  "state": {
+    "loading": "Chargement des membres...",
+    "retry": "Réessayer"
+  }
+}

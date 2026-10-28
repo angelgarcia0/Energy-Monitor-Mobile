@@ -1,0 +1,108 @@
+{
+  "generic": {
+    "badRequest": "Os dados enviados não são válidos. Verifique-os e tente novamente.",
+    "unauthorized": "Sua sessão não é válida. Entre novamente.",
+    "forbidden": "Você não tem permissão para realizar esta ação.",
+    "notFound": "O que você procura não foi encontrado.",
+    "conflict": "A operação entra em conflito com o estado atual.",
+    "rateLimited": "Muitas tentativas. Aguarde {{minutes}} minutos antes de tentar novamente.",
+    "server": "Ocorreu um erro inesperado. Tente novamente.",
+    "network": "Não foi possível conectar ao servidor. Verifique sua conexão."
+  },
+  "password": {
+    "policy": "A senha não atende à política de segurança."
+  },
+  "login": {
+    "invalidCredentials": "E-mail ou senha incorretos.",
+    "inactive": "Sua conta está bloqueada ou inativa."
+  },
+  "googleLogin": {
+    "rejected": "O Google não conseguiu confirmar sua conta. Tente novamente.",
+    "emailTaken": "Este e-mail já tem uma conta com senha. Entre com seu e-mail e senha.",
+    "unavailable": "O login com Google não está disponível no momento.",
+    "playServices": "Você precisa do Google Play Services atualizado para entrar com o Google.",
+    "failed": "Não foi possível entrar com o Google. Tente novamente."
+  },
+  "register": {
+    "emailTaken": "Já existe uma conta com este e-mail.",
+    "invalidEmail": "Esse e-mail não existe ou o domínio dele não recebe e-mails. Verifique se está escrito corretamente."
+  },
+  "passwordReset": {
+    "failed": "Não foi possível alterar a senha. Tente novamente.",
+    "invalidToken": "O link de redefinição não é válido ou expirou."
+  },
+  "passwordChange": {
+    "wrongCurrent": "A senha atual não está correta.",
+    "failed": "Não foi possível alterar a senha. Tente novamente."
+  },
+  "accountDelete": {
+    "wrongPassword": "A senha não está correta.",
+    "lastOwner": "Você é o único proprietário de uma casa que ainda tem membros. Remova os membros dessas casas antes de excluir sua conta.",
+    "failed": "Não foi possível excluir a conta. Tente novamente.",
+    "wrongCode": "O código está incorreto ou expirou."
+  },
+  "homeCreate": {
+    "typeNotFound": "O tipo de casa selecionado não existe.",
+    "codeCollision": "Não foi possível gerar o código de acesso da casa. Tente novamente."
+  },
+  "homeJoin": {
+    "codeNotFound": "Não existe nenhuma casa com esse código de acesso.",
+    "alreadyMember": "Você já é membro desta casa."
+  },
+  "homeLeave": {
+    "lastOwner": "Você é o único responsável: não pode sair da casa.",
+    "notMember": "Você não é mais membro desta casa."
+  },
+  "homeDelete": {
+    "notOwner": "Só o responsável pela casa pode excluí-la.",
+    "notFound": "Esta casa não existe mais ou você não faz parte dela.",
+    "failed": "Não foi possível excluir a casa."
+  },
+  "memberRemove": {
+    "notOwner": "Somente o responsável pela casa pode remover membros.",
+    "notFound": "Este usuário não é mais membro da casa.",
+    "isOwner": "O responsável pela casa não pode ser removido."
+  },
+  "thresholdsUpdate": {
+    "invalid": "Os limites não são válidos: o limite diário não pode ultrapassar o mensal.",
+    "notOwner": "Somente o responsável pela casa pode alterar os limites."
+  },
+  "ownershipTransfer": {
+    "notOwner": "Somente o responsável da casa pode transferi-la.",
+    "notMember": "Este usuário não é mais membro da casa.",
+    "alreadyOwner": "Este usuário já é o responsável da casa.",
+    "failed": "Não foi possível transferir a casa. Tente novamente."
+  },
+  "deviceLink": {
+    "notOwner": "Só o proprietário da casa pode vincular dispositivos.",
+    "otherHome": "Este módulo já está vinculado a outra casa.",
+    "failed": "Não foi possível registrar o dispositivo."
+  },
+  "deviceUnlink": {
+    "notOwner": "Só o proprietário da casa pode remover dispositivos.",
+    "failed": "Não foi possível remover o dispositivo."
+  },
+  "deviceEdit": {
+    "notOwner": "Só o proprietário da casa pode editar dispositivos.",
+    "failed": "Não foi possível salvar as alterações do dispositivo."
+  },
+  "deviceReconnect": {
+    "notOwner": "Só o proprietário da casa pode trocar a rede de um dispositivo.",
+    "failed": "Não foi possível preparar as credenciais do dispositivo."
+  },
+  "emailVerify": {
+    "invalidCode": "O código não é válido ou expirou."
+  },
+  "accountUpdate": {
+    "failed": "Não foi possível atualizar o perfil. Tente novamente.",
+    "emailTaken": "Esse e-mail já pertence a outra conta.",
+    "invalid": "Os dados do perfil não são válidos."
+  },
+  "terms": {
+    "required": "Você precisa aceitar os termos e condições para continuar."
+  },
+  "accountDeleteCode": {
+    "unavailable": "No momento não podemos enviar o código. Tente mais tarde.",
+    "failed": "Não foi possível enviar o código. Tente novamente."
+  }
+}

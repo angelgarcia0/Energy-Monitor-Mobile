@@ -1,0 +1,70 @@
+{
+  "filters": {
+    "label": "Période",
+    "day": "Jour",
+    "week": "Semaine",
+    "month": "Mois",
+    "year": "Année"
+  },
+  "dates": {
+    "day": "Dernières 24 heures",
+    "week": "7 derniers jours"
+  },
+  "chart": {
+    "title": {
+      "day": "Consommation par heure",
+      "week": "Consommation par jour",
+      "month": "Consommation par jour",
+      "year": "Consommation par mois"
+    },
+    "empty": "Associez un appareil pour voir son historique de consommation",
+    "noData": "Pas encore de mesures sur cette période",
+    "deviceLabel": "Type d'appareil"
+  },
+  "summary": {
+    "title": "Résumé de la période"
+  },
+  "stats": {
+    "totalConsumption": "Consommation totale",
+    "topConsumer": "Plus grand consommateur",
+    "vsPrevious": "{{pct}} % vs période précédente",
+    "periodAverage": "Moyenne par type d'appareil",
+    "noPrevious": "Pas de données pour la période précédente",
+    "intervalOnly": "Intervalle choisi uniquement"
+  },
+  "ranking": {
+    "title": "Classement de consommation",
+    "headers": {
+      "position": "#",
+      "device": "Appareil",
+      "total": "Total",
+      "percentage": "%"
+    }
+  },
+  "subfilters": {
+    "label": "Intervalle",
+    "showAll": "Tout",
+    "day": {
+      "0-6": "0h - 6h",
+      "6-12": "6h - 12h",
+      "12-18": "12h - 18h",
+      "18-24": "18h - 24h"
+    },
+    "month": {
+      "sem1": "Semaine 1",
+      "sem2": "Semaine 2",
+      "sem3": "Semaine 3",
+      "sem4": "Semaine 4"
+    },
+    "year": {
+      "q1": "Jan - Mar",
+      "q2": "Avr - Juin",
+      "q3": "Juil - Sep",
+      "q4": "Oct - Déc"
+    }
+  },
+  "state": {
+    "loading": "Chargement de l'historique...",
+    "retry": "Réessayer"
+  }
+}

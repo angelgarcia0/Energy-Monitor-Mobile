@@ -1,0 +1,305 @@
+import { Controller, useForm, useWatch } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Image, Pressable, Text, View } from "react-native";
+
+import { Button } from "@/components/Button/Button";
+import { Card } from "@/components/Card/Card";
+import { Input } from "@/components/Input/Input";
+import { Theme } from "@/constants/theme";
+import { authApi } from "@/services/auth";
+import { errorMessage } from "@/services/http/errorMessages";
+import { LegalModal, type LegalTab } from "../LegalModal/LegalModal";
+import { useGoogleSignIn } from "../../hooks/useGoogleSignIn";
+import { toRegisterPayload } from "../../service/registerPayload";
+import {
+  registerSchema,
+  type RegisterFormValues,
+} from "../../validation/registerSchema";
+import { styles } from "./RegisterForm.styles";
+
+export interface RegisterFormProps {
+  onSuccess?: () => void;
+}
+
+export function RegisterForm({ onSuccess }: RegisterFormProps) {
+  const { t } = useTranslation("auth");
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [serverError, setServerError] = useState("");
+  const [legalTab, setLegalTab] = useState<LegalTab | null>(null);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
+    mode: "onChange",
+    defaultValues: {
+      name: "",
+      lastName: "",
+      email: "",
+      password: "",
+      repeatPassword: "",
+      terms: false,
+    },
+  });
+  // Con Google no hay formulario ni verificación: la cuenta nace con el correo de
+  // Google ya verificado. Los términos sí se exigen: si el checkbox está marcado se
+  // envían aceptados; si no, el servidor responde 428 y se preguntan.
+  const termsAccepted = useWatch({ control, name: "terms" }) === true;
+  const google = useGoogleSignIn(onSuccess, termsAccepted);
+
+  const onSubmit = async (data: RegisterFormValues) => {
+    setSubmitting(true);
+    setServerError("");
+    try {
+      await authApi.register(toRegisterPayload(data));
+      // El registro no devuelve token: se verifica el correo y luego se inicia sesión.
+      router.push({
+        pathname: "/verify-account",
+        params: { email: data.email.trim() },
+      });
+      onSuccess?.();
+    } catch (error) {
+      setServerError(errorMessage(t, error, "register"));
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <Card padding="lg" style={styles.card}>
+      <View style={styles.form}>
+        <Text style={styles.title}>{t("register.title")}</Text>
+
+        <View style={styles.nameRow}>
+          <View style={styles.fieldHalf}>
+            <Controller
+              control={control}
+              name="name"
+              render={({ field: { value, onChange, onBlur } }) => (
+                <Input
+                  label={t("register.name")}
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  placeholder={t("register.namePlaceholder")}
+                  autoComplete="name"
+                />
+              )}
+            />
+            {errors.name ? (
+              <Text style={styles.error}>{errors.name.message}</Text>
+            ) : null}
+          </View>
+
+          <View style={styles.fieldHalf}>
+            <Controller
+              control={control}
+              name="lastName"
+              render={({ field: { value, onChange, onBlur } }) => (
+                <Input
+                  label={t("register.lastName")}
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  placeholder={t("register.lastNamePlaceholder")}
+                  autoComplete="family-name"
+                />
+              )}
+            />
+            {errors.lastName ? (
+              <Text style={styles.error}>{errors.lastName.message}</Text>
+            ) : null}
+          </View>
+        </View>
+
+        <Controller
+          control={control}
+          name="email"
+          render={({ field: { value, onChange, onBlur } }) => (
+            <Input
+              label={t("register.email")}
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              placeholder={t("register.emailPlaceholder")}
+              keyboardType="email-address"
+              autoComplete="email"
+            />
+          )}
+        />
+        {errors.email ? (
+          <Text style={styles.error}>{errors.email.message}</Text>
+        ) : null}
+
+        <Controller
+          control={control}
+          name="password"
+          render={({ field: { value, onChange, onBlur } }) => (
+            <Input
+              label={t("register.password")}
+              hint={t("validations:hints.password")}
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              placeholder="••••••"
+              secureTextEntry={!showPassword}
+              icon={
+                <Ionicons
+                  name={showPassword ? "eye-off-outline" : "eye-outline"}
+                  size={Theme.typography.size.lg}
+                  color={Theme.colors.textSecondary}
+                />
+              }
+              onIconPress={() => setShowPassword((prev) => !prev)}
+              iconAccessibilityLabel={t(showPassword ? "common:a11y.hidePassword" : "common:a11y.showPassword")}
+            />
+          )}
+        />
+        {errors.password ? (
+          <Text style={styles.error}>{errors.password.message}</Text>
+        ) : null}
+
+        <Controller
+          control={control}
+          name="repeatPassword"
+          render={({ field: { value, onChange, onBlur } }) => (
+            <Input
+              label={t("register.repeatPassword")}
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              placeholder="••••••"
+              secureTextEntry={!showRepeatPassword}
+              icon={
+                <Ionicons
+                  name={showRepeatPassword ? "eye-off-outline" : "eye-outline"}
+                  size={Theme.typography.size.lg}
+                  color={Theme.colors.textSecondary}
+                />
+              }
+              onIconPress={() => setShowRepeatPassword((prev) => !prev)}
+              iconAccessibilityLabel={t(showRepeatPassword ? "common:a11y.hidePassword" : "common:a11y.showPassword")}
+            />
+          )}
+        />
+        {errors.repeatPassword ? (
+          <Text style={styles.error}>{errors.repeatPassword.message}</Text>
+        ) : null}
+
+        <Controller
+          control={control}
+          name="terms"
+          render={({ field: { value, onChange } }) => (
+            <View style={styles.options}>
+              <Pressable
+                style={[styles.checkbox, value && styles.checkboxChecked]}
+                onPress={() => onChange(!value)}
+                hitSlop={12}
+                accessibilityRole="checkbox"
+                accessibilityState={{ checked: Boolean(value) }}
+                accessibilityLabel={`${t("register.termsPrefix")} ${t("register.terms")} ${t("register.termsJoin")} ${t("register.privacy")}`}
+              >
+                {value ? (
+                  <Ionicons
+                    name="checkmark"
+                    size={Theme.typography.size.xs}
+                    color={Theme.colors.onPrimary}
+                  />
+                ) : null}
+              </Pressable>
+
+              <Text style={styles.termsText}>
+                {t("register.termsPrefix")}{" "}
+                <Text
+                  style={styles.termsLink}
+                  accessibilityRole="link"
+                  onPress={() => setLegalTab("terms")}
+                >
+                  {t("register.terms")}
+                </Text>
+                {t("register.termsJoin")}{" "}
+                <Text
+                  style={styles.termsLink}
+                  accessibilityRole="link"
+                  onPress={() => setLegalTab("privacy")}
+                >
+                  {t("register.privacy")}
+                </Text>
+              </Text>
+            </View>
+          )}
+        />
+        {errors.terms ? (
+          <Text style={styles.error}>{errors.terms.message}</Text>
+        ) : null}
+
+        {serverError || google.error ? (
+          <Text style={styles.error}>{serverError || google.error}</Text>
+        ) : null}
+
+        <View style={styles.buttonsContainer}>
+          <Button
+            variant="primary"
+            size="large"
+            style={styles.submitButton}
+            disabled={submitting || google.submitting}
+            onPress={handleSubmit(onSubmit)}
+          >
+            {submitting ? t("register.submitting") : t("register.submit")}
+          </Button>
+
+          <View style={styles.divider}>
+            <View style={styles.dividerLine} />
+            <Text style={styles.dividerText}>{t("register.divider")}</Text>
+            <View style={styles.dividerLine} />
+          </View>
+
+          <Text style={styles.loginWith}>{t("register.registerWith")}</Text>
+
+          <Button
+            variant="secondary"
+            size="medium"
+            style={styles.googleButton}
+            icon={
+              <Image
+                source={require("../../../../assets/google_icon.png")}
+                style={styles.googleIcon}
+              />
+            }
+            disabled={submitting || google.submitting}
+            onPress={() => {
+              setServerError("");
+              void google.signIn();
+            }}
+          >
+            {t("register.google")}
+          </Button>
+        </View>
+
+        <Text style={styles.register}>
+          {t("register.haveAccount")}{" "}
+          <Text
+            style={styles.registerLink}
+            accessibilityRole="link"
+            onPress={() => router.push("/")}
+          >
+            {t("register.login")}
+          </Text>
+        </Text>
+      </View>
+      <LegalModal
+        visible={legalTab !== null}
+        activeTab={legalTab ?? "terms"}
+        onTabChange={setLegalTab}
+        onClose={() => setLegalTab(null)}
+      />
+    </Card>
+  );
+}

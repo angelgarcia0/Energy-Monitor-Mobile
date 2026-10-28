@@ -1,0 +1,65 @@
+{
+  "title": "Mon compte",
+  "photoOptions": "Options de photo",
+  "addPhoto": "Ajouter une photo",
+  "viewPhoto": "Voir la photo",
+  "delete": "Supprimer",
+  "name": "Nom",
+  "lastName": "Nom de famille",
+  "email": "Email",
+  "password": "Mot de passe",
+  "deleteQuestion": "Voulez-vous supprimer votre compte ?",
+  "deleteAccount": {
+    "title": "Supprimer votre compte ?",
+    "message": "Cette action est définitive. Vous perdrez l'accès à vos foyers et à vos données de consommation.",
+    "confirm": "Supprimer",
+    "cancel": "Annuler",
+    "passwordLabel": "Mot de passe",
+    "googleMessage": "Votre compte utilise Google, il n'a donc pas de mot de passe. Pour confirmer, nous enverrons un code à {{email}}.",
+    "sendCode": "M'envoyer le code",
+    "resendCode": "Envoyer un autre code",
+    "codeLabel": "Code à 6 chiffres",
+    "codeSent": "Nous avons envoyé un code à {{email}}. Il expire dans 15 minutes."
+  },
+  "breadcrumb": {
+    "home": "Accueil",
+    "current": "Mon compte"
+  },
+  "personalData": "Informations personnelles",
+  "avatarHint": "Touchez la photo pour voir les options",
+  "avatarChangeLabel": "Changer la photo de profil",
+  "closePhoto": "Fermer la photo",
+  "edit": "Modifier {{label}}",
+  "maskedPassword": "••••••••",
+  "editField": {
+    "nameTitle": "Modifier le nom",
+    "lastNameTitle": "Modifier le nom de famille",
+    "placeholderLastName": "Ex : Dupont",
+    "emailTitle": "Modifier l'email",
+    "save": "Enregistrer",
+    "placeholderName": "Ex : Jean Dupont",
+    "placeholderEmail": "Ex : votre@email.com"
+  },
+  "changePassword": {
+    "title": "Changer le mot de passe",
+    "currentLabel": "Mot de passe actuel",
+    "newLabel": "Nouveau mot de passe",
+    "confirmLabel": "Confirmer le mot de passe",
+    "confirmPlaceholder": "Répétez le nouveau mot de passe",
+    "save": "Enregistrer",
+    "saving": "Enregistrement..."
+  },
+  "success": {
+    "nameUpdated": "Nom mis à jour",
+    "lastNameUpdated": "Nom de famille mis à jour",
+    "emailUpdated": "Email mis à jour",
+    "avatarUpdated": "Photo de profil mise à jour",
+    "avatarRemoved": "Photo de profil supprimée",
+    "passwordUpdated": "Mot de passe mis à jour"
+  },
+  "permissions": {
+    "photoDenied": "Nous avons besoin de l'accès à vos photos pour en ajouter une."
+  },
+  "passwordGoogle": "Géré par Google",
+  "subtitle": "Gérez vos données personnelles et la sécurité de votre compte."
+}

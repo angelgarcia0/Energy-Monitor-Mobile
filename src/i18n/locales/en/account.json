@@ -1,0 +1,65 @@
+{
+  "title": "My account",
+  "photoOptions": "Photo options",
+  "addPhoto": "Add photo",
+  "viewPhoto": "View photo",
+  "delete": "Delete",
+  "name": "Name",
+  "lastName": "Last name",
+  "email": "Email",
+  "password": "Password",
+  "deleteQuestion": "Do you want to delete your account?",
+  "deleteAccount": {
+    "title": "Delete your account?",
+    "message": "This action is permanent. You will lose access to your homes and your consumption data.",
+    "confirm": "Delete",
+    "cancel": "Cancel",
+    "passwordLabel": "Password",
+    "googleMessage": "Your account uses Google, so it has no password. To confirm, we'll send a code to {{email}}.",
+    "sendCode": "Send me the code",
+    "resendCode": "Send another code",
+    "codeLabel": "6-digit code",
+    "codeSent": "We sent a code to {{email}}. It expires in 15 minutes."
+  },
+  "breadcrumb": {
+    "home": "Home",
+    "current": "My account"
+  },
+  "personalData": "Personal details",
+  "avatarHint": "Tap the photo to see the options",
+  "avatarChangeLabel": "Change profile photo",
+  "closePhoto": "Close photo",
+  "edit": "Edit {{label}}",
+  "maskedPassword": "••••••••",
+  "editField": {
+    "nameTitle": "Edit name",
+    "lastNameTitle": "Edit last name",
+    "placeholderLastName": "E.g. Smith",
+    "emailTitle": "Edit email",
+    "save": "Save",
+    "placeholderName": "E.g. John Smith",
+    "placeholderEmail": "E.g. you@example.com"
+  },
+  "changePassword": {
+    "title": "Change password",
+    "currentLabel": "Current password",
+    "newLabel": "New password",
+    "confirmLabel": "Confirm password",
+    "confirmPlaceholder": "Repeat the new password",
+    "save": "Save",
+    "saving": "Saving..."
+  },
+  "success": {
+    "nameUpdated": "Name updated",
+    "lastNameUpdated": "Last name updated",
+    "emailUpdated": "Email updated",
+    "avatarUpdated": "Profile photo updated",
+    "avatarRemoved": "Profile photo removed",
+    "passwordUpdated": "Password updated"
+  },
+  "permissions": {
+    "photoDenied": "We need permission to access your photos to add one."
+  },
+  "passwordGoogle": "Managed by Google",
+  "subtitle": "Manage your personal data and account security."
+}

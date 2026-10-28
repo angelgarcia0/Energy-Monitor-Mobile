@@ -1,0 +1,57 @@
+{
+  "header": {
+    "title": "Usuários",
+    "membersCount_one": "{{count}} membro neste projeto",
+    "membersCount_other": "{{count}} membros neste projeto"
+  },
+  "roles": {
+    "owner": "Responsável",
+    "member": "Membro"
+  },
+  "members": {
+    "title": "Membros do projeto",
+    "onlyOwnerTitle": "Ainda não há outros usuários vinculados",
+    "onlyOwnerDescription": "Compartilhe o código de acesso do lar para que outras pessoas entrem."
+  },
+  "invite": {
+    "title": "Convidar usuário por e-mail",
+    "placeholder": "email@exemplo.com",
+    "button": "Convidar",
+    "errors": {
+      "empty": "Digite um e-mail.",
+      "invalid": "E-mail inválido.",
+      "alreadyMember": "Este usuário já é membro.",
+      "alreadyInvited": "Já foi enviado um convite para este e-mail."
+    }
+  },
+  "pending": {
+    "title": "Convites pendentes",
+    "empty": "Sem convites pendentes",
+    "sent": "Convite enviado",
+    "cancel": "Cancelar"
+  },
+  "actions": {
+    "removeUser": "Remover {{name}}",
+    "transferOwnership": "Tornar {{name}} o responsável"
+  },
+  "confirmRemove": {
+    "title": "Remover membro?",
+    "message": "Você está prestes a remover \"{{name}}\" do projeto. Ela deixará de receber os dados de consumo da casa e você precisará convidá-la novamente se quiser que participe.",
+    "confirm": "Remover",
+    "cancel": "Cancelar",
+    "removing": "Removendo..."
+  },
+  "confirmTransfer": {
+    "title": "Transferir a casa?",
+    "message": "\"{{name}}\" passará a ser o responsável por esta casa e você continuará como membro: não poderá mais gerenciar dispositivos, limites nem membros. Os dispositivos, limites e o histórico não mudam.",
+    "acknowledge": "Entendo que deixarei de ser o responsável",
+    "confirm": "Transferir",
+    "transferring": "Transferindo...",
+    "cancel": "Cancelar",
+    "done": "Agora \"{{name}}\" é o responsável pela casa."
+  },
+  "state": {
+    "loading": "Carregando membros...",
+    "retry": "Tentar novamente"
+  }
+}

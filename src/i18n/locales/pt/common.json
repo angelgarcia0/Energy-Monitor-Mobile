@@ -1,0 +1,14 @@
+{
+  "a11y": {
+    "close": "Fechar",
+    "closeMenu": "Fechar menu",
+    "showPassword": "Mostrar senha",
+    "hidePassword": "Ocultar senha",
+    "openProfileMenu": "Abrir menu do perfil",
+    "otpDigit": "Dígito {{index}} de {{total}} do código"
+  },
+  "trend": {
+    "up": "Aumentou",
+    "down": "Diminuiu"
+  }
+}

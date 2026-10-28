@@ -1,0 +1,25 @@
+{
+  "errors": {
+    "required": "El campo es obligatorio",
+    "invalidEmail": "Correo inválido",
+    "passwordMin": "Mínimo 8 caracteres",
+    "passwordUpper": "Debe tener una mayúscula",
+    "passwordLower": "Debe tener al menos 3 minúsculas",
+    "passwordNumber": "Debe tener al menos 3 números",
+    "passwordSpecial": "Debe tener un carácter especial",
+    "repeatPassword": "Confirma tu contraseña",
+    "terms": "Debes aceptar los términos y condiciones",
+    "passwordMatch": "Las contraseñas no coinciden",
+    "codeInvalid": "El código debe tener 6 dígitos",
+    "codeDigits": "El código solo debe contener dígitos",
+    "currentPasswordRequired": "Ingresa tu contraseña actual",
+    "confirmNewPassword": "Confirma tu nueva contraseña",
+    "nameMin": "Mínimo 2 caracteres",
+    "networkPassword": "Ingresa la contraseña de la red",
+    "nameMax": "Máximo 100 caracteres",
+    "passwordMax": "Máximo 64 caracteres"
+  },
+  "hints": {
+    "password": "De 8 a 64 caracteres, con una mayúscula, 3 minúsculas, 3 números y un carácter especial."
+  }
+}

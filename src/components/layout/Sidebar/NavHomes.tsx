@@ -1,0 +1,86 @@
+import { Ionicons } from "@expo/vector-icons";
+import { usePathname, useRouter } from "expo-router";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Pressable, Text, View } from "react-native";
+
+import { Theme } from "@/constants/theme";
+import { useHomes } from "@/context/HomeContext";
+import type { Href } from "expo-router";
+import { styles } from "./Sidebar.styles";
+
+export interface NavHomesProps {
+  onNavigate: () => void;
+}
+
+export function NavHomes({ onNavigate }: NavHomesProps) {
+  const { t } = useTranslation("sidebar");
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+  const { homes } = useHomes();
+
+  const active = pathname === "/homes" || pathname.startsWith("/home/");
+
+  const handleHomePress = (idHome: string) => {
+    router.push(`/home/${idHome}` as Href);
+    onNavigate();
+  };
+
+  return (
+    <View>
+      <Pressable
+        onPress={() => setOpen((prev) => !prev)}
+        accessibilityRole="button"
+        accessibilityState={{ expanded: open }}
+        style={[styles.navItem, active && styles.navItemActive]}
+      >
+        <Ionicons
+          name="flash-outline"
+          size={Theme.typography.size.lg}
+          color={active ? Theme.colors.onBrand : Theme.colors.onBrandMuted}
+        />
+        <Text style={[styles.navLabel, active && styles.navLabelActive]}>
+          {t("homes")}
+        </Text>
+        <View style={styles.homesChevron}>
+          <Ionicons
+            name={open ? "chevron-up-outline" : "chevron-down-outline"}
+            size={Theme.typography.size.md}
+            color={active ? Theme.colors.onBrand : Theme.colors.onBrandMuted}
+          />
+        </View>
+      </Pressable>
+
+      {open ? (
+        <View style={styles.homesList}>
+          {homes.length === 0 ? (
+            <Text style={styles.noHomes}>{t("noHomes")}</Text>
+          ) : (
+            homes.map((home) => {
+              const selected = pathname === `/home/${home.idHome}`;
+              return (
+                <Pressable
+                  key={home.idHome}
+                  onPress={() => handleHomePress(home.idHome)}
+                  accessibilityRole="button"
+                  accessibilityState={{ selected }}
+                  style={[styles.homeItem, selected && styles.homeItemActive]}
+                >
+                  <View style={styles.homeAvatar}>
+                    <Text style={styles.homeAvatarText}>
+                      {home.name.charAt(0).toUpperCase()}
+                    </Text>
+                  </View>
+                  <Text style={styles.homeName} numberOfLines={1}>
+                    {home.name}
+                  </Text>
+                </Pressable>
+              );
+            })
+          )}
+        </View>
+      ) : null}
+    </View>
+  );
+}

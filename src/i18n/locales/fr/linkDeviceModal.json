@@ -1,0 +1,87 @@
+{
+  "title": "Connecter un appareil",
+  "close": "Fermer",
+  "discover": {
+    "title": "Trouvez votre module",
+    "hint": "Branchez le module et maintenez son bouton BOOT pendant 3 secondes, jusqu’à ce que la lumière clignote. Appuyez ensuite sur «Rechercher un module» et choisissez-le dans la liste.",
+    "scanning": "Connexion Bluetooth...",
+    "foundTitle": "Module connecté",
+    "rescan": "Choisir un autre module",
+    "search": "Rechercher le module",
+    "unsupported": "Ce téléphone n’a pas de Bluetooth compatible avec le module. Essayez un autre appareil.",
+    "portalFallback": "Alternative : connectez-vous au réseau Wi-Fi « EnergyMonitor-Setup » (le mot de passe du portail défini dans le firmware), ouvrez http://192.168.4.1 et configurez-y le réseau.",
+    "empty": "Approchez le module et appuyez sur rechercher.",
+    "noneFound": "Aucun module trouvé. Le module doit être en mode configuration.",
+    "permissionDenied": "L'autorisation Bluetooth manque. Activez-la dans les paramètres du système et réessayez.",
+    "bluetoothOff": "Le Bluetooth est désactivé. Activez-le pour continuer."
+  },
+  "appliance": {
+    "title": "Quel appareil allez-vous surveiller ?",
+    "hint": "Sélectionnez le type d'appareil qui sera connecté à ce module"
+  },
+  "network": {
+    "title": "Connectez-vous à votre réseau WiFi",
+    "subtitle": "Voici les réseaux que voit le module. Choisissez celui de votre maison.",
+    "passwordLabel": "Mot de passe",
+    "passwordPlaceholder": "Entrez le mot de passe du réseau",
+    "open": "Ouvert",
+    "scanning": "Le module recherche des réseaux...",
+    "rescan": "Rechercher à nouveau",
+    "manual": "Saisir le nom du réseau",
+    "pickFromList": "Choisir dans la liste",
+    "ssidLabel": "Nom du réseau (SSID)",
+    "ssidPlaceholder": "Nom exact de votre réseau Wi-Fi",
+    "empty": "Le module ne voit aucun réseau. Saisissez le nom à la main."
+  },
+  "connecting": {
+    "title": "Connexion de l'appareil",
+    "step1": "Connexion du module à « {{ssid}} »",
+    "step2": "Vérification du mot de passe",
+    "step3": "Connexion au serveur",
+    "step0": "Enregistrement de l’appareil dans votre maison"
+  },
+  "done": {
+    "title": "Appareil connecté !",
+    "subtitle": "Votre appareil est maintenant connecté et envoie des données",
+    "nameLabel": "Nom de l'appareil",
+    "roomLabel": "Emplacement",
+    "optional": "(facultatif)"
+  },
+  "buttons": {
+    "cancel": "Annuler",
+    "back": "Retour",
+    "continue": "Continuer",
+    "connect": "Connecter",
+    "finish": "Terminer",
+    "retry": "Réessayer",
+    "saving": "Enregistrement..."
+  },
+  "errors": {
+    "passwordRequired": "Entrez le mot de passe du réseau",
+    "codeRequired": "Saisissez le code du module.",
+    "codeMax": "6 caractères maximum.",
+    "codeInvalid": "Lettres et chiffres uniquement, sans espaces.",
+    "applianceRequired": "Choisissez un appareil.",
+    "bluetooth": "La connexion Bluetooth avec le module a été perdue. Rapprochez-vous et réessayez.",
+    "wifiAuth": "Le mot de passe du réseau est incorrect.",
+    "wifiNotFound": "Le module ne trouve pas ce réseau. Vérifiez le nom ou rapprochez-le du routeur.",
+    "wifiFailed": "Le module n’a pas pu se connecter au Wi-Fi.",
+    "broker": "Le module a le Wi-Fi mais n’atteint pas le serveur.",
+    "timeout": "Le module n’a pas répondu à temps. Vérifiez qu’il est allumé et proche.",
+    "noBroker": "Le serveur n’a pas d’adresse de broker MQTT configurée (DEVICE_MQTT_PUBLIC_HOST)."
+  },
+  "step": "Étape {{current}} sur {{total}}",
+  "moduleLabel": "Module détecté",
+  "reconnect": {
+    "title": "Changer le Wi-Fi de « {{name}} »",
+    "hint": "À utiliser si vous avez déménagé, changé le mot de passe Wi-Fi ou d’opérateur. Si le module ne trouve pas son réseau, il active le Bluetooth tout seul au bout de 5 minutes ; pour ne pas attendre, maintenez son bouton BOOT 3 secondes jusqu’à ce que la lumière clignote. Appuyez ensuite sur « Rechercher le module » et choisissez « EnergyMonitor-{{code}} ».",
+    "wrongModule": "C’est le module {{found}}, pas {{code}}. Choisissez « EnergyMonitor-{{code}} » dans la liste.",
+    "step0": "Préparation de nouveaux identifiants",
+    "doneTitle": "Réseau mis à jour !"
+  },
+  "edit": {
+    "title": "Modifier l’appareil",
+    "hint": "Changez l’appareil mesuré par ce module, son nom ou son emplacement. Le module reste connecté.",
+    "save": "Enregistrer"
+  }
+}

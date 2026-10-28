@@ -1,0 +1,13 @@
+{
+  "home": "Início",
+  "homes": "Lares",
+  "favorites": "Favoritos",
+  "notifications": "Notificações",
+  "settings": "Configurações",
+  "profile": {
+    "myAccount": "Minha conta",
+    "logout": "Sair"
+  },
+  "openNav": "Abrir menu de navegação",
+  "noHomes": "Sem casas"
+}

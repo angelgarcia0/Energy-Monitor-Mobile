@@ -1,0 +1,212 @@
+{
+  "breadcrumb": {
+    "home": "Início",
+    "current": "Notificações"
+  },
+  "title": "Notificações",
+  "subtitle": "Alertas, recomendações e novidades da sua conta e das suas casas.",
+  "tabs": {
+    "all": "Todas",
+    "alerts": "Alertas",
+    "recommendations": "Recomendações",
+    "activity": "Atividade"
+  },
+  "status": {
+    "active": "Ativa",
+    "resolved": "Resolvida",
+    "new": "Nova",
+    "read": "Lida",
+    "resolvedAuto": "Resolvida"
+  },
+  "actions": {
+    "markRead": "Marcar como lida",
+    "markAllRead": "Marcar todas como lidas",
+    "delete": "Excluir",
+    "deleteAllResolved_one": "Excluir {{count}} resolvida",
+    "deleteAllResolved_other": "Excluir {{count}} resolvidas",
+    "deleteAllRead_one": "Excluir {{count}} lida",
+    "deleteAllRead_other": "Excluir {{count}} lidas"
+  },
+  "threshold": {
+    "dailyExceeded": {
+      "title": "Limite diário excedido",
+      "message": "A casa \"{{home}}\" ultrapassou o limite diário de consumo configurado."
+    },
+    "monthlyApproaching": {
+      "title": "Perto do limite mensal",
+      "message": "A casa \"{{home}}\" está perto de atingir o limite mensal de consumo configurado."
+    },
+    "high": {
+      "title": "Consumo alto",
+      "message": "Um dispositivo de \"{{home}}\" está consumindo acima do normal."
+    },
+    "critical": {
+      "title": "Consumo crítico",
+      "message": "Um dispositivo de \"{{home}}\" está consumindo em nível crítico."
+    }
+  },
+  "connectivity": {
+    "deviceOffline": {
+      "title": "Dispositivo desconectado",
+      "message": "Um dispositivo de \"{{home}}\" parou de enviar dados de consumo. Verifique a conexão WiFi dele."
+    }
+  },
+  "recommendation": {
+    "someDevice": "um dispositivo",
+    "generic": {
+      "title": "Nova recomendação",
+      "message": "Há uma nova recomendação para \"{{home}}\"."
+    },
+    "peakHours": {
+      "title": "Tire o consumo do horário de pico",
+      "message": "Boa parte do consumo da última semana em \"{{home}}\" foi entre 18h e 22h. Usar a máquina de lavar, o ferro ou o forno em outro horário alivia a conta."
+    },
+    "standby": {
+      "title": "Reduza o consumo em standby",
+      "message": "\"{{device}}\" de \"{{home}}\" continua consumindo energia de madrugada. Desligue-o da tomada ou use um filtro de linha com interruptor quando não estiver usando."
+    },
+    "aboveAverage": {
+      "title": "Seu consumo está aumentando",
+      "message": "\"{{home}}\" consumiu bem mais nesta semana do que na anterior. Veja o que mudou no uso dos seus aparelhos."
+    },
+    "limitProjection": {
+      "title": "Você vai ultrapassar seu limite",
+      "message": "No ritmo atual \"{{home}}\" vai ultrapassar o limite de consumo que você configurou. Reduza o uso dos aparelhos que mais consomem."
+    },
+    "deviceIncrease": {
+      "title": "Um aparelho consome mais que antes",
+      "message": "\"{{device}}\" de \"{{home}}\" está consumindo mais do que nas semanas anteriores. Pode precisar de manutenção ou estar sendo mais usado que o normal."
+    }
+  },
+  "empty": {
+    "all": {
+      "title": "Sem notificações",
+      "description": "Quando o sistema detectar algo relevante nas suas casas, você verá aqui."
+    },
+    "alerts": {
+      "title": "Sem alertas ativos",
+      "description": "Não há alertas pendentes para revisar no momento."
+    },
+    "recommendations": {
+      "title": "Sem recomendações",
+      "description": "Ainda não há recomendações geradas para as suas casas."
+    },
+    "activity": {
+      "title": "Sem atividade",
+      "description": "Aqui você verá quando alguém entrar nas suas casas, alterar os limites ou vincular um dispositivo."
+    }
+  },
+  "markReadLabel": "Marcar como lida: {{title}}",
+  "device": {
+    "linked": {
+      "title": "Novo dispositivo vinculado",
+      "message": "\"{{home}}\" tem um novo dispositivo conectado que já está enviando medições."
+    }
+  },
+  "limit": {
+    "daily": {
+      "title": "Limite diário atingido",
+      "message": "\"{{home}}\" já consumiu hoje o limite diário que você configurou."
+    },
+    "monthly": {
+      "title": "Limite mensal atingido",
+      "message": "\"{{home}}\" já consumiu este mês o limite mensal que você configurou."
+    }
+  },
+  "autoResolveHint": {
+    "threshold": "Será resolvida quando o consumo se normalizar",
+    "connectivity": "Será resolvida quando o dispositivo se reconectar",
+    "limit": "Será resolvido sozinho quando começar um novo período ou se você aumentar o limite"
+  },
+  "state": {
+    "loading": "Carregando notificações...",
+    "retry": "Tentar novamente"
+  },
+  "deleteLabel": "Excluir alerta {{title}}",
+  "deleteRecommendationLabel": "Excluir recomendação {{title}}",
+  "filter": {
+    "label": "Casa",
+    "all": "Todas as casas",
+    "account": "Conta",
+    "optionPending": "{{name}}, {{count}} pendentes"
+  },
+  "activity": {
+    "quoted": "\"{{name}}\"",
+    "yourHome": "sua casa",
+    "someone": "Alguém",
+    "aMember": "Um membro",
+    "aDevice": "um dispositivo",
+    "generic": {
+      "title": "Novidades no Energy Monitor",
+      "message": "Há novidades em {{home}}."
+    },
+    "account": {
+      "welcome": {
+        "title": "Bem-vindo ao Energy Monitor",
+        "message": "Sua conta está pronta. Crie uma casa ou entre em uma com o código dela para começar a ver o consumo dos seus dispositivos."
+      }
+    },
+    "home": {
+      "created": {
+        "title": "Você criou uma casa",
+        "message": "Você criou {{home}}. Compartilhe o código para que outros entrem e vincule seus dispositivos."
+      },
+      "joined": {
+        "title": "Você entrou em uma casa",
+        "message": "Agora você é membro de {{home}}."
+      },
+      "member-joined": {
+        "title": "Novo membro",
+        "message": "{{actor}} entrou em {{home}}."
+      },
+      "thresholds-updated": {
+        "title": "Limites atualizados",
+        "message": "{{actor}} alterou os limites de consumo de {{home}}."
+      },
+      "removed-you": {
+        "title": "Você não é mais membro de uma casa",
+        "message": "{{actor}} removeu você de {{home}}."
+      },
+      "member-removed": {
+        "title": "Um membro saiu da casa",
+        "message": "{{subject}} não é mais membro de {{home}}."
+      },
+      "member-left": {
+        "title": "Um membro saiu da casa",
+        "message": "{{actor}} saiu de {{home}}."
+      },
+      "ownership-received": {
+        "title": "Agora você é o proprietário",
+        "message": "{{actor}} transferiu {{home}} para você. Agora você é o proprietário."
+      },
+      "ownership-given": {
+        "title": "Você transferiu uma casa",
+        "message": "{{subject}} agora é o proprietário de {{home}}."
+      },
+      "owner-changed": {
+        "title": "Novo proprietário",
+        "message": "{{subject}} agora é o proprietário de {{home}}."
+      },
+      "deleted-by-you": {
+        "title": "Você excluiu uma casa",
+        "message": "Você excluiu {{home}}. Os dispositivos dela foram desvinculados."
+      },
+      "deleted": {
+        "title": "Uma casa foi excluída",
+        "message": "{{actor}} excluiu {{home}}. Você não é mais membro."
+      }
+    },
+    "device": {
+      "linked": {
+        "title": "Dispositivo vinculado",
+        "message": "{{actor}} vinculou {{device}} a {{home}}.",
+        "messageNoActor": "{{device}} foi vinculado a {{home}}."
+      },
+      "unlinked": {
+        "title": "Dispositivo desvinculado",
+        "message": "{{device}} foi desvinculado de {{home}}."
+      }
+    }
+  },
+  "deleteActivityLabel": "Excluir atividade {{title}}"
+}

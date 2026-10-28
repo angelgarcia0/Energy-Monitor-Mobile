@@ -1,0 +1,239 @@
+import { StyleSheet } from "react-native";
+
+import { createThemeStyles, Theme } from "../../../constants/theme";
+
+export const TRIGGER_SIZE = Theme.spacing.xl + Theme.spacing.sm + Theme.spacing.xs;
+
+// Centra el trigger con el botón de acción del Header: borde (1) + paddingVertical del
+// Header + diferencia de tamaños entre ambos botones repartida a cada lado.
+const HEADER_ACTION_SIZE = Theme.spacing.xl + Theme.spacing.sm;
+export const TRIGGER_TOP_OFFSET =
+  1 + Theme.spacing.sm + (HEADER_ACTION_SIZE - TRIGGER_SIZE) / 2;
+const AVATAR_SIZE = Theme.spacing.xl + Theme.spacing.xs;
+const LOGO_SIZE = Theme.spacing.xl + Theme.spacing.md;
+
+const OVERLAY_COLOR = "rgba(0, 0, 0, 0.4)";
+const TINT_SUBTLE = "rgba(255, 255, 255, 0.08)";
+const TINT_AVATAR = "rgba(255, 255, 255, 0.15)";
+const TINT_ACTIVE = "rgba(255, 255, 255, 0.16)";
+
+export const styles = createThemeStyles(() => StyleSheet.create({
+  trigger: {
+    position: "absolute",
+    left: Theme.spacing.md,
+    width: TRIGGER_SIZE,
+    height: TRIGGER_SIZE,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Theme.colors.primary,
+    borderRadius: Theme.radius.md,
+    zIndex: 1000,
+    ...Theme.shadow.md,
+  },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: OVERLAY_COLOR,
+    zIndex: 998,
+  },
+  drawer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    backgroundColor: Theme.colors.backgroundLeft,
+    paddingHorizontal: Theme.spacing.md,
+    zIndex: 999,
+    ...Theme.shadow.lg,
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Theme.spacing.sm,
+    marginBottom: Theme.spacing.sm,
+  },
+  logo: {
+    width: LOGO_SIZE,
+    height: LOGO_SIZE,
+  },
+  headerTitle: {
+    flexShrink: 1,
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.sm,
+    fontWeight: Theme.typography.weight.bold,
+    color: Theme.colors.onBrand,
+  },
+  nav: {
+    flexGrow: 1,
+    justifyContent: "center",
+    gap: Theme.spacing.md,
+  },
+  navItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Theme.spacing.sm,
+    paddingVertical: Theme.spacing.md,
+    paddingHorizontal: Theme.spacing.md,
+    borderRadius: Theme.radius.lg,
+  },
+  navItemActive: {
+    backgroundColor: TINT_ACTIVE,
+  },
+  navLabel: {
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.md,
+    fontWeight: Theme.typography.weight.medium,
+    color: Theme.colors.onBrandMuted,
+  },
+  navLabelActive: {
+    color: Theme.colors.onBrand,
+  },
+  navBadge: {
+    minWidth: Theme.spacing.xl,
+    height: Theme.spacing.xl,
+    paddingHorizontal: Theme.spacing.xs,
+    borderRadius: Theme.spacing.xl / 2,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Theme.colors.danger,
+  },
+  navBadgeLabel: {
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.xs,
+    fontWeight: Theme.typography.weight.bold,
+    color: Theme.colors.onDanger,
+  },
+  homesChevron: {
+    marginLeft: "auto",
+  },
+  homesList: {
+    gap: Theme.spacing.xs,
+    marginTop: Theme.spacing.xs,
+    paddingLeft: Theme.spacing.md,
+  },
+  profileSection: {
+    marginTop: "auto",
+    position: "relative",
+    paddingBottom: Theme.spacing.md,
+    zIndex: 3,
+  },
+  profileRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Theme.spacing.sm,
+    paddingVertical: Theme.spacing.sm,
+    paddingHorizontal: Theme.spacing.xs,
+    borderRadius: Theme.radius.lg,
+    backgroundColor: TINT_SUBTLE,
+  },
+  avatar: {
+    width: AVATAR_SIZE,
+    height: AVATAR_SIZE,
+    borderRadius: AVATAR_SIZE / 2,
+    backgroundColor: TINT_AVATAR,
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
+  },
+  avatarImage: {
+    width: "100%",
+    height: "100%",
+  },
+  profileName: {
+    flex: 1,
+    minWidth: 0,
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.sm,
+    fontWeight: Theme.typography.weight.medium,
+    color: Theme.colors.onBrand,
+  },
+  menuButton: {
+    padding: Theme.spacing.xs,
+  },
+  dropdownCatcher: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 1,
+  },
+  dropdown: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: "100%",
+    marginBottom: Theme.spacing.sm,
+    backgroundColor: Theme.colors.surface,
+    borderRadius: Theme.radius.lg,
+    padding: Theme.spacing.md,
+    zIndex: 2,
+    ...Theme.shadow.lg,
+  },
+  dropdownItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Theme.spacing.sm,
+    paddingVertical: Theme.spacing.sm,
+    paddingHorizontal: Theme.spacing.sm,
+    borderRadius: Theme.radius.md,
+  },
+  dropdownItemPressed: {
+    backgroundColor: Theme.colors.background,
+  },
+  dropdownItemText: {
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.sm,
+    color: Theme.colors.textPrimary,
+  },
+  homeItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Theme.spacing.sm,
+    paddingVertical: Theme.spacing.sm,
+    paddingHorizontal: Theme.spacing.sm,
+    borderRadius: Theme.radius.md,
+  },
+  homeItemActive: {
+    backgroundColor: TINT_ACTIVE,
+  },
+  homeAvatar: {
+    width: AVATAR_SIZE,
+    height: AVATAR_SIZE,
+    borderRadius: AVATAR_SIZE / 2,
+    backgroundColor: TINT_AVATAR,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  homeAvatarText: {
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.sm,
+    fontWeight: Theme.typography.weight.bold,
+    color: Theme.colors.onBrand,
+  },
+  homeName: {
+    flex: 1,
+    minWidth: 0,
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.sm,
+    color: Theme.colors.onBrandMuted,
+  },
+  noHomes: {
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.sm,
+    color: Theme.colors.onBrandMuted,
+    paddingVertical: Theme.spacing.sm,
+    paddingHorizontal: Theme.spacing.sm,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: Theme.colors.border,
+    marginVertical: Theme.spacing.sm,
+  },
+  logoutButton: {
+    width: "100%",
+  },
+}));

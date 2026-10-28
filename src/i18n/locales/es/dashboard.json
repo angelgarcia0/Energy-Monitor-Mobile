@@ -1,0 +1,23 @@
+{
+  "breadcrumb": {
+    "home": "Inicio"
+  },
+  "actions": {
+    "joinHome": "Unirse a hogar",
+    "createHome": "Crear hogar",
+    "openMenu": "Abrir menú de acciones"
+  },
+  "home": {
+    "joinedName": "Hogar unido",
+    "responsible": "Responsable del hogar",
+    "joinedDescription": "Hogar al que te has unido como usuario regular.",
+    "you": "Tú"
+  },
+  "homeAddress": "Av. Central 45, Oficina 3",
+  "state": {
+    "loading": "Cargando hogares...",
+    "error": "No se pudo cargar la lista de hogares.",
+    "errorDescription": "Revisa tu conexión e inténtalo de nuevo.",
+    "retry": "Reintentar"
+  }
+}

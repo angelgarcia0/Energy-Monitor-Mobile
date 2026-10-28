@@ -1,0 +1,41 @@
+{
+  "title": {
+    "homeInfo": "Informations de la maison",
+    "accessCode": "Code d'accès",
+    "owner": "Utilisateur responsable"
+  },
+  "fields": {
+    "name": "Nom",
+    "homeType": "Type de maison",
+    "address": "Adresse",
+    "description": "Description",
+    "creationDate": "Date de création",
+    "email": "E-mail"
+  },
+  "placeholders": {
+    "empty": "—",
+    "noCode": "——————"
+  },
+  "hints": {
+    "accessCode": "Partagez ce code pour que d'autres utilisateurs puissent rejoindre."
+  },
+  "buttons": {
+    "copy": "Copier le code d'accès",
+    "deleteHome": "Supprimer la maison",
+    "leaveHome": "Quitter la maison",
+    "leaving": "Sortie...",
+    "deleting": "Suppression..."
+  },
+  "status": {
+    "responsible": "Responsable"
+  },
+  "confirm": {
+    "leaveTitle": "Quitter la maison ?",
+    "leave": "Êtes-vous sûr de vouloir quitter cette maison ?",
+    "deleteTitle": "Supprimer la maison ?",
+    "delete": "Le foyer disparaîtra pour tous ses membres et ses appareils seront dissociés, prêts à être liés à un autre foyer. Cette action est irréversible.",
+    "cancel": "Annuler",
+    "deleteTypeName": "Saisissez « {{name}} » pour confirmer"
+  },
+  "copyLabel": "Copier le code d'accès"
+}

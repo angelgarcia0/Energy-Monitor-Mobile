@@ -1,0 +1,87 @@
+{
+  "title": "Link device",
+  "close": "Close",
+  "discover": {
+    "title": "Find your module",
+    "hint": "Plug in the module and hold its BOOT button for 3 seconds, until the light blinks. Then press “Search module” and pick it from the list.",
+    "scanning": "Connecting over Bluetooth...",
+    "foundTitle": "Module connected",
+    "rescan": "Pick another module",
+    "search": "Find module",
+    "unsupported": "This phone has no Bluetooth compatible with the module. Try another device.",
+    "portalFallback": "Alternative: join the “EnergyMonitor-Setup” Wi-Fi network (the portal password set in the firmware), open http://192.168.4.1 and set the network there.",
+    "empty": "Bring the module close and press search.",
+    "noneFound": "No module was found. The module has to be in setup mode.",
+    "permissionDenied": "Bluetooth permission is missing. Enable it in the system settings and try again.",
+    "bluetoothOff": "Bluetooth is off. Turn it on to continue."
+  },
+  "appliance": {
+    "title": "Which appliance are you going to monitor?",
+    "hint": "Select the type of appliance that will be connected to this module"
+  },
+  "network": {
+    "title": "Connect to your WiFi network",
+    "subtitle": "These are the networks the module can see. Pick your home network.",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter the network password",
+    "open": "Open",
+    "scanning": "The module is looking for networks...",
+    "rescan": "Scan again",
+    "manual": "Type the network name",
+    "pickFromList": "Pick from the list",
+    "ssidLabel": "Network name (SSID)",
+    "ssidPlaceholder": "Exact name of your Wi-Fi network",
+    "empty": "The module sees no networks. Type the name by hand."
+  },
+  "connecting": {
+    "title": "Connecting device",
+    "step1": "Connecting the module to “{{ssid}}”",
+    "step2": "Checking the password",
+    "step3": "Connecting to the server",
+    "step0": "Registering the device in your home"
+  },
+  "done": {
+    "title": "Device linked!",
+    "subtitle": "Your device is now connected and sending data",
+    "nameLabel": "Device name",
+    "roomLabel": "Location",
+    "optional": "(optional)"
+  },
+  "buttons": {
+    "cancel": "Cancel",
+    "back": "Back",
+    "continue": "Continue",
+    "connect": "Connect",
+    "finish": "Finish",
+    "retry": "Try again",
+    "saving": "Saving..."
+  },
+  "errors": {
+    "passwordRequired": "Enter the network password",
+    "codeRequired": "Enter the module code.",
+    "codeMax": "Maximum 6 characters.",
+    "codeInvalid": "Letters and numbers only, no spaces.",
+    "applianceRequired": "Choose an appliance.",
+    "bluetooth": "The Bluetooth connection to the module was lost. Move closer and try again.",
+    "wifiAuth": "The network password is wrong.",
+    "wifiNotFound": "The module cannot find that network. Check the name or move it closer to the router.",
+    "wifiFailed": "The module could not join the Wi-Fi network.",
+    "broker": "The module has Wi-Fi but cannot reach the server.",
+    "timeout": "The module did not answer in time. Check it is still on and nearby.",
+    "noBroker": "The server has no MQTT broker address configured (DEVICE_MQTT_PUBLIC_HOST)."
+  },
+  "step": "Step {{current}} of {{total}}",
+  "moduleLabel": "Module found",
+  "reconnect": {
+    "title": "Change Wi-Fi of “{{name}}”",
+    "hint": "Use it if you moved, changed the Wi-Fi password or your internet provider. If the module cannot find its network it turns Bluetooth on by itself after 5 minutes; to skip the wait, hold its BOOT button for 3 seconds until the light blinks. Then press “Find module” and pick “EnergyMonitor-{{code}}”.",
+    "wrongModule": "That is module {{found}}, not {{code}}. Pick “EnergyMonitor-{{code}}” in the list.",
+    "step0": "Preparing new credentials",
+    "doneTitle": "Network updated!"
+  },
+  "edit": {
+    "title": "Edit device",
+    "hint": "Change which appliance this module measures, its name or its location. The module stays connected.",
+    "save": "Save changes"
+  }
+}

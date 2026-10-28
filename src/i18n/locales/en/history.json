@@ -1,0 +1,70 @@
+{
+  "filters": {
+    "label": "Period",
+    "day": "Day",
+    "week": "Week",
+    "month": "Month",
+    "year": "Year"
+  },
+  "dates": {
+    "day": "Last 24 hours",
+    "week": "Last 7 days"
+  },
+  "chart": {
+    "title": {
+      "day": "Hourly consumption",
+      "week": "Daily consumption",
+      "month": "Daily consumption",
+      "year": "Monthly consumption"
+    },
+    "empty": "Link a device to see its consumption history",
+    "noData": "No measurements in this period yet",
+    "deviceLabel": "Device type"
+  },
+  "summary": {
+    "title": "Period summary"
+  },
+  "stats": {
+    "totalConsumption": "Total consumption",
+    "topConsumer": "Top consumer",
+    "vsPrevious": "{{pct}}% vs previous period",
+    "periodAverage": "Average per device type",
+    "noPrevious": "No data for the previous period",
+    "intervalOnly": "Selected range only"
+  },
+  "ranking": {
+    "title": "Consumption ranking",
+    "headers": {
+      "position": "#",
+      "device": "Device",
+      "total": "Total",
+      "percentage": "%"
+    }
+  },
+  "subfilters": {
+    "label": "Range",
+    "showAll": "All",
+    "day": {
+      "0-6": "0h - 6h",
+      "6-12": "6h - 12h",
+      "12-18": "12h - 18h",
+      "18-24": "18h - 24h"
+    },
+    "month": {
+      "sem1": "Week 1",
+      "sem2": "Week 2",
+      "sem3": "Week 3",
+      "sem4": "Week 4"
+    },
+    "year": {
+      "q1": "Jan - Mar",
+      "q2": "Apr - Jun",
+      "q3": "Jul - Sep",
+      "q4": "Oct - Dec"
+    }
+  },
+  "state": {
+    "loading": "Loading history...",
+    "retry": "Retry"
+  }
+}

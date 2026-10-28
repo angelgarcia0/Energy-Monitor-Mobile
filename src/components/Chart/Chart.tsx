@@ -1,0 +1,126 @@
+import React from "react";
+import { Dimensions, StyleProp, View, ViewStyle } from "react-native";
+import { LineChart, BarChart, PieChart } from "react-native-chart-kit";
+import { Theme } from "../../constants/theme";
+import { styles } from "./Chart.styles";
+
+export type ChartType = "area" | "bar" | "pie";
+
+export interface ChartDataset {
+  data: number[];
+  color?: (opacity: number) => string;
+  strokeWidth?: number;
+}
+
+export interface ChartSeriesData {
+  labels: string[];
+  datasets: ChartDataset[];
+}
+
+export interface ChartPieSlice {
+  name: string;
+  value: number;
+  color: string;
+}
+
+export type ChartProps =
+  | {
+      type: "area" | "bar";
+      data: ChartSeriesData;
+      height?: number;
+      width?: number;
+      style?: StyleProp<ViewStyle>;
+      /** Decimales del eje Y; por defecto 0. Los kWh pequeños necesitan más. */
+      decimalPlaces?: number;
+      /** Solo `bar`: el valor encima de cada barra. Por defecto se muestra. */
+      showValues?: boolean;
+    }
+  | {
+      type: "pie";
+      data: ChartPieSlice[];
+      height?: number;
+      width?: number;
+      style?: StyleProp<ViewStyle>;
+    };
+
+function hexToRgba(hex: string, opacity: number) {
+  const clean = hex.replace("#", "");
+  const bigint = parseInt(clean, 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+}
+
+const screenWidth = Dimensions.get("window").width;
+const defaultWidth = screenWidth - Theme.spacing.md * 2;
+
+export function Chart(props: ChartProps) {
+  const height = props.height ?? 220;
+  const width = props.width ?? defaultWidth;
+
+  // Se construye en cada render (y no a nivel de módulo) para leer los tokens de la
+  // paleta activa: los gráficos se repintan al cambiar el tema.
+  const baseChartConfig = {
+    backgroundColor: Theme.colors.surface,
+    backgroundGradientFrom: Theme.colors.surface,
+    backgroundGradientTo: Theme.colors.surface,
+    decimalPlaces: props.type === "pie" ? 0 : (props.decimalPlaces ?? 0),
+    color: (opacity = 1) => hexToRgba(Theme.colors.primary, opacity),
+    labelColor: (opacity = 1) => hexToRgba(Theme.colors.textSecondary, opacity),
+    propsForBackgroundLines: {
+      stroke: Theme.colors.border,
+      strokeDasharray: "3 3",
+    },
+    propsForLabels: {
+      fontSize: Theme.typography.size.size11,
+      fontFamily: Theme.typography.fontPrimary,
+    },
+  };
+
+  return (
+    <View style={[styles.container, props.style]}>
+      {props.type === "pie" ? (
+        <PieChart
+          data={props.data.map((slice) => ({
+            name: slice.name,
+            population: slice.value,
+            color: slice.color,
+            legendFontColor: Theme.colors.textSecondary,
+            legendFontSize: Theme.typography.size.size11,
+          }))}
+          width={width}
+          height={height}
+          chartConfig={baseChartConfig}
+          accessor="population"
+          backgroundColor="transparent"
+          paddingLeft="0"
+        />
+      ) : props.type === "bar" ? (
+        <BarChart
+          data={props.data}
+          width={width}
+          height={height}
+          chartConfig={baseChartConfig}
+          fromZero
+          showValuesOnTopOfBars={props.showValues ?? true}
+          yAxisLabel=""
+          yAxisSuffix=""
+        />
+      ) : (
+        <LineChart
+          data={props.data}
+          width={width}
+          height={height}
+          bezier
+          chartConfig={{
+            ...baseChartConfig,
+            fillShadowGradient: Theme.colors.primary,
+            fillShadowGradientOpacity: 0.15,
+          }}
+          withShadow={false}
+        />
+      )}
+    </View>
+  );
+}

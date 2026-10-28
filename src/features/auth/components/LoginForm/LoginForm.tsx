@@ -1,0 +1,203 @@
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Image, Pressable, Text, View } from "react-native";
+
+import { Button } from "@/components/Button/Button";
+import { Card } from "@/components/Card/Card";
+import { Input } from "@/components/Input/Input";
+import { Theme } from "@/constants/theme";
+import { authApi } from "@/services/auth";
+import { errorMessage } from "@/services/http/errorMessages";
+import { useGoogleSignIn } from "../../hooks/useGoogleSignIn";
+import { askTermsConsent } from "../../service/termsConsent";
+import {
+  loginSchema,
+  type LoginFormValues,
+} from "../../validation/loginSchema";
+import { styles } from "./LoginForm.styles";
+
+export interface LoginFormProps {
+  onSuccess?: () => void;
+}
+
+export function LoginForm({ onSuccess }: LoginFormProps) {
+  const { t } = useTranslation("auth");
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+  // Marcada por defecto: lo esperado en un teléfono es no volver a escribir la
+  // contraseña cada vez que se abre la app.
+  const [remember, setRemember] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [serverError, setServerError] = useState("");
+  const google = useGoogleSignIn(onSuccess, false, remember);
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: "", password: "" },
+  });
+
+  const onSubmit = async (data: LoginFormValues) => {
+    setSubmitting(true);
+    setServerError("");
+    try {
+      try {
+        await authApi.login({ ...data, remember });
+      } catch (error) {
+        // La cuenta nunca aceptó los términos: se preguntan y se repite aceptándolos.
+        if ((error as { status?: number })?.status !== 428 || !(await askTermsConsent(t))) {
+          throw error;
+        }
+        await authApi.login({ ...data, remember, acceptTerms: true });
+      }
+      router.replace("/dashboard");
+      onSuccess?.();
+    } catch (error) {
+      setServerError(errorMessage(t, error, "login"));
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <Card padding="lg" style={styles.card}>
+      <View style={styles.form}>
+        <Text style={styles.title}>{t("login.title")}</Text>
+
+        <Controller
+          control={control}
+          name="email"
+          render={({ field: { value, onChange, onBlur } }) => (
+            <Input
+              label={t("login.email")}
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              placeholder={t("login.emailPlaceholder")}
+              keyboardType="email-address"
+              autoComplete="email"
+            />
+          )}
+        />
+        {errors.email ? (
+          <Text style={styles.error}>{errors.email.message}</Text>
+        ) : null}
+
+        <Controller
+          control={control}
+          name="password"
+          render={({ field: { value, onChange, onBlur } }) => (
+            <Input
+              label={t("login.password")}
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              placeholder="••••••"
+              secureTextEntry={!showPassword}
+              icon={
+                <Ionicons
+                  name={showPassword ? "eye-off-outline" : "eye-outline"}
+                  size={Theme.typography.size.lg}
+                  color={Theme.colors.textSecondary}
+                />
+              }
+              onIconPress={() => setShowPassword((prev) => !prev)}
+              iconAccessibilityLabel={t(showPassword ? "common:a11y.hidePassword" : "common:a11y.showPassword")}
+            />
+          )}
+        />
+        {errors.password ? (
+          <Text style={styles.error}>{errors.password.message}</Text>
+        ) : null}
+
+        <View style={styles.options}>
+          <Pressable
+            style={styles.remember}
+            onPress={() => setRemember((prev) => !prev)}
+            accessibilityRole="checkbox"
+            accessibilityState={{ checked: remember }}
+          >
+            <View style={[styles.checkbox, remember && styles.checkboxChecked]}>
+              {remember ? (
+                <Ionicons
+                  name="checkmark"
+                  size={Theme.typography.size.xs}
+                  color={Theme.colors.onPrimary}
+                />
+              ) : null}
+            </View>
+            <Text style={styles.rememberLabel}>{t("login.remember")}</Text>
+          </Pressable>
+
+          <Pressable
+            onPress={() => router.push("/recover-password")}
+            hitSlop={8}
+            accessibilityRole="link"
+          >
+            <Text style={styles.link}>{t("login.forgotPassword")}</Text>
+          </Pressable>
+        </View>
+
+        {serverError || google.error ? (
+          <Text style={styles.error}>{serverError || google.error}</Text>
+        ) : null}
+
+        <View style={styles.buttonsContainer}>
+          <Button
+            variant="primary"
+            size="large"
+            style={styles.submitButton}
+            disabled={submitting || google.submitting}
+            onPress={handleSubmit(onSubmit)}
+          >
+            {submitting ? t("login.submitting") : t("login.submit")}
+          </Button>
+
+          <View style={styles.divider}>
+            <View style={styles.dividerLine} />
+            <Text style={styles.dividerText}>{t("login.divider")}</Text>
+            <View style={styles.dividerLine} />
+          </View>
+
+          <Text style={styles.loginWith}>{t("login.loginWith")}</Text>
+
+          <Button
+            variant="secondary"
+            size="medium"
+            style={styles.googleButton}
+            icon={
+              <Image
+                source={require("../../../../assets/google_icon.png")}
+                style={styles.googleIcon}
+              />
+            }
+            disabled={submitting || google.submitting}
+            onPress={() => {
+              setServerError("");
+              void google.signIn();
+            }}
+          >
+            {t("login.google")}
+          </Button>
+        </View>
+
+        <Text style={styles.register}>
+          {t("login.noAccount")}{" "}
+          <Text
+            style={styles.registerLink}
+            accessibilityRole="link"
+            onPress={() => router.push("/register")}
+          >
+            {t("login.register")}
+          </Text>
+        </Text>
+      </View>
+    </Card>
+  );
+}

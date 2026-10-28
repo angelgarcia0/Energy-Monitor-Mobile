@@ -1,0 +1,108 @@
+{
+  "generic": {
+    "badRequest": "Les données envoyées ne sont pas valides. Vérifiez-les et réessayez.",
+    "unauthorized": "Votre session n'est pas valide. Reconnectez-vous.",
+    "forbidden": "Vous n'avez pas l'autorisation d'effectuer cette action.",
+    "notFound": "L'élément recherché est introuvable.",
+    "conflict": "L'opération entre en conflit avec l'état actuel.",
+    "rateLimited": "Trop de tentatives. Attendez {{minutes}} minutes avant de réessayer.",
+    "server": "Une erreur inattendue s'est produite. Réessayez.",
+    "network": "Impossible de se connecter au serveur. Vérifiez votre connexion."
+  },
+  "password": {
+    "policy": "Le mot de passe ne respecte pas la politique de sécurité."
+  },
+  "login": {
+    "invalidCredentials": "E-mail ou mot de passe incorrect.",
+    "inactive": "Votre compte est bloqué ou inactif."
+  },
+  "googleLogin": {
+    "rejected": "Google n'a pas pu confirmer votre compte. Veuillez réessayer.",
+    "emailTaken": "Cet e-mail a déjà un compte avec mot de passe. Connectez-vous avec votre e-mail et votre mot de passe.",
+    "unavailable": "La connexion avec Google n'est pas disponible pour le moment.",
+    "playServices": "Vous avez besoin de Google Play Services à jour pour vous connecter avec Google.",
+    "failed": "Impossible de se connecter avec Google. Veuillez réessayer."
+  },
+  "register": {
+    "emailTaken": "Un compte existe déjà avec cet e-mail.",
+    "invalidEmail": "Cette adresse e-mail n'existe pas ou son domaine ne reçoit pas de courrier. Vérifiez qu'elle est bien écrite."
+  },
+  "passwordReset": {
+    "failed": "Le mot de passe n'a pas pu être modifié. Réessayez.",
+    "invalidToken": "Le lien de réinitialisation n'est pas valide ou a expiré."
+  },
+  "passwordChange": {
+    "wrongCurrent": "Le mot de passe actuel est incorrect.",
+    "failed": "Le mot de passe n'a pas pu être modifié. Réessayez."
+  },
+  "accountDelete": {
+    "wrongPassword": "Le mot de passe est incorrect.",
+    "lastOwner": "Vous êtes le seul propriétaire d'un foyer qui a encore des membres. Retirez les membres de ces foyers avant de supprimer votre compte.",
+    "failed": "Le compte n'a pas pu être supprimé. Réessayez.",
+    "wrongCode": "Le code est incorrect ou a expiré."
+  },
+  "homeCreate": {
+    "typeNotFound": "Le type de foyer sélectionné n'existe pas.",
+    "codeCollision": "Le code d'accès du foyer n'a pas pu être généré. Réessayez."
+  },
+  "homeJoin": {
+    "codeNotFound": "Aucun foyer ne correspond à ce code d'accès.",
+    "alreadyMember": "Vous êtes déjà membre de ce foyer."
+  },
+  "homeLeave": {
+    "lastOwner": "Vous êtes le seul responsable : vous ne pouvez pas quitter le foyer.",
+    "notMember": "Vous n'êtes plus membre de ce foyer."
+  },
+  "homeDelete": {
+    "notOwner": "Seul le responsable du foyer peut le supprimer.",
+    "notFound": "Ce foyer n’existe plus ou vous n’en faites pas partie.",
+    "failed": "Le foyer n’a pas pu être supprimé."
+  },
+  "memberRemove": {
+    "notOwner": "Seul le responsable du foyer peut retirer des membres.",
+    "notFound": "Cet utilisateur n'est plus membre du foyer.",
+    "isOwner": "Le responsable du foyer ne peut pas être retiré."
+  },
+  "thresholdsUpdate": {
+    "invalid": "Les limites ne sont pas valides : la limite journalière ne peut pas dépasser la limite mensuelle.",
+    "notOwner": "Seul le responsable du foyer peut modifier les seuils."
+  },
+  "ownershipTransfer": {
+    "notOwner": "Seul le responsable du foyer peut le transférer.",
+    "notMember": "Cet utilisateur n'est plus membre du foyer.",
+    "alreadyOwner": "Cet utilisateur est déjà le responsable du foyer.",
+    "failed": "Le foyer n'a pas pu être transféré. Réessayez."
+  },
+  "deviceLink": {
+    "notOwner": "Seul le propriétaire du foyer peut lier des appareils.",
+    "otherHome": "Ce module est déjà lié à un autre foyer.",
+    "failed": "L'appareil n'a pas pu être enregistré."
+  },
+  "deviceUnlink": {
+    "notOwner": "Seul le propriétaire du foyer peut supprimer des appareils.",
+    "failed": "L'appareil n'a pas pu être supprimé."
+  },
+  "deviceEdit": {
+    "notOwner": "Seul le propriétaire du foyer peut modifier les appareils.",
+    "failed": "Les modifications de l'appareil n'ont pas pu être enregistrées."
+  },
+  "deviceReconnect": {
+    "notOwner": "Seul le propriétaire du foyer peut changer le réseau d'un appareil.",
+    "failed": "Les identifiants de l'appareil n'ont pas pu être préparés."
+  },
+  "emailVerify": {
+    "invalidCode": "Le code n'est pas valide ou a expiré."
+  },
+  "accountUpdate": {
+    "failed": "Le profil n'a pas pu être mis à jour. Réessayez.",
+    "emailTaken": "Cet e-mail appartient déjà à un autre compte.",
+    "invalid": "Les données du profil ne sont pas valides."
+  },
+  "terms": {
+    "required": "Vous devez accepter les conditions générales pour continuer."
+  },
+  "accountDeleteCode": {
+    "unavailable": "Nous ne pouvons pas vous envoyer le code pour le moment. Réessayez plus tard.",
+    "failed": "Le code n'a pas pu être envoyé. Réessayez."
+  }
+}

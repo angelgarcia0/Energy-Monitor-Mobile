@@ -9,6 +9,8 @@ export interface InputProps extends TextInputProps {
   variant?: InputVariant;
   icon?: React.ReactNode;
   onIconPress?: () => void;
+  /** Lo que hace el botón del ícono (p. ej. "Mostrar contraseña"); el ícono solo no se lee. */
+  iconAccessibilityLabel?: string;
 }
 
 export function Input({
@@ -16,16 +18,25 @@ export function Input({
   variant = "default",
   icon,
   onIconPress,
+  iconAccessibilityLabel,
   style,
   onFocus,
   onBlur,
+  accessibilityLabel,
+  accessibilityHint,
   ...rest
 }: InputProps) {
   const [focused, setFocused] = useState(false);
 
   return (
     <View style={styles.container}>
-      {label ? <Text style={styles.label}>{label}</Text> : null}
+      {/* La etiqueta visible se repite como nombre accesible del campo: un lector de pantalla
+          no la asocia sola, y el placeholder desaparece al escribir. */}
+      {label ? (
+        <Text style={styles.label} importantForAccessibility="no" accessibilityElementsHidden>
+          {label}
+        </Text>
+      ) : null}
 
       <View
         style={[
@@ -44,6 +55,8 @@ export function Input({
           spellCheck={false}
           autoCorrect={false}
           autoCapitalize="none"
+          accessibilityLabel={accessibilityLabel ?? label}
+          accessibilityHint={accessibilityHint}
           onFocus={(e) => {
             setFocused(true);
             onFocus?.(e);
@@ -56,7 +69,13 @@ export function Input({
         />
 
         {icon ? (
-          <Pressable onPress={onIconPress} style={styles.icon}>
+          <Pressable
+            onPress={onIconPress}
+            style={styles.icon}
+            hitSlop={12}
+            accessibilityRole="button"
+            accessibilityLabel={iconAccessibilityLabel}
+          >
             {icon}
           </Pressable>
         ) : null}

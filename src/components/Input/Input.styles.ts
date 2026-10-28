@@ -53,7 +53,6 @@ export const styles = createThemeStyles(() => StyleSheet.create({
   },
   icon: {
     marginLeft: Theme.spacing.sm,
-    opacity: 0.6,
   },
   placeholder: {
     color: Theme.colors.textSecondary,

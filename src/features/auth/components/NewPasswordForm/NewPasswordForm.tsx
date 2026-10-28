@@ -92,6 +92,7 @@ export function NewPasswordForm({ onSuccess }: NewPasswordFormProps) {
                 />
               }
               onIconPress={() => setShowPassword((prev) => !prev)}
+              iconAccessibilityLabel={t(showPassword ? "common:a11y.hidePassword" : "common:a11y.showPassword")}
             />
           )}
         />
@@ -118,6 +119,7 @@ export function NewPasswordForm({ onSuccess }: NewPasswordFormProps) {
                 />
               }
               onIconPress={() => setShowRepeatPassword((prev) => !prev)}
+              iconAccessibilityLabel={t(showRepeatPassword ? "common:a11y.hidePassword" : "common:a11y.showPassword")}
             />
           )}
         />

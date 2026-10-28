@@ -115,6 +115,7 @@ export function ChangePasswordModal({
                 secureTextEntry={!showPasswords}
                 icon={eyeIcon}
                 onIconPress={() => setShowPasswords((prev) => !prev)}
+                iconAccessibilityLabel={t(showPasswords ? "common:a11y.hidePassword" : "common:a11y.showPassword")}
               />
             )}
           />

@@ -157,6 +157,7 @@ export function NetworkStep({
             />
           }
           onIconPress={() => setShowPassword((value) => !value)}
+          iconAccessibilityLabel={t(showPassword ? "common:a11y.hidePassword" : "common:a11y.showPassword")}
         />
       ) : null}
     </View>

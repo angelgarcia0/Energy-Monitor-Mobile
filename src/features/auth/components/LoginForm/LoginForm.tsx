@@ -108,6 +108,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
                 />
               }
               onIconPress={() => setShowPassword((prev) => !prev)}
+              iconAccessibilityLabel={t(showPassword ? "common:a11y.hidePassword" : "common:a11y.showPassword")}
             />
           )}
         />

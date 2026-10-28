@@ -155,6 +155,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                 />
               }
               onIconPress={() => setShowPassword((prev) => !prev)}
+              iconAccessibilityLabel={t(showPassword ? "common:a11y.hidePassword" : "common:a11y.showPassword")}
             />
           )}
         />
@@ -181,6 +182,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                 />
               }
               onIconPress={() => setShowRepeatPassword((prev) => !prev)}
+              iconAccessibilityLabel={t(showRepeatPassword ? "common:a11y.hidePassword" : "common:a11y.showPassword")}
             />
           )}
         />

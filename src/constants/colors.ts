@@ -38,6 +38,8 @@ export type ThemeColors = {
   // AuthLayout.module.css, Button.module.css, HomeCard.module.css).
   onBrand: string;
   onBrandMuted: string;
+  /** Texto sobre un relleno `primary` (botones, chips activos). */
+  onPrimary: string;
 
   // Contenido dibujado sobre un relleno `danger`: el contador de alertas del
   // sidebar. No puede ser `onBrand` fijo porque en los temas oscuros `danger` es
@@ -65,7 +67,7 @@ export const Colors: ThemeColors = {
   gradient: "#e6f0fa",
 
   textPrimary: "#212529",
-  textSecondary: "#6c757d",
+  textSecondary: "#636b73",
   border: "#e5e7eb",
 
   cardSoft: "#e8f3ff",
@@ -83,7 +85,8 @@ export const Colors: ThemeColors = {
   infoText: "#0C5460",
 
   onBrand: "#FFFFFF",
-  onBrandMuted: "rgba(255, 255, 255, 0.8)",
+  onBrandMuted: "rgba(255, 255, 255, 0.9)",
+  onPrimary: "#FFFFFF",
   onDanger: "#FFFFFF",
 };
 

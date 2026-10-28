@@ -54,7 +54,7 @@ const ecoLight: ThemePalette = {
     surface: "#FFFFFF",
     gradient: "#E8F5E9",
     textPrimary: "#1A2E1B",
-    textSecondary: "#5A7A5C",
+    textSecondary: "#55735A",
     border: "#C8E6C9",
     cardSoft: "#E8F5E9",
     cardSelected: "#F1F8F2",
@@ -68,7 +68,8 @@ const ecoLight: ThemePalette = {
     infoSoft: "#D1ECF1",
     infoText: "#0C5460",
     onBrand: "#FFFFFF",
-    onBrandMuted: "rgba(255, 255, 255, 0.8)",
+    onBrandMuted: "rgba(255, 255, 255, 0.95)",
+    onPrimary: "#FFFFFF",
     onDanger: "#FFFFFF",
   },
 };
@@ -111,6 +112,8 @@ const energyDark: ThemePalette = {
     infoText: "#67E8F9",
     onBrand: "#FFFFFF",
     onBrandMuted: "rgba(255, 255, 255, 0.8)",
+    // Blanco sobre `primary` no llega a 4,5:1 en este tema: el texto de los botones va oscuro.
+    onPrimary: "#0B1220",
     // `danger` es rosa claro en los temas oscuros: el texto sobre él va oscuro.
     onDanger: "#1F2937",
   },
@@ -154,6 +157,8 @@ const ecoDark: ThemePalette = {
     infoText: "#67E8F9",
     onBrand: "#FFFFFF",
     onBrandMuted: "rgba(255, 255, 255, 0.8)",
+    // Blanco sobre el verde `primary` no llega a 4,5:1: el texto de los botones va oscuro.
+    onPrimary: "#052E16",
     onDanger: "#1F2937",
   },
 };

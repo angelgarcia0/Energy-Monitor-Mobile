@@ -80,7 +80,7 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     borderColor: Theme.colors.danger,
   },
   text_danger: {
-    color: Theme.colors.danger,
+    color: Theme.colors.dangerText,
   },
 
   pressed: {

@@ -46,6 +46,6 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     textAlign: "center",
   },
   deleteButtonText: {
-    color: Theme.colors.danger,
+    color: Theme.colors.dangerText,
   },
 }));

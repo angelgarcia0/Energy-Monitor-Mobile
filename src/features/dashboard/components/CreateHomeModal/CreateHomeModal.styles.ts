@@ -43,6 +43,6 @@ export const styles = createThemeStyles(() => StyleSheet.create({
   error: {
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.size13,
-    color: Theme.colors.danger,
+    color: Theme.colors.dangerText,
   },
 }));

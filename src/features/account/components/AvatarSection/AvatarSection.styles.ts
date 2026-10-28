@@ -88,7 +88,7 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     color: Theme.colors.textPrimary,
   },
   optionTextDanger: {
-    color: Theme.colors.danger,
+    color: Theme.colors.dangerText,
   },
   optionTextDisabled: {
     color: Theme.colors.textSecondary,

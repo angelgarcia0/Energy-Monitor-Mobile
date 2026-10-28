@@ -27,8 +27,13 @@ export function EmptyState({
 
   return (
     <View style={[styles.container, isFull && styles.containerFull, style]}>
-      {isFull && image ? <View style={styles.image}>{image}</View> : null}
-      {!isFull && icon ? <View style={styles.icon}>{icon}</View> : null}
+      {/* La imagen manda en la variante completa; sin ella se usa el ícono en cualquier variante
+          (antes un ícono con `variant="full"` no se mostraba). */}
+      {isFull && image ? (
+        <View style={styles.image}>{image}</View>
+      ) : icon ? (
+        <View style={styles.icon}>{icon}</View>
+      ) : null}
 
       <Text style={[styles.title, isFull && styles.titleFull]} accessibilityRole="header">
         {title}

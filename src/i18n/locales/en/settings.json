@@ -71,5 +71,9 @@
       "description": "Latest updates, improvements, and bug fixes",
       "action": "View changelog"
     }
+  },
+  "hero": {
+    "title": "Settings",
+    "subtitle": "Customize the app language, theme and notifications."
   }
 }

@@ -5,12 +5,10 @@
     "save": "Guardar",
     "discard": "Descartar"
   },
-
   "language": {
     "title": "Idioma del sistema",
     "description": "Define el idioma de la interfaz y los reportes generados"
   },
-
   "theme": {
     "title": "Temas del sistema",
     "description": "Apariencia visual del sistema para todos los usuarios",
@@ -26,7 +24,6 @@
     "energyDark": "Oscuro · Tema 1",
     "ecoDark": "Oscuro · Tema 2"
   },
-
   "notifications": {
     "title": "Notificaciones",
     "description": "Configura cómo deseas recibir alertas y eventos del sistema",
@@ -54,12 +51,10 @@
     },
     "retry": "Reintentar"
   },
-
   "helpCenter": {
     "title": "Centro de ayuda",
     "description": "Recursos y soporte para sacar el máximo provecho al sistema"
   },
-
   "help": {
     "docs": {
       "title": "Documentación",
@@ -76,5 +71,9 @@
       "description": "Últimas actualizaciones, mejoras y correcciones del sistema",
       "action": "Ver registro de cambios"
     }
+  },
+  "hero": {
+    "title": "Ajustes",
+    "subtitle": "Personaliza el idioma, el tema y las notificaciones de la aplicación."
   }
 }

@@ -71,5 +71,9 @@
       "description": "Últimas atualizações, melhorias e correções",
       "action": "Ver registro de alterações"
     }
+  },
+  "hero": {
+    "title": "Configurações",
+    "subtitle": "Personalize o idioma, o tema e as notificações do aplicativo."
   }
 }

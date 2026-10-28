@@ -1,7 +1,7 @@
 import { useRouter, type Href } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useTranslation } from "react-i18next";
-import { ScrollView, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Header } from "@/components/Header/Header";
@@ -43,6 +43,13 @@ export function SettingsScreen() {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
+        <View style={styles.hero}>
+          <Text style={styles.title} accessibilityRole="header">
+            {t("hero.title")}
+          </Text>
+          <Text style={styles.subtitle}>{t("hero.subtitle")}</Text>
+        </View>
+
         <LanguageSettings />
         <ThemeSettings />
         <NotificationSettings />

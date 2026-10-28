@@ -71,5 +71,9 @@
       "description": "Dernières mises à jour, améliorations et corrections",
       "action": "Voir le journal des modifications"
     }
+  },
+  "hero": {
+    "title": "Paramètres",
+    "subtitle": "Personnalisez la langue, le thème et les notifications de l’application."
   }
 }

@@ -267,7 +267,7 @@ export function NotificationsScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.hero}>
-          <Text style={styles.title}>{t("title")}</Text>
+          <Text style={styles.title} accessibilityRole="header">{t("title")}</Text>
           <Text style={styles.subtitle}>{t("subtitle")}</Text>
         </View>
 

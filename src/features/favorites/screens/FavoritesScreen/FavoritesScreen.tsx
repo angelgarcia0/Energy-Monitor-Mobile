@@ -52,7 +52,7 @@ export function FavoritesScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.hero}>
-          <Text style={styles.title}>{t("favorites.title")}</Text>
+          <Text style={styles.title} accessibilityRole="header">{t("favorites.title")}</Text>
           <Text style={styles.subtitle}>{t("favorites.subtitle")}</Text>
         </View>
 

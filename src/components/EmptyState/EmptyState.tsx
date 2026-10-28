@@ -30,7 +30,9 @@ export function EmptyState({
       {isFull && image ? <View style={styles.image}>{image}</View> : null}
       {!isFull && icon ? <View style={styles.icon}>{icon}</View> : null}
 
-      <Text style={[styles.title, isFull && styles.titleFull]}>{title}</Text>
+      <Text style={[styles.title, isFull && styles.titleFull]} accessibilityRole="header">
+        {title}
+      </Text>
 
       {description ? (
         <Text style={styles.description}>{description}</Text>

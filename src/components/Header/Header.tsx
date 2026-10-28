@@ -29,7 +29,7 @@ export function Header({
         {breadcrumbItems && breadcrumbItems.length > 0 ? (
           <Breadcrumb items={breadcrumbItems} />
         ) : (
-          <Text style={styles.title} numberOfLines={1}>
+          <Text style={styles.title} numberOfLines={1} accessibilityRole="header">
             {title}
           </Text>
         )}

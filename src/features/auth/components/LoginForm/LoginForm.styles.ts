@@ -60,7 +60,7 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.sm,
     fontWeight: Theme.typography.weight.bold,
-    color: Theme.colors.secondary,
+    color: Theme.colors.successText,
     flexShrink: 1,
   },
   buttonsContainer: {
@@ -108,6 +108,6 @@ export const styles = createThemeStyles(() => StyleSheet.create({
   },
   registerLink: {
     fontWeight: Theme.typography.weight.bold,
-    color: Theme.colors.secondary,
+    color: Theme.colors.successText,
   },
 }));

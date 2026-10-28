@@ -59,7 +59,7 @@ export const styles = createThemeStyles(() => StyleSheet.create({
   },
   termsLink: {
     fontWeight: Theme.typography.weight.bold,
-    color: Theme.colors.secondary,
+    color: Theme.colors.successText,
   },
   buttonsContainer: {
     alignItems: "center",
@@ -106,6 +106,6 @@ export const styles = createThemeStyles(() => StyleSheet.create({
   },
   registerLink: {
     fontWeight: Theme.typography.weight.bold,
-    color: Theme.colors.secondary,
+    color: Theme.colors.successText,
   },
 }));

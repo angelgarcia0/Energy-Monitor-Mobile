@@ -40,6 +40,6 @@ export const styles = createThemeStyles(() => StyleSheet.create({
   },
   footerLink: {
     fontWeight: Theme.typography.weight.bold,
-    color: Theme.colors.secondary,
+    color: Theme.colors.successText,
   },
 }));

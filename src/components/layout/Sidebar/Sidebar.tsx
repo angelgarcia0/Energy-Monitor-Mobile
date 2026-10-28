@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Animated,
+  BackHandler,
   Dimensions,
   Easing,
   Image,
@@ -57,6 +58,8 @@ function NavItem({ icon, label, active, onPress, badge = 0 }: NavItemProps) {
   return (
     <Pressable
       onPress={onPress}
+      accessibilityRole="button"
+      accessibilityState={{ selected: active }}
       style={[styles.navItem, active && styles.navItemActive]}
     >
       <Ionicons
@@ -98,6 +101,17 @@ export function Sidebar(_props: SidebarProps) {
     }).start();
   }, [isOpen, translateX]);
 
+  // El botón atrás de Android cierra el menú abierto en vez de salir de la pantalla.
+  useEffect(() => {
+    if (!isOpen) return;
+    const subscription = BackHandler.addEventListener("hardwareBackPress", () => {
+      setIsOpen(false);
+      setOpenMenu(false);
+      return true;
+    });
+    return () => subscription.remove();
+  }, [isOpen]);
+
   const closeDrawer = () => {
     setIsOpen(false);
     setOpenMenu(false);
@@ -134,9 +148,20 @@ export function Sidebar(_props: SidebarProps) {
         </Pressable>
       ) : null}
 
-      {isOpen ? <Pressable style={styles.overlay} onPress={closeDrawer} /> : null}
+      {isOpen ? (
+        <Pressable
+          style={styles.overlay}
+          onPress={closeDrawer}
+          accessibilityRole="button"
+          accessibilityLabel={t("common:a11y.closeMenu")}
+        />
+      ) : null}
 
       <Animated.View
+        // Cerrado, el menú sigue montado fuera de la pantalla: el lector no debe recorrerlo.
+        accessibilityElementsHidden={!isOpen}
+        importantForAccessibility={isOpen ? "auto" : "no-hide-descendants"}
+        accessibilityViewIsModal={isOpen}
         style={[
           styles.drawer,
           {
@@ -150,10 +175,14 @@ export function Sidebar(_props: SidebarProps) {
         <View style={styles.header}>
           <Image
             source={require("../../../assets/logo_proyecto.png")}
+            accessibilityIgnoresInvertColors
+            accessible={false}
             style={styles.logo}
             resizeMode="contain"
           />
-          <Text style={styles.headerTitle}>EnergyMonitor</Text>
+          <Text style={styles.headerTitle} accessibilityRole="header">
+            EnergyMonitor
+          </Text>
         </View>
 
         <View style={styles.nav}>
@@ -185,11 +214,18 @@ export function Sidebar(_props: SidebarProps) {
           <Pressable
             style={styles.dropdownCatcher}
             onPress={() => setOpenMenu(false)}
+            accessible={false}
           />
         ) : null}
 
         <View style={styles.profileSection}>
-          <Pressable style={styles.profileRow} onPress={() => setOpenMenu((prev) => !prev)}>
+          <Pressable
+            style={styles.profileRow}
+            onPress={() => setOpenMenu((prev) => !prev)}
+            accessibilityRole="button"
+            accessibilityLabel={`${user.name}. ${t("common:a11y.openProfileMenu")}`}
+            accessibilityState={{ expanded: openMenu }}
+          >
             <View style={styles.avatar}>
               {user.avatarUri ? (
                 <Image source={{ uri: user.avatarUri }} style={styles.avatarImage} />

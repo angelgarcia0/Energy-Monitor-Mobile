@@ -63,6 +63,8 @@ export function NavHomes({ onNavigate }: NavHomesProps) {
                 <Pressable
                   key={home.idHome}
                   onPress={() => handleHomePress(home.idHome)}
+                  accessibilityRole="button"
+                  accessibilityState={{ selected }}
                   style={[styles.homeItem, selected && styles.homeItemActive]}
                 >
                   <View style={styles.homeAvatar}>

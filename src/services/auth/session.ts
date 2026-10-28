@@ -1,7 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
+import { Platform } from "react-native";
 
 /**
- * Sesión del usuario (tokens + idUser) en AsyncStorage, bajo una sola clave.
+ * Sesión del usuario (tokens + idUser). Los tokens van al almacén seguro del sistema
+ * (Keychain / Keystore, `expo-secure-store`): en AsyncStorage quedarían en texto plano y
+ * entrarían en las copias de seguridad del teléfono. El resto (cuenta, perfil) sigue en
+ * AsyncStorage, bajo una sola clave.
  * El id del usuario vive en `session.account.idUser` (login y GET /auth/account).
  *
  * El módulo mantiene un espejo en memoria: `useSyncExternalStore` exige una
@@ -10,6 +15,38 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
  * lugar al disco.
  */
 const STORAGE_KEY = "energymonitor_session";
+const TOKENS_KEY = "energymonitor_session_tokens";
+
+// En la Web no hay almacén seguro: los tokens van con el resto, como antes.
+const secureStoreAvailable = Platform.OS !== "web";
+
+type StoredTokens = Pick<Session, "accessToken" | "refreshToken">;
+
+async function readTokens(): Promise<StoredTokens | null> {
+  if (!secureStoreAvailable) return null;
+  const raw = await SecureStore.getItemAsync(TOKENS_KEY);
+  return raw ? (JSON.parse(raw) as StoredTokens) : null;
+}
+
+/** Escribe la sesión: los tokens en el almacén seguro y lo demás en AsyncStorage. */
+async function writeSession(session: Session): Promise<void> {
+  if (!secureStoreAvailable) {
+    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(session));
+    return;
+  }
+  const { accessToken, refreshToken, ...rest } = session;
+  await SecureStore.setItemAsync(
+    TOKENS_KEY,
+    JSON.stringify({ accessToken, refreshToken }),
+    { keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK_THIS_DEVICE_ONLY },
+  );
+  await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(rest));
+}
+
+async function removeStoredSession(): Promise<void> {
+  await AsyncStorage.removeItem(STORAGE_KEY);
+  if (secureStoreAvailable) await SecureStore.deleteItemAsync(TOKENS_KEY);
+}
 
 export interface SessionAccount {
   idUser?: string;
@@ -81,7 +118,17 @@ const enqueue = (task: () => Promise<void>) => {
 export async function hydrateSession(): Promise<void> {
   try {
     const raw = await AsyncStorage.getItem(STORAGE_KEY);
-    cache = raw ? (JSON.parse(raw) as Session) : null;
+    const stored = raw ? (JSON.parse(raw) as Partial<Session>) : null;
+    const tokens = await readTokens();
+    cache = stored ? ({ ...stored, ...tokens } as Session) : null;
+    // Una versión anterior guardaba los tokens junto con el resto, en AsyncStorage: se
+    // pasan al almacén seguro y dejan de estar en texto plano.
+    if (cache && secureStoreAvailable && stored?.accessToken) {
+      const migrated = cache;
+      void enqueue(() => writeSession(migrated));
+    }
+    // Sin tokens no hay sesión que recuperar (p. ej. se restauró una copia de seguridad).
+    if (cache && !cache.accessToken) cache = null;
   } catch {
     cache = null;
   }
@@ -138,10 +185,10 @@ export function saveSession(patch: Partial<Session>): void {
   void enqueue(async () => {
     try {
       if (persist) {
-        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+        await writeSession(next);
       } else {
         // Una sesión anterior que sí se guardó no debe revivir al reabrir la app.
-        await AsyncStorage.removeItem(STORAGE_KEY);
+        await removeStoredSession();
       }
     } catch {
       // Sin persistencia la sesión sigue viva en memoria hasta cerrar la app.
@@ -166,7 +213,7 @@ export function clearSession(): void {
 
   void enqueue(async () => {
     try {
-      await AsyncStorage.removeItem(STORAGE_KEY);
+      await removeStoredSession();
     } catch {
       // Nada que hacer: la sesión ya no está en memoria.
     }

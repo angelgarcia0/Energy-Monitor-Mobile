@@ -6,8 +6,10 @@ import { useTranslation } from "react-i18next";
 import { ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { Button } from "@/components/Button/Button";
 import { EmptyState } from "@/components/EmptyState/EmptyState";
 import { Header } from "@/components/Header/Header";
+import { Loader } from "@/components/Loader/Loader";
 import { Theme } from "@/constants/theme";
 import { useHomes } from "@/context/HomeContext";
 import { HomeCard } from "@/features/dashboard/components/HomeCard/HomeCard";
@@ -18,7 +20,7 @@ export function FavoritesScreen() {
   const { t } = useTranslation("favorites");
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { homes, setFavorite } = useHomes();
+  const { homes, loading, error, reload, setFavorite } = useHomes();
   const favoriteHomes = homes.filter((home) => home.favorite);
 
   // Solo el id viaja en la ruta: el hogar se resuelve del contexto, así que no
@@ -57,7 +59,24 @@ export function FavoritesScreen() {
         </View>
 
         <View style={styles.favoritesCard}>
-          {favoriteHomes.length > 0 ? (
+          {/* Mientras carga, o si falló, "sin favoritos" sería falso. */}
+          {loading && homes.length === 0 ? (
+            <Loader text={t("dashboard:state.loading")} />
+          ) : error && homes.length === 0 ? (
+            <EmptyState
+              icon={
+                <Ionicons
+                  name="cloud-offline-outline"
+                  size={Theme.typography.size.xxl + Theme.spacing.sm}
+                  color={Theme.colors.border}
+                />
+              }
+              title={t("dashboard:state.error")}
+              description={t("dashboard:state.errorDescription")}
+              actions={<Button onPress={() => void reload()}>{t("dashboard:state.retry")}</Button>}
+              style={styles.emptyState}
+            />
+          ) : favoriteHomes.length > 0 ? (
             <View style={styles.grid}>
               {favoriteHomes.map((home) => (
                 <View key={home.idHome} style={styles.gridItem}>

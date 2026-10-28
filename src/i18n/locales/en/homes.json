@@ -1,7 +1,3 @@
 {
-  "title": "Homes",
-  "placeholder": {
-    "title": "Homes (placeholder)",
-    "description": "Temporary screen navigated from the Sidebar."
-  }
+  "title": "Homes"
 }

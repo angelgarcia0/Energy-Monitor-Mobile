@@ -1,4 +1,6 @@
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   Modal as RNModal,
   Pressable,
@@ -7,6 +9,7 @@ import {
   View,
   ViewStyle,
 } from "react-native";
+import { Theme } from "@/constants/theme";
 import { styles } from "./Modal.styles";
 
 export type ModalVariant = "default" | "danger";
@@ -32,6 +35,8 @@ export function Modal({
   footer,
   style,
 }: ModalProps) {
+  const { t } = useTranslation("common");
+
   return (
     <RNModal
       visible={visible}
@@ -40,17 +45,33 @@ export function Modal({
       onRequestClose={onRequestClose}
     >
       <View style={styles.overlay}>
-        <View style={[styles.surface, style]}>
+        <View style={[styles.surface, style]} accessibilityViewIsModal>
           {variant === "danger" ? (
             <View style={styles.dangerHeader}>
               {icon ? <View style={styles.dangerIconCircle}>{icon}</View> : null}
-              {title ? <Text style={styles.dangerTitle}>{title}</Text> : null}
+              {title ? (
+                <Text style={styles.dangerTitle} accessibilityRole="header">
+                  {title}
+                </Text>
+              ) : null}
             </View>
           ) : title ? (
             <View style={styles.header}>
-              <Text style={styles.title}>{title}</Text>
-              <Pressable onPress={onRequestClose} style={styles.closeButton}>
-                <Text style={styles.closeButtonText}>×</Text>
+              <Text style={styles.title} accessibilityRole="header">
+                {title}
+              </Text>
+              <Pressable
+                onPress={onRequestClose}
+                style={styles.closeButton}
+                hitSlop={8}
+                accessibilityRole="button"
+                accessibilityLabel={t("a11y.close")}
+              >
+                <Ionicons
+                  name="close"
+                  size={Theme.typography.size.lg}
+                  color={Theme.colors.textSecondary}
+                />
               </Pressable>
             </View>
           ) : null}

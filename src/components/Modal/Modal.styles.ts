@@ -40,11 +40,6 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     justifyContent: "center",
     backgroundColor: Theme.colors.background,
   },
-  closeButtonText: {
-    fontSize: Theme.typography.size.lg,
-    color: Theme.colors.textSecondary,
-    lineHeight: Theme.typography.size.lg,
-  },
 
   body: {
     padding: Theme.spacing.lg,

@@ -15,6 +15,7 @@ import {
 } from "./languages";
 import en from "./locales/en/account.json";
 import enAuth from "./locales/en/auth.json";
+import enCommon from "./locales/en/common.json";
 import enAuthLayout from "./locales/en/authLayout.json";
 import enConsumption from "./locales/en/consumption.json";
 import enCreateHomeModal from "./locales/en/createHomeModal.json";
@@ -40,6 +41,7 @@ import enUsers from "./locales/en/users.json";
 import enValidations from "./locales/en/validations.json";
 import es from "./locales/es/account.json";
 import esAuth from "./locales/es/auth.json";
+import esCommon from "./locales/es/common.json";
 import esAuthLayout from "./locales/es/authLayout.json";
 import esConsumption from "./locales/es/consumption.json";
 import esCreateHomeModal from "./locales/es/createHomeModal.json";
@@ -65,6 +67,7 @@ import esUsers from "./locales/es/users.json";
 import esValidations from "./locales/es/validations.json";
 import fr from "./locales/fr/account.json";
 import frAuth from "./locales/fr/auth.json";
+import frCommon from "./locales/fr/common.json";
 import frAuthLayout from "./locales/fr/authLayout.json";
 import frConsumption from "./locales/fr/consumption.json";
 import frCreateHomeModal from "./locales/fr/createHomeModal.json";
@@ -90,6 +93,7 @@ import frUsers from "./locales/fr/users.json";
 import frValidations from "./locales/fr/validations.json";
 import pt from "./locales/pt/account.json";
 import ptAuth from "./locales/pt/auth.json";
+import ptCommon from "./locales/pt/common.json";
 import ptAuthLayout from "./locales/pt/authLayout.json";
 import ptConsumption from "./locales/pt/consumption.json";
 import ptCreateHomeModal from "./locales/pt/createHomeModal.json";
@@ -118,6 +122,7 @@ const esResources = {
   account: es,
   auth: esAuth,
   authLayout: esAuthLayout,
+  common: esCommon,
   consumption: esConsumption,
   createHomeModal: esCreateHomeModal,
   dashboard: esDashboard,
@@ -146,6 +151,7 @@ const enResources = {
   account: en,
   auth: enAuth,
   authLayout: enAuthLayout,
+  common: enCommon,
   consumption: enConsumption,
   createHomeModal: enCreateHomeModal,
   dashboard: enDashboard,
@@ -174,6 +180,7 @@ const frResources = {
   account: fr,
   auth: frAuth,
   authLayout: frAuthLayout,
+  common: frCommon,
   consumption: frConsumption,
   createHomeModal: frCreateHomeModal,
   dashboard: frDashboard,
@@ -202,6 +209,7 @@ const ptResources = {
   account: pt,
   auth: ptAuth,
   authLayout: ptAuthLayout,
+  common: ptCommon,
   consumption: ptConsumption,
   createHomeModal: ptCreateHomeModal,
   dashboard: ptDashboard,

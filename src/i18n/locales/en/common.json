@@ -1,0 +1,14 @@
+{
+  "a11y": {
+    "close": "Close",
+    "closeMenu": "Close menu",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "openProfileMenu": "Open profile menu",
+    "otpDigit": "Code digit {{index}} of {{total}}"
+  },
+  "trend": {
+    "up": "Increased",
+    "down": "Decreased"
+  }
+}

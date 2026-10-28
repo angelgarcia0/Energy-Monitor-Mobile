@@ -12,6 +12,7 @@ import { Input } from "@/components/Input/Input";
 import { Theme } from "@/constants/theme";
 import { authApi } from "@/services/auth";
 import { errorMessage } from "@/services/http/errorMessages";
+import { LegalModal, type LegalTab } from "../LegalModal/LegalModal";
 import { useGoogleSignIn } from "../../hooks/useGoogleSignIn";
 import { toRegisterPayload } from "../../service/registerPayload";
 import {
@@ -31,6 +32,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
+  const [legalTab, setLegalTab] = useState<LegalTab | null>(null);
   const {
     control,
     watch,
@@ -217,20 +219,16 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                 {t("register.termsPrefix")}{" "}
                 <Text
                   style={styles.termsLink}
-                  onPress={() =>
-                    console.log("Términos de uso: pendiente de implementar")
-                  }
+                  accessibilityRole="link"
+                  onPress={() => setLegalTab("terms")}
                 >
                   {t("register.terms")}
                 </Text>
                 {t("register.termsJoin")}{" "}
                 <Text
                   style={styles.termsLink}
-                  onPress={() =>
-                    console.log(
-                      "Política de privacidad: pendiente de implementar",
-                    )
-                  }
+                  accessibilityRole="link"
+                  onPress={() => setLegalTab("privacy")}
                 >
                   {t("register.privacy")}
                 </Text>
@@ -296,6 +294,12 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           </Text>
         </Text>
       </View>
+      <LegalModal
+        visible={legalTab !== null}
+        activeTab={legalTab ?? "terms"}
+        onTabChange={setLegalTab}
+        onClose={() => setLegalTab(null)}
+      />
     </Card>
   );
 }

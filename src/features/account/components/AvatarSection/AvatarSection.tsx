@@ -88,7 +88,7 @@ export function AvatarSection({
           <Ionicons
             name="camera"
             size={Theme.typography.size.sm}
-            color={Theme.colors.onBrand}
+            color={Theme.colors.onPrimary}
           />
         </View>
       </Pressable>

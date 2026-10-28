@@ -130,7 +130,7 @@ export function Sidebar(_props: SidebarProps) {
           accessibilityRole="button"
           accessibilityLabel={t("openNav")}
         >
-          <Ionicons name="menu-outline" size={Theme.typography.size.lg} color={Theme.colors.onBrand} />
+          <Ionicons name="menu-outline" size={Theme.typography.size.lg} color={Theme.colors.onPrimary} />
         </Pressable>
       ) : null}
 

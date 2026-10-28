@@ -52,7 +52,7 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     borderWidth: 0,
   },
   text_primary: {
-    color: Theme.colors.onBrand,
+    color: Theme.colors.onPrimary,
   },
 
   variant_secondary: {

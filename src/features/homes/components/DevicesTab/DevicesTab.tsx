@@ -247,7 +247,7 @@ export function DevicesTab({ state, isOwner }: DevicesTabProps) {
                 <Ionicons
                   name="add"
                   size={Theme.typography.size.md}
-                  color={Theme.colors.onBrand}
+                  color={Theme.colors.onPrimary}
                 />
               }
             >

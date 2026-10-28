@@ -73,7 +73,7 @@ export function ConfirmTransferUserModal({
       >
         <View style={[styles.checkbox, acknowledged && styles.checkboxChecked]}>
           {acknowledged ? (
-            <Ionicons name="checkmark" size={Theme.typography.size.sm} color={Theme.colors.onBrand} />
+            <Ionicons name="checkmark" size={Theme.typography.size.sm} color={Theme.colors.onPrimary} />
           ) : null}
         </View>
         <Text style={styles.acknowledgeText}>{t("confirmTransfer.acknowledge")}</Text>

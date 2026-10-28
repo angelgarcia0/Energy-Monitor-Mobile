@@ -41,7 +41,7 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     color: Theme.colors.textSecondary,
   },
   chipTextActive: {
-    color: Theme.colors.onBrand,
+    color: Theme.colors.onPrimary,
   },
   chipSoftActiveText: {
     color: Theme.colors.primary,

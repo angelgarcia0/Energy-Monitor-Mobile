@@ -127,7 +127,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
                 <Ionicons
                   name="checkmark"
                   size={Theme.typography.size.xs}
-                  color={Theme.colors.onBrand}
+                  color={Theme.colors.onPrimary}
                 />
               ) : null}
             </View>

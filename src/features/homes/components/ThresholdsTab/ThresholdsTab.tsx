@@ -338,7 +338,7 @@ export function ThresholdsTab({ state, isOwner }: ThresholdsTabProps) {
                   <Ionicons
                     name="checkmark"
                     size={Theme.typography.size.md}
-                    color={Theme.colors.onBrand}
+                    color={Theme.colors.onPrimary}
                   />
                 ) : undefined
               }

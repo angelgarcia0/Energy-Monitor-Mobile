@@ -98,7 +98,7 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.xs,
     fontWeight: Theme.typography.weight.bold,
-    color: Theme.colors.onBrand,
+    color: Theme.colors.onPrimary,
   },
   scopeChips: {
     flexDirection: "row",

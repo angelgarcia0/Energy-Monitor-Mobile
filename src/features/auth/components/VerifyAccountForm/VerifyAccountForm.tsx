@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { Text, View } from "react-native";
 
 import { Button } from "@/components/Button/Button";
@@ -34,14 +34,13 @@ export function VerifyAccountForm({ onSuccess }: VerifyAccountFormProps) {
   const {
     control,
     handleSubmit,
-    watch,
   } = useForm<VerifyCodeFormValues>({
     resolver: zodResolver(verifyCodeSchema),
     mode: "onChange",
     defaultValues: { code: "" },
   });
 
-  const code = watch("code");
+  const code = useWatch({ control, name: "code" });
   const isComplete = /^\d{6}$/.test(code);
 
   const onSubmit = async (data: VerifyCodeFormValues) => {

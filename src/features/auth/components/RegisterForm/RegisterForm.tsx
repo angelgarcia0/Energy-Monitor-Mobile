@@ -1,4 +1,4 @@
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -35,7 +35,6 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
   const [legalTab, setLegalTab] = useState<LegalTab | null>(null);
   const {
     control,
-    watch,
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterFormValues>({
@@ -53,7 +52,8 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
   // Con Google no hay formulario ni verificación: la cuenta nace con el correo de
   // Google ya verificado. Los términos sí se exigen: si el checkbox está marcado se
   // envían aceptados; si no, el servidor responde 428 y se preguntan.
-  const google = useGoogleSignIn(onSuccess, watch("terms") === true);
+  const termsAccepted = useWatch({ control, name: "terms" }) === true;
+  const google = useGoogleSignIn(onSuccess, termsAccepted);
 
   const onSubmit = async (data: RegisterFormValues) => {
     setSubmitting(true);

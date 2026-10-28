@@ -11,6 +11,8 @@ export interface CardProps {
   variant?: CardVariant;
   padding?: CardPadding;
   style?: StyleProp<ViewStyle>;
+  /** Nombre accesible de la tarjeta cuando es pulsable. */
+  accessibilityLabel?: string;
 }
 
 export function Card({
@@ -19,6 +21,7 @@ export function Card({
   variant = "default",
   padding = "md",
   style,
+  accessibilityLabel,
 }: CardProps) {
   const baseStyles: StyleProp<ViewStyle> = [
     styles.base,
@@ -31,6 +34,8 @@ export function Card({
     return (
       <Pressable
         onPress={onPress}
+        accessibilityRole="button"
+        accessibilityLabel={accessibilityLabel}
         style={({ pressed }) => [baseStyles, pressed && styles.pressed]}
       >
         {children}

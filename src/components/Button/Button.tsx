@@ -13,7 +13,12 @@ export interface ButtonProps {
   disabled?: boolean;
   icon?: React.ReactNode;
   style?: StyleProp<ViewStyle>;
+  /** Nombre accesible cuando el texto visible no basta (p. ej. "Eliminar Casa 1"). */
+  accessibilityLabel?: string;
 }
+
+/** Los tamaños pequeño y mediano quedan por debajo de 44 pt: el toque se amplía sin cambiar el diseño. */
+const HIT_SLOP: Record<ButtonSize, number> = { small: 10, medium: 6, large: 0 };
 
 export function Button({
   children,
@@ -23,11 +28,16 @@ export function Button({
   disabled = false,
   icon,
   style,
+  accessibilityLabel,
 }: ButtonProps) {
   return (
     <Pressable
       onPress={onPress}
       disabled={disabled}
+      hitSlop={HIT_SLOP[size]}
+      accessibilityRole="button"
+      accessibilityState={{ disabled }}
+      accessibilityLabel={accessibilityLabel}
       style={({ pressed }) => [
         styles.base,
         styles[`size_${size}`],

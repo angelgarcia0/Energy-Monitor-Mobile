@@ -66,7 +66,7 @@ export function LanguageSwitcher({
         animationType="fade"
         onRequestClose={() => setOpen(false)}
       >
-        <Pressable style={styles.backdrop} onPress={() => setOpen(false)}>
+        <Pressable style={styles.backdrop} onPress={() => setOpen(false)} accessible={false}>
           <View style={[styles.sheet, isDark ? styles.sheetDark : styles.sheetLight]}>
             {LANGUAGES.map((lang) => {
               const active = lang.id === currentId;

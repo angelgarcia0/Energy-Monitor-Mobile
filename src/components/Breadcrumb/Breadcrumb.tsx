@@ -28,6 +28,7 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
               <Pressable
                 onPress={item.onPress}
                 hitSlop={8}
+                accessibilityRole="link"
                 style={({ pressed }) => [
                   styles.link,
                   pressed && styles.linkPressed,
@@ -38,13 +39,15 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
                 </Text>
               </Pressable>
             ) : (
-              <Text style={styles.current} numberOfLines={1}>
+              <Text style={styles.current} numberOfLines={1} accessibilityRole="header">
                 {item.label}
               </Text>
             )}
 
             {!isLast && (
               <Ionicons
+                accessibilityElementsHidden
+                importantForAccessibility="no"
                 name="chevron-forward"
                 size={16}
                 color={Theme.colors.textSecondary}

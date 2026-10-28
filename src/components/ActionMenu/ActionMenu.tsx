@@ -59,6 +59,8 @@ export function ActionMenu({
     <View ref={triggerRef} collapsable={false} style={style}>
       <Pressable
         onPress={open}
+        accessibilityRole="button"
+        accessibilityState={{ expanded: anchor !== null }}
         accessibilityLabel={accessibilityLabel}
         style={({ pressed }) => [styles.trigger, pressed && styles.triggerPressed]}
       >
@@ -66,12 +68,13 @@ export function ActionMenu({
       </Pressable>
 
       <Modal visible={anchor !== null} transparent animationType="fade" onRequestClose={close}>
-        <Pressable style={styles.backdrop} onPress={close}>
+        <Pressable style={styles.backdrop} onPress={close} accessible={false}>
           {anchor ? (
             <View style={[styles.dropdown, { top: anchor.top, right: anchor.right }]}>
               {options.map((option) => (
                 <Pressable
                   key={option.label}
+                  accessibilityRole="menuitem"
                   style={({ pressed }) => [styles.item, pressed && styles.itemPressed]}
                   onPress={() => {
                     close();

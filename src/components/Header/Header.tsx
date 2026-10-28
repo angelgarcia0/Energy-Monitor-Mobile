@@ -41,6 +41,8 @@ export function Header({
         ) : onActionPress ? (
           <Pressable
             onPress={onActionPress}
+            hitSlop={8}
+            accessibilityRole="button"
             accessibilityLabel={actionLabel}
             style={({ pressed }) => [
               styles.actionButton,

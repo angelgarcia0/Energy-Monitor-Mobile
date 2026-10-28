@@ -24,13 +24,14 @@ export function BottomTabBar({ tabs, activeTabId, onTabPress }: BottomTabBarProp
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={[styles.bar, { paddingBottom: insets.bottom }]}>
+    <View style={[styles.bar, { paddingBottom: insets.bottom }]} accessibilityRole="tablist">
       {tabs.map((tab) => {
         const active = tab.id === activeTabId;
         return (
           <Pressable
             key={tab.id}
             onPress={() => onTabPress(tab.id)}
+            accessibilityRole="tab"
             accessibilityLabel={tab.label}
             accessibilityState={{ selected: active }}
             style={[styles.tab, active && styles.tabActive]}

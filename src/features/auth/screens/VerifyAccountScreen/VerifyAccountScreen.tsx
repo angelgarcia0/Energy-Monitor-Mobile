@@ -9,7 +9,7 @@ import { AuthBrandHeader } from "../../components/AuthBrandHeader/AuthBrandHeade
 import { VerifyAccountForm } from "../../components/VerifyAccountForm/VerifyAccountForm";
 import { styles } from "./VerifyAccountScreen.styles";
 
-export interface VerifyAccountScreenProps {}
+export type VerifyAccountScreenProps = object;
 
 export function VerifyAccountScreen(_props: VerifyAccountScreenProps) {
   const insets = useSafeAreaInsets();

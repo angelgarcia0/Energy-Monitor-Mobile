@@ -13,7 +13,7 @@ import { AuthBrandHeader } from "../../components/AuthBrandHeader/AuthBrandHeade
 import { LoginForm } from "../../components/LoginForm/LoginForm";
 import { styles } from "./LoginScreen.styles";
 
-export interface LoginScreenProps {}
+export type LoginScreenProps = object;
 
 export function LoginScreen(_props: LoginScreenProps) {
   const { t } = useTranslation("auth");

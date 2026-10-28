@@ -9,7 +9,7 @@ import { AuthBrandHeader } from "../../components/AuthBrandHeader/AuthBrandHeade
 import { RegisterForm } from "../../components/RegisterForm/RegisterForm";
 import { styles } from "./RegisterScreen.styles";
 
-export interface RegisterScreenProps {}
+export type RegisterScreenProps = object;
 
 export function RegisterScreen(_props: RegisterScreenProps) {
   const insets = useSafeAreaInsets();

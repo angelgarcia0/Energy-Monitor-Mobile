@@ -9,7 +9,7 @@ import { AuthBrandHeader } from "../../components/AuthBrandHeader/AuthBrandHeade
 import { NewPasswordForm } from "../../components/NewPasswordForm/NewPasswordForm";
 import { styles } from "./NewPasswordScreen.styles";
 
-export interface NewPasswordScreenProps {}
+export type NewPasswordScreenProps = object;
 
 export function NewPasswordScreen(_props: NewPasswordScreenProps) {
   const insets = useSafeAreaInsets();

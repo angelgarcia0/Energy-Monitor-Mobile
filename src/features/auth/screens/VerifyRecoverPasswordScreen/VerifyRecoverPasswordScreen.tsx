@@ -9,7 +9,7 @@ import { AuthBrandHeader } from "../../components/AuthBrandHeader/AuthBrandHeade
 import { VerifyRecoverPasswordForm } from "../../components/VerifyRecoverPasswordForm/VerifyRecoverPasswordForm";
 import { styles } from "./VerifyRecoverPasswordScreen.styles";
 
-export interface VerifyRecoverPasswordScreenProps {}
+export type VerifyRecoverPasswordScreenProps = object;
 
 export function VerifyRecoverPasswordScreen(
   _props: VerifyRecoverPasswordScreenProps,

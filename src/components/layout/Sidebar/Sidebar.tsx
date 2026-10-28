@@ -21,7 +21,7 @@ import { useUser } from "@/context/UserContext";
 import { styles, TRIGGER_TOP_OFFSET } from "./Sidebar.styles";
 import { NavHomes } from "./NavHomes";
 
-export interface SidebarProps {}
+export type SidebarProps = object;
 
 const DRAWER_WIDTH = Math.min(Dimensions.get("window").width * 0.85, 300);
 

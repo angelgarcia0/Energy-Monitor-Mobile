@@ -9,7 +9,7 @@ import { AuthBrandHeader } from "../../components/AuthBrandHeader/AuthBrandHeade
 import { RecoverPasswordForm } from "../../components/RecoverPasswordForm/RecoverPasswordForm";
 import { styles } from "./RecoverPasswordScreen.styles";
 
-export interface RecoverPasswordScreenProps {}
+export type RecoverPasswordScreenProps = object;
 
 export function RecoverPasswordScreen(_props: RecoverPasswordScreenProps) {
   const insets = useSafeAreaInsets();

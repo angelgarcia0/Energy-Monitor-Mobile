@@ -22,7 +22,7 @@ import { JoinHomeModal } from "../../components/JoinHomeModal/JoinHomeModal";
 import type { CreateHomeFormValues } from "../../validation/createHomeSchema";
 import { styles } from "./DashboardScreen.styles";
 
-export interface DashboardScreenProps {}
+export type DashboardScreenProps = object;
 
 export function DashboardScreen(_props: DashboardScreenProps) {
   const { t } = useTranslation("dashboard");

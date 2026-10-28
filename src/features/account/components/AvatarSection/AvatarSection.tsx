@@ -101,8 +101,8 @@ export function AvatarSection({
         animationType="fade"
         onRequestClose={closeOptions}
       >
-        <Pressable style={styles.backdrop} onPress={closeOptions}>
-          <Pressable style={styles.sheet} onPress={() => {}}>
+        <Pressable style={styles.backdrop} onPress={closeOptions} accessible={false}>
+          <Pressable style={styles.sheet} onPress={() => {}} accessible={false}>
             <View style={styles.sheetHandle} />
 
             <OptionRow

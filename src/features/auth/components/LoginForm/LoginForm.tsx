@@ -135,7 +135,11 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
             <Text style={styles.rememberLabel}>{t("login.remember")}</Text>
           </Pressable>
 
-          <Pressable onPress={() => router.push("/recover-password")}>
+          <Pressable
+            onPress={() => router.push("/recover-password")}
+            hitSlop={8}
+            accessibilityRole="link"
+          >
             <Text style={styles.link}>{t("login.forgotPassword")}</Text>
           </Pressable>
         </View>
@@ -187,6 +191,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           {t("login.noAccount")}{" "}
           <Text
             style={styles.registerLink}
+            accessibilityRole="link"
             onPress={() => router.push("/register")}
           >
             {t("login.register")}

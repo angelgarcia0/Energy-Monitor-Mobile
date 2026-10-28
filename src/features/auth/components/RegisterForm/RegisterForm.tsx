@@ -198,6 +198,10 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
               <Pressable
                 style={[styles.checkbox, value && styles.checkboxChecked]}
                 onPress={() => onChange(!value)}
+                hitSlop={12}
+                accessibilityRole="checkbox"
+                accessibilityState={{ checked: Boolean(value) }}
+                accessibilityLabel={`${t("register.termsPrefix")} ${t("register.terms")} ${t("register.termsJoin")} ${t("register.privacy")}`}
               >
                 {value ? (
                   <Ionicons
@@ -284,6 +288,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           {t("register.haveAccount")}{" "}
           <Text
             style={styles.registerLink}
+            accessibilityRole="link"
             onPress={() => router.push("/")}
           >
             {t("register.login")}

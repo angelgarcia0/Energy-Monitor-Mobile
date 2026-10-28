@@ -81,6 +81,9 @@ function ThemeCard({ theme, isActive, onPress }: ThemeCardProps) {
   return (
     <Pressable
       onPress={onPress}
+      accessibilityRole="radio"
+      accessibilityState={{ checked: isActive }}
+      accessibilityLabel={`${theme.name}, ${theme.subtitle}`}
       style={({ pressed }) => [
         styles.themeCard,
         {

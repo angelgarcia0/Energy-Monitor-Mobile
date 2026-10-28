@@ -67,6 +67,8 @@ export function HomeDetailScreen({ home }: HomeDetailScreenProps) {
       <View style={styles.header}>
         <Pressable
           onPress={handleBack}
+          accessibilityRole="button"
+          hitSlop={8}
           accessibilityLabel={t("breadcrumb.home")}
           style={styles.backButton}
         >

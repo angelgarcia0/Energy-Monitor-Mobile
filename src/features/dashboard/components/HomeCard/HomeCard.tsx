@@ -41,6 +41,7 @@ export function HomeCard({
   return (
     <Pressable
       onPress={() => onPress?.(home)}
+      accessibilityRole="button"
       accessibilityLabel={t("openHome", { name: home.name })}
     >
       <View style={[styles.header, { backgroundColor: headerColor }]}>
@@ -80,7 +81,12 @@ export function HomeCard({
             {displayText}
           </Text>
           {isLong ? (
-            <Pressable onPress={() => setExpanded((prev) => !prev)}>
+            <Pressable
+              onPress={() => setExpanded((prev) => !prev)}
+              hitSlop={8}
+              accessibilityRole="button"
+              accessibilityState={{ expanded }}
+            >
               <Text style={styles.toggle}>
                 {expanded ? t("showLess") : t("showMore")}
               </Text>

@@ -96,7 +96,7 @@ export function RecoverPasswordForm({ onSuccess }: RecoverPasswordFormProps) {
 
         <Text style={styles.footer}>
           {t("comeBack")}{" "}
-          <Text style={styles.footerLink} onPress={() => router.push("/")}>
+          <Text style={styles.footerLink} accessibilityRole="link" onPress={() => router.push("/")}>
             {t("login")}
           </Text>
         </Text>

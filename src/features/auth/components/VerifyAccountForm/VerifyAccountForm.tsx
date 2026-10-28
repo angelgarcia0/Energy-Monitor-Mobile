@@ -126,7 +126,7 @@ export function VerifyAccountForm({ onSuccess }: VerifyAccountFormProps) {
 
         <Text style={styles.footer}>
           {t("register.haveAccount")}{" "}
-          <Text style={styles.footerLink} onPress={() => router.navigate("/")}>
+          <Text style={styles.footerLink} accessibilityRole="link" onPress={() => router.navigate("/")}>
             {t("register.login")}
           </Text>
         </Text>

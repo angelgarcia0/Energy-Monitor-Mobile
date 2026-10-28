@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleProp, TextInput, View, ViewStyle } from "react-native";
 
 import { styles } from "./OtpInput.styles";
@@ -20,6 +21,7 @@ export function OtpInput({
   disabled = false,
   style,
 }: OtpInputProps) {
+  const { t } = useTranslation("common");
   const refs = useRef<Array<TextInput | null>>([]);
   const [focusedIndex, setFocusedIndex] = useState(-1);
 
@@ -33,14 +35,19 @@ export function OtpInput({
       return;
     }
 
-    chars[index] = digit.charAt(0);
-    const joined = chars.join("");
+    // Un código pegado o autocompletado llega entero en un solo campo: se reparte desde ahí.
+    const pasted = digit.length > 1 ? digit.slice(0, length - index) : digit.charAt(0);
+    pasted.split("").forEach((char, offset) => {
+      chars[index + offset] = char;
+    });
+    const joined = chars.join("").slice(0, length);
     onChange?.(joined);
 
+    const next = index + pasted.length;
     if (joined.length === length) {
       onComplete?.(joined);
-    } else if (index < length - 1) {
-      refs.current[index + 1]?.focus();
+    } else if (next < length) {
+      refs.current[next]?.focus();
     }
   };
 
@@ -70,8 +77,12 @@ export function OtpInput({
           onFocus={() => setFocusedIndex(index)}
           onBlur={() => setFocusedIndex((prev) => (prev === index ? -1 : prev))}
           editable={!disabled}
-          maxLength={1}
+          maxLength={index === 0 ? length : 1}
           keyboardType="number-pad"
+          // El primer campo recibe el código que ofrece el teclado (SMS o correo).
+          autoComplete={index === 0 ? "one-time-code" : "off"}
+          textContentType={index === 0 ? "oneTimeCode" : "none"}
+          accessibilityLabel={t("a11y.otpDigit", { index: index + 1, total: length })}
           selectTextOnFocus
           style={[
             styles.input,

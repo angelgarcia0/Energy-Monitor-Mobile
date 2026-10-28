@@ -60,5 +60,6 @@
   "permissions": {
     "photoDenied": "We need permission to access your photos to add one."
   },
-  "passwordGoogle": "Managed by Google"
+  "passwordGoogle": "Managed by Google",
+  "subtitle": "Manage your personal data and account security."
 }

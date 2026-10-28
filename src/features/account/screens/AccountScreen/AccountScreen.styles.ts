@@ -16,6 +16,27 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     paddingHorizontal: Theme.spacing.md,
     paddingBottom: Theme.spacing.xl,
   },
+  hero: {
+    alignItems: "center",
+    gap: Theme.spacing.xs,
+    paddingHorizontal: Theme.spacing.lg,
+    paddingTop: Theme.spacing.lg,
+  },
+  title: {
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.xl,
+    fontWeight: Theme.typography.weight.bold,
+    color: Theme.colors.textPrimary,
+    textAlign: "center",
+  },
+  subtitle: {
+    maxWidth: 640,
+    fontFamily: Theme.typography.fontPrimary,
+    fontSize: Theme.typography.size.sm,
+    lineHeight: Theme.typography.size.size22,
+    color: Theme.colors.textSecondary,
+    textAlign: "center",
+  },
   card: {
     gap: Theme.spacing.md,
   },

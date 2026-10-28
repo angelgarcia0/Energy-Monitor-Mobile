@@ -162,6 +162,13 @@ export function AccountScreen() {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
+        <View style={styles.hero}>
+          <Text style={styles.title} accessibilityRole="header">
+            {t("title")}
+          </Text>
+          <Text style={styles.subtitle}>{t("subtitle")}</Text>
+        </View>
+
         {successMessage ? (
           <Alert
             variant="success"

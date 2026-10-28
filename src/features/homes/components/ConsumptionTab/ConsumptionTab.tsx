@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, Text, useWindowDimensions, View } from "react-native";
@@ -35,6 +35,26 @@ interface LimitBarProps {
   used: number;
   limit: number | null;
   noData: string;
+}
+
+type IoniconName = React.ComponentProps<typeof Ionicons>["name"];
+
+/** Etiqueta de una tarjeta de indicador, con su ícono (antes un emoji en el texto). */
+function KpiLabel({
+  icon,
+  color,
+  children,
+}: {
+  icon: IoniconName;
+  color: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <View style={styles.kpiLabelRow}>
+      <Text style={styles.kpiLabel}>{children}</Text>
+      <Ionicons name={icon} size={Theme.typography.size.sm} color={color} accessible={false} />
+    </View>
+  );
 }
 
 function LimitBar({ label, used, limit, noData }: LimitBarProps) {
@@ -118,7 +138,9 @@ export function ConsumptionTab({ homeId, devices }: ConsumptionTabProps) {
   return (
     <ScrollView contentContainerStyle={styles.content}>
       <Card style={[styles.kpiCard, { borderColor: Theme.colors.warning }]}>
-        <Text style={styles.kpiLabel}>{t("consumption:kpi.currentPower")}</Text>
+        <KpiLabel icon="flash-outline" color={Theme.colors.warningText}>
+          {t("consumption:kpi.currentPower")}
+        </KpiLabel>
         <Text style={styles.kpiValue}>
           {data?.currentPower !== null && data?.currentPower !== undefined
             ? toKw(data.currentPower)
@@ -133,7 +155,9 @@ export function ConsumptionTab({ homeId, devices }: ConsumptionTabProps) {
       </Card>
 
       <Card style={[styles.kpiCard, { borderColor: Theme.colors.primary }]}>
-        <Text style={styles.kpiLabel}>{t("consumption:kpi.todayConsumption")}</Text>
+        <KpiLabel icon="stats-chart-outline" color={Theme.colors.primary}>
+          {t("consumption:kpi.todayConsumption")}
+        </KpiLabel>
         <Text style={styles.kpiValue}>
           {data ? Number(data.todayEnergy.toFixed(2)) : "—"}
           <Text style={styles.kpiUnit}> kWh</Text>
@@ -145,7 +169,9 @@ export function ConsumptionTab({ homeId, devices }: ConsumptionTabProps) {
       </Card>
 
       <Card style={[styles.kpiCard, { borderColor: Theme.colors.secondary }]}>
-        <Text style={styles.kpiLabel}>{t("consumption:kpi.devices")}</Text>
+        <KpiLabel icon="hardware-chip-outline" color={Theme.colors.successText}>
+          {t("consumption:kpi.devices")}
+        </KpiLabel>
         <Text style={styles.kpiValue}>
           {activeDevices}
           <Text style={styles.kpiUnit}> / {devices.length}</Text>

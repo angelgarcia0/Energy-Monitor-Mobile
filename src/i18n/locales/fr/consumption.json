@@ -13,9 +13,9 @@
     "homeFallback": "Maison"
   },
   "kpi": {
-    "currentPower": "PUISSANCE ACTUELLE ⚡",
-    "todayConsumption": "CONSOMMATION D'AUJOURD'HUI 📊",
-    "devices": "APPAREILS 🔌",
+    "currentPower": "PUISSANCE ACTUELLE",
+    "todayConsumption": "CONSOMMATION D'AUJOURD'HUI",
+    "devices": "APPAREILS",
     "level": "Niveau",
     "currentLimit": "Limite actuelle : ",
     "noLimit": "Aucune limite configurée",

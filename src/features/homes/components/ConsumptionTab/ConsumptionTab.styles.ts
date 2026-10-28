@@ -18,6 +18,11 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     borderWidth: 2,
     borderRadius: Theme.radius.lg,
   },
+  kpiLabelRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Theme.spacing.xs,
+  },
   kpiLabel: {
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.size11,

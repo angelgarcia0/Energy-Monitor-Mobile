@@ -13,9 +13,9 @@
     "homeFallback": "Home"
   },
   "kpi": {
-    "currentPower": "CURRENT POWER ⚡",
-    "todayConsumption": "TODAY'S CONSUMPTION 📊",
-    "devices": "DEVICES 🔌",
+    "currentPower": "CURRENT POWER",
+    "todayConsumption": "TODAY'S CONSUMPTION",
+    "devices": "DEVICES",
     "level": "Level",
     "currentLimit": "Current limit: ",
     "noLimit": "No limit configured",

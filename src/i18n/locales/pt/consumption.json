@@ -13,9 +13,9 @@
     "homeFallback": "Lar"
   },
   "kpi": {
-    "currentPower": "POTÊNCIA ATUAL ⚡",
-    "todayConsumption": "CONSUMO DE HOJE 📊",
-    "devices": "DISPOSITIVOS 🔌",
+    "currentPower": "POTÊNCIA ATUAL",
+    "todayConsumption": "CONSUMO DE HOJE",
+    "devices": "DISPOSITIVOS",
     "level": "Nível",
     "currentLimit": "Limite atual: ",
     "noLimit": "Sem limite configurado",

@@ -171,6 +171,11 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     color: Theme.colors.textPrimary,
   },
   // Consumir más que el periodo anterior es malo (rojo); menos, bueno (verde).
+  trendRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Theme.spacing.xs,
+  },
   trendUp: {
     color: Theme.colors.dangerText,
   },

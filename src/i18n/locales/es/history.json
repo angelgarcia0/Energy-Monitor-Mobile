@@ -27,7 +27,7 @@
   "stats": {
     "totalConsumption": "Consumo total",
     "topConsumer": "Mayor consumidor",
-    "vsPrevious": "{{sign}} {{pct}}% vs periodo anterior",
+    "vsPrevious": "{{pct}}% vs periodo anterior",
     "periodAverage": "Promedio por tipo de dispositivo",
     "noPrevious": "Sin datos del periodo anterior",
     "intervalOnly": "Solo el intervalo elegido"

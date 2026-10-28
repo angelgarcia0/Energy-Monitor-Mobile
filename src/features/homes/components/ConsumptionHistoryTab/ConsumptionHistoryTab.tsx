@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, Text, useWindowDimensions, View } from "react-native";
@@ -195,10 +196,7 @@ export function ConsumptionHistoryTab({ homeId, devices }: ConsumptionHistoryTab
     if (previousTotal === 0) return { text: t("history:stats.noPrevious"), trend: null };
     const pct = Math.round(((totalPeriod - previousTotal) / previousTotal) * 100);
     return {
-      text: t("history:stats.vsPrevious", {
-        sign: pct > 0 ? "↑" : pct < 0 ? "↓" : "=",
-        pct: Math.abs(pct),
-      }),
+      text: t("history:stats.vsPrevious", { pct: Math.abs(pct) }),
       trend: pct > 0 ? "up" : pct < 0 ? "down" : null,
     };
   }, [activeSubFilter, previousTotal, totalPeriod, t]);
@@ -329,15 +327,34 @@ export function ConsumptionHistoryTab({ homeId, devices }: ConsumptionHistoryTab
             <Text style={styles.statLabel}>{t("history:stats.totalConsumption")}</Text>
             <Text style={styles.statValue}>{totalPeriod.toFixed(2)} kWh</Text>
             {comparison ? (
-              <Text
-                style={[
-                  styles.statSub,
-                  comparison.trend === "up" && styles.trendUp,
-                  comparison.trend === "down" && styles.trendDown,
-                ]}
+              <View
+                style={styles.trendRow}
+                accessible
+                accessibilityLabel={
+                  comparison.trend
+                    ? `${t(`common:trend.${comparison.trend}`)} ${comparison.text}`
+                    : comparison.text
+                }
               >
-                {comparison.text}
-              </Text>
+                {comparison.trend ? (
+                  <Ionicons
+                    name={comparison.trend === "up" ? "arrow-up" : "arrow-down"}
+                    size={Theme.typography.size.sm}
+                    color={
+                      comparison.trend === "up" ? Theme.colors.dangerText : Theme.colors.successText
+                    }
+                  />
+                ) : null}
+                <Text
+                  style={[
+                    styles.statSub,
+                    comparison.trend === "up" && styles.trendUp,
+                    comparison.trend === "down" && styles.trendDown,
+                  ]}
+                >
+                  {comparison.text}
+                </Text>
+              </View>
             ) : null}
           </View>
 

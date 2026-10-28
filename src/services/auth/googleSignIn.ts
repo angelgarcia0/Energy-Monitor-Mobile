@@ -69,7 +69,7 @@ export async function signInWithGoogle(
       if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
         throw new GoogleSignInError("playServices", error.code);
       }
-      console.warn("Google sign-in failed:", error.code, error.message);
+      if (__DEV__) console.warn("Google sign-in failed:", error.code, error.message);
       throw new GoogleSignInError("failed", error.code);
     }
     throw new GoogleSignInError("failed");

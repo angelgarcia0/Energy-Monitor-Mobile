@@ -34,6 +34,8 @@ export type ChartProps =
       decimalPlaces?: number;
       /** Solo `bar`: el valor encima de cada barra. Por defecto se muestra. */
       showValues?: boolean;
+      /** Solo `area`: índices de datos sin medición; no se les pinta punto. */
+      hidePointsAtIndex?: number[];
     }
   | {
       type: "pie";
@@ -66,7 +68,9 @@ export function Chart(props: ChartProps) {
     backgroundGradientFrom: Theme.colors.surface,
     backgroundGradientTo: Theme.colors.surface,
     decimalPlaces: props.type === "pie" ? 0 : (props.decimalPlaces ?? 0),
-    color: (opacity = 1) => hexToRgba(Theme.colors.primary, opacity),
+    // chart-kit dibuja la línea bezier con alpha 0.2 fijo; se promueve a opaco para
+    // que la curva sea legible. Los puntos se pintan con 0.9 y no cambian.
+    color: (opacity = 1) => hexToRgba(Theme.colors.primary, opacity <= 0.2 ? 1 : opacity),
     labelColor: (opacity = 1) => hexToRgba(Theme.colors.textSecondary, opacity),
     propsForBackgroundLines: {
       stroke: Theme.colors.border,
@@ -118,7 +122,7 @@ export function Chart(props: ChartProps) {
             fillShadowGradient: Theme.colors.primary,
             fillShadowGradientOpacity: 0.15,
           }}
-          withShadow={false}
+          hidePointsAtIndex={props.hidePointsAtIndex}
         />
       )}
     </View>

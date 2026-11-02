@@ -56,6 +56,15 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     fontSize: Theme.typography.size.sm,
     fontWeight: Theme.typography.weight.bold,
   },
+  avatarImage: {
+    width: "100%",
+    height: "100%",
+    // El recorte va en la imagen: el contenedor no lleva overflow hidden.
+    borderRadius: AVATAR_SIZE / 2,
+  },
+  avatarPressed: {
+    opacity: 0.6,
+  },
   userInfo: {
     flex: 1,
     minWidth: 0,

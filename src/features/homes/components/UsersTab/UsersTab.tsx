@@ -1,4 +1,5 @@
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Image } from "expo-image";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, Text, View } from "react-native";
@@ -6,6 +7,8 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import { Button } from "@/components/Button/Button";
 import { Card } from "@/components/Card/Card";
 import { Loader } from "@/components/Loader/Loader";
+import { PhotoViewer } from "@/components/PhotoViewer/PhotoViewer";
+import { safeImage } from "@/components/PhotoViewer/safeImage";
 import { Theme } from "@/constants/theme";
 import { useHomes } from "@/context/HomeContext";
 import { useCurrentPerson, type CurrentPerson } from "@/services/auth";
@@ -29,6 +32,7 @@ interface MemberRow {
   lastName: string;
   email: string;
   role: Role;
+  profileImage: string | null;
 }
 
 /**
@@ -53,6 +57,9 @@ function toRows(
       lastName: member.lastName || (isMe ? me?.lastName : "") || "",
       email: member.email || (isMe ? me?.email : "") || "",
       role: member.role,
+      // El backend no siempre manda la foto en la membresía: la de la persona
+      // en sesión completa la fila propia.
+      profileImage: member.profileImage || (isMe ? me?.profileImage : null) || null,
     };
   });
 
@@ -63,6 +70,7 @@ function toRows(
       lastName: me.lastName,
       email: me.email,
       role: "OWNER",
+      profileImage: me.profileImage,
     });
   }
 
@@ -71,8 +79,42 @@ function toRows(
   );
 }
 
-function Avatar({ name, lastName, index }: { name: string; lastName: string; index: number }) {
+function Avatar({
+  name,
+  lastName,
+  index,
+  image,
+  label,
+  onView,
+}: {
+  name: string;
+  lastName: string;
+  index: number;
+  image: string | null;
+  label: string;
+  onView?: () => void;
+}) {
+  const safe = safeImage(image);
   const variant = getAvatarColor(index);
+
+  // Con foto, la imagen se puede ampliar desde la lista; sin ella (o si la
+  // fuente no es una data URL segura), quedan las iniciales como respaldo.
+  if (safe && onView) {
+    return (
+      <Pressable
+        onPress={onView}
+        accessibilityRole="button"
+        accessibilityLabel={label}
+        style={({ pressed }) => [styles.avatar, pressed && styles.avatarPressed]}
+      >
+        <Image
+          source={{ uri: safe }}
+          style={styles.avatarImage}
+          contentFit="cover"
+        />
+      </Pressable>
+    );
+  }
 
   return (
     <View style={[styles.avatar, { backgroundColor: variant.background }]}>
@@ -91,6 +133,7 @@ interface UserRowProps {
   transferring: boolean;
   onRequestRemove: (user: MemberRow) => void;
   onRequestTransfer: (user: MemberRow) => void;
+  onViewPhoto: (user: MemberRow) => void;
 }
 
 function UserRow({
@@ -101,6 +144,7 @@ function UserRow({
   transferring,
   onRequestRemove,
   onRequestTransfer,
+  onViewPhoto,
 }: UserRowProps) {
   const { t } = useTranslation("users");
   const badge = getRoleBadgeColor(user.role);
@@ -108,7 +152,14 @@ function UserRow({
 
   return (
     <View style={styles.userRow}>
-      <Avatar name={user.name} lastName={user.lastName} index={index} />
+      <Avatar
+        name={user.name}
+        lastName={user.lastName}
+        index={index}
+        image={user.profileImage}
+        label={t("actions.viewPhoto", { name: fullName })}
+        onView={() => onViewPhoto(user)}
+      />
 
       <View style={styles.userInfo}>
         <Text style={styles.userName} numberOfLines={1}>
@@ -188,6 +239,7 @@ export function UsersTab({ homeId, isOwner }: UsersTabProps) {
   const [transferring, setTransferring] = useState(false);
   const [transferError, setTransferError] = useState<string | null>(null);
   const [transferredTo, setTransferredTo] = useState<string | null>(null);
+  const [photoUser, setPhotoUser] = useState<MemberRow | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -309,6 +361,7 @@ export function UsersTab({ homeId, isOwner }: UsersTabProps) {
                   transferring={transferring}
                   onRequestRemove={setUserToRemove}
                   onRequestTransfer={openTransfer}
+                  onViewPhoto={setPhotoUser}
                 />
                 {index < rows.length - 1 ? <View style={styles.divider} /> : null}
               </View>
@@ -362,6 +415,19 @@ export function UsersTab({ homeId, isOwner }: UsersTabProps) {
           onConfirm={handleConfirmTransfer}
         />
       ) : null}
+
+      {/* Visor compartido: el mismo que usa la cuenta para su propia foto. */}
+      <PhotoViewer
+        visible={photoUser !== null}
+        src={photoUser?.profileImage ?? null}
+        alt={
+          photoUser
+            ? [photoUser.name, photoUser.lastName].filter(Boolean).join(" ")
+            : ""
+        }
+        closeLabel={t("actions.closePhoto")}
+        onClose={() => setPhotoUser(null)}
+      />
     </>
   );
 }

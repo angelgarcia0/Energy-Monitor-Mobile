@@ -67,9 +67,11 @@ export function toUiAlert(alert: Alert, homeName: string): UiAlert {
           ? alert.messageKey === "alert.limit.monthly"
             ? "limit.monthly"
             : "limit.daily"
-          : critical
-            ? "threshold.critical"
-            : "threshold.high";
+          : alert.messageKey === "alert.anomaly.device"
+            ? "threshold.anomaly"
+            : critical
+              ? "threshold.critical"
+              : "threshold.high";
 
   return {
     id: alert.idAlert,

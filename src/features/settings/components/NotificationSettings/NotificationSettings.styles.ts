@@ -90,6 +90,11 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     color: Theme.colors.dangerText,
     paddingVertical: Theme.spacing.xs,
   },
+  problem: {
+    gap: Theme.spacing.sm,
+    alignItems: "flex-start",
+    paddingVertical: Theme.spacing.xs,
+  },
   retry: {
     fontFamily: Theme.typography.fontPrimary,
     fontSize: Theme.typography.size.size13,

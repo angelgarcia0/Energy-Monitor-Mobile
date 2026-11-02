@@ -24,7 +24,8 @@ export interface Alert {
   /**
    * `alert.threshold.high`, `alert.threshold.critical`,
    * `alert.connectivity.offline`, `alert.device.linked`,
-   * `alert.limit.daily`, `alert.limit.monthly`.
+   * `alert.limit.daily`, `alert.limit.monthly`,
+   * `alert.anomaly.device` (un aparato consume mucho más de lo habitual).
    */
   messageKey: string;
   /** ISO-8601. */

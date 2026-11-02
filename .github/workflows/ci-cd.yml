@@ -1,0 +1,74 @@
+# CI: type check, lint and unit tests on every pull request and push to dev and main.
+# CD: after a push to main, or on a manual run from any branch, EAS queues the Android
+# build (preview profile: APK for internal distribution). The EXPO_TOKEN repository secret
+# is required; without it the step notices and skips the build. The EXPO_PUBLIC_* values
+# are public client configuration and are not stored in the repository.
+name: Mobile CI/CD
+
+on:
+  pull_request:
+    branches: [dev, main]
+  push:
+    branches: [dev, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mobile-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  test:
+    name: Type check, lint and tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npx eslint src
+
+      - name: Unit tests
+        run: npx jest --ci
+
+  build:
+    name: EAS build (CD)
+    needs: test
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Queue the Android build on EAS
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          EXPO_NO_TELEMETRY: "1"
+          EXPO_PUBLIC_API_BASE_URL: https://energy-monitor.tech
+          EXPO_PUBLIC_EAS_PROJECT_ID: 98821905-8663-4d75-b8f4-684a26cf80cf
+          EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID: 373584980038-ikk6ile2mg4aupdcn1cufehgf2d0k9rn.apps.googleusercontent.com
+        run: |
+          if [ -z "$EXPO_TOKEN" ]; then
+            echo "::notice::EXPO_TOKEN is not configured; the EAS build was skipped."
+          else
+            npx --yes eas build --platform android --profile preview --non-interactive --no-wait
+          fi

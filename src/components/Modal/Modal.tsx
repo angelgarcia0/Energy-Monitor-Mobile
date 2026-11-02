@@ -2,7 +2,9 @@ import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
+  KeyboardAvoidingView,
   Modal as RNModal,
+  Platform,
   Pressable,
   StyleProp,
   Text,
@@ -44,7 +46,14 @@ export function Modal({
       animationType="fade"
       onRequestClose={onRequestClose}
     >
-      <View style={styles.overlay}>
+      {/* El teclado no lo evita nadie solo: en iOS la ventana del modal no se
+          ajusta, así que el contenedor entero se eleva con él. En Android la
+          ventana de RNModal ya redimensiona (adjustResize) y este KAV no hace
+          nada (behavior undefined). */}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        style={styles.overlay}
+      >
         <View style={[styles.surface, style]} accessibilityViewIsModal>
           {variant === "danger" ? (
             <View style={styles.dangerHeader}>
@@ -96,7 +105,7 @@ export function Modal({
             </View>
           ) : null}
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </RNModal>
   );
 }

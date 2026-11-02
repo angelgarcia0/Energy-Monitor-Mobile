@@ -49,6 +49,11 @@ export interface UserHome {
   name: string | null;
   lastName: string | null;
   email: string | null;
+  /**
+   * `data:` del avatar (MEDIUMTEXT en la persona), igual que en la cuenta.
+   * Opcional: quien no tiene foto lo recibe null o directamente sin el campo.
+   */
+  profileImage?: string | null;
 }
 
 /**

@@ -39,7 +39,9 @@
       "browsers_one": "Alertes vers ce téléphone et le navigateur abonné.",
       "browsers_other": "Alertes vers ce téléphone et les {{count}} navigateurs abonnés.",
       "permissionDenied": "Sans l'autorisation de notification, ce téléphone ne peut pas les recevoir. Vous pouvez l'accorder dans les réglages du système.",
-      "registrationFailed": "Ce téléphone n'a pas pu être enregistré pour recevoir des alertes. Réessayez plus tard."
+      "registrationFailed": "Ce téléphone n'a pas pu être enregistré pour recevoir des alertes. Réessayez plus tard.",
+      "missingProjectId": "Cette version de l'application n'a pas les notifications push configurées (l'identifiant du projet Expo est manquant), ce téléphone ne peut donc pas les recevoir.",
+      "openSystemSettings": "Ouvrir les réglages du système"
     },
     "combined": {
       "title": "Mode combiné",
@@ -70,6 +72,15 @@
       "title": "Nouveautés",
       "description": "Dernières mises à jour, améliorations et corrections",
       "action": "Voir le journal des modifications"
+    },
+    "close": "Fermer",
+    "supportModal": {
+      "intro": "L'équipe d'administration assure l'assistance d'EnergyMonitor.",
+      "steps": [
+        "Choisissez à qui écrire, s'il y a plusieurs administrateurs.",
+        "Appuyez sur « Créer un ticket » : un e-mail s'ouvre avec l'objet déjà rédigé.",
+        "Décrivez le problème et envoyez-le : on vous répondra par e-mail."
+      ]
     }
   },
   "hero": {

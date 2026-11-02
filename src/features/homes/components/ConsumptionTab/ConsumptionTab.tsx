@@ -77,7 +77,7 @@ function LimitBar({ label, used, limit, noData }: LimitBarProps) {
 }
 
 export function ConsumptionTab({ homeId, devices }: ConsumptionTabProps) {
-  const { t } = useTranslation(["consumption", "devices"]);
+  const { t, i18n } = useTranslation(["consumption", "devices"]);
   const { width } = useWindowDimensions();
   const { currentTheme } = useTheme();
   const { summary, loading, error, reload } = useConsumptionSummary(homeId);
@@ -101,22 +101,24 @@ export function ConsumptionTab({ homeId, devices }: ConsumptionTabProps) {
   }));
 
   // Las horas vienen en W y pueden venir en null. Si ninguna tiene dato no se
-  // pinta un gráfico en cero: se ve como "no hay mediciones".
+  // pinta un gráfico en cero: se ve como "no hay mediciones". chart-kit solo
+  // acepta números, así que los null entran como 0, pero sus índices se ocultan
+  // con hidePointsAtIndex para no pintar un punto que parezca una medición.
   const horas = summary?.lastHours ?? [];
   const hayDatos = horas.some((h) => h.averagePower !== null);
   const kwValues = horas.map((h) => toKw(h.averagePower) ?? 0);
+  const sinDato = horas
+    .map((h, i) => (h.averagePower === null ? i : -1))
+    .filter((i) => i >= 0);
   const hourLabels = horas.map((h, i) =>
     i % 3 === 0
-      ? new Date(h.hourStart).toLocaleTimeString(undefined, {
+      ? new Date(h.hourStart).toLocaleTimeString(i18n.language, {
           hour: "2-digit",
           minute: "2-digit",
           hourCycle: "h23",
         })
       : "",
   );
-  // ponytail: dataset invisible que fuerza el eje Y a 0..múltiplo de 4, porque el
-  // Chart genérico no expone fromZero/decimalPlaces; añadir esas props y quitar esto.
-  const yTop = kwValues.length ? Math.ceil(Math.max(...kwValues) / 4) * 4 : 0;
 
   if (loading) return <Loader text={t("consumption:state.loading")} />;
 
@@ -203,16 +205,11 @@ export function ConsumptionTab({ homeId, devices }: ConsumptionTabProps) {
             width={chartWidth}
             height={180}
             style={styles.chart}
+            decimalPlaces={2}
+            hidePointsAtIndex={sinDato}
             data={{
               labels: hourLabels,
-              datasets: [
-                { data: kwValues, strokeWidth: 2 },
-                {
-                  data: kwValues.map((_, i) => (i % 2 ? yTop : 0)),
-                  color: () => "transparent",
-                  strokeWidth: 0,
-                },
-              ],
+              datasets: [{ data: kwValues, strokeWidth: 2 }],
             }}
           />
         ) : (

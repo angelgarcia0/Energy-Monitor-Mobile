@@ -117,15 +117,37 @@ export async function registerThisDevice(): Promise<boolean> {
 }
 
 /**
+ * Resultado de intentar activar el push en este teléfono.
+ *
+ * Solo `registered` permite encender el interruptor. Los otros tres se
+ * distinguen para que Ajustes diga qué falló —permiso, configuración de la
+ * build o red— en vez de un "no se pudo" genérico.
+ */
+export type EnablePushResult =
+  | "registered"
+  | "permissionDenied"
+  | "missingProjectId"
+  | "failed";
+
+/**
  * Pide el permiso y, si se concede, registra el token.
  *
  * Es el camino de "el usuario acaba de encender el push en Ajustes", y el único
- * que abre el diálogo del sistema.
+ * que abre el diálogo del sistema. Nunca lanza: cualquier fallo termina en
+ * `failed`, para que la UI solo tenga que pintar el resultado.
  */
-export async function enablePushOnThisDevice(): Promise<boolean> {
-  await ensureAlertsChannel();
-  if (!(await requestPermission())) return false;
-  return registerThisDevice();
+export async function enablePushOnThisDevice(): Promise<EnablePushResult> {
+  // Sin identificador de proyecto no hay token posible: se informa antes de
+  // molestar con el diálogo del sistema.
+  if (!HAS_EAS_PROJECT_ID) return "missingProjectId";
+
+  try {
+    await ensureAlertsChannel();
+    if (!(await requestPermission())) return "permissionDenied";
+    return (await registerThisDevice()) ? "registered" : "failed";
+  } catch {
+    return "failed";
+  }
 }
 
 /**

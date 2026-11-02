@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Image, Modal, Pressable, Text, View } from "react-native";
 
+import { PhotoViewer } from "@/components/PhotoViewer/PhotoViewer";
 import { Theme } from "@/constants/theme";
 import { styles } from "./AvatarSection.styles";
 
@@ -127,34 +128,15 @@ export function AvatarSection({
         </Pressable>
       </Modal>
 
-      <Modal
+      {/* El visor de foto es un componente compartido (también lo usan los
+          miembros del hogar), en lugar del modal que vivía dentro de aquí. */}
+      <PhotoViewer
         visible={viewerOpen}
-        animationType="fade"
-        onRequestClose={() => setViewerOpen(false)}
-      >
-        <View style={styles.viewer}>
-          <Pressable
-            onPress={() => setViewerOpen(false)}
-            accessibilityRole="button"
-            accessibilityLabel={t("closePhoto")}
-            style={styles.viewerClose}
-          >
-            <Ionicons
-              name="close"
-              size={Theme.typography.size.xl}
-              color={Theme.colors.onBrand}
-            />
-          </Pressable>
-
-          {avatarUri ? (
-            <Image
-              source={{ uri: avatarUri }}
-              style={styles.viewerImage}
-              resizeMode="contain"
-            />
-          ) : null}
-        </View>
-      </Modal>
+        src={avatarUri}
+        alt={t("viewPhoto")}
+        closeLabel={t("closePhoto")}
+        onClose={() => setViewerOpen(false)}
+      />
     </View>
   );
 }

@@ -1,0 +1,12 @@
+{
+  "contact": {
+    "email": {
+      "subject": "Soporte EnergyMonitor",
+      "body": "Hola,\n\nQuiero recibir ayuda con lo siguiente:\n\n- \n\nGracias.",
+      "buttonTo": "Escribir a {{name}}",
+      "chooseLabel": "¿A quién quieres escribir?",
+      "loading": "Cargando contactos…",
+      "unavailable": "Por ahora no hay un administrador disponible para recibir mensajes. Vuelve a intentarlo más tarde."
+    }
+  }
+}

@@ -21,6 +21,7 @@ import enConsumption from "./locales/en/consumption.json";
 import enCreateHomeModal from "./locales/en/createHomeModal.json";
 import enDashboard from "./locales/en/dashboard.json";
 import enDevices from "./locales/en/devices.json";
+import enDocs from "./locales/en/docs.json";
 import enEmptyState from "./locales/en/emptyState.json";
 import enErrors from "./locales/en/errors.json";
 import enFavorites from "./locales/en/favorites.json";
@@ -33,10 +34,12 @@ import enJoinHomeModal from "./locales/en/joinHomeModal.json";
 import enLegalModal from "./locales/en/legalModal.json";
 import enLanguageSwitcher from "./locales/en/languageSwitcher.json";
 import enLinkDeviceModal from "./locales/en/linkDeviceModal.json";
+import enNews from "./locales/en/news.json";
 import enNotifications from "./locales/en/notifications.json";
 import enRecoverPassword from "./locales/en/recoverPassword.json";
 import enSettings from "./locales/en/settings.json";
 import enSidebar from "./locales/en/sidebar.json";
+import enSupport from "./locales/en/support.json";
 import enThresholds from "./locales/en/thresholds.json";
 import enUsers from "./locales/en/users.json";
 import enValidations from "./locales/en/validations.json";
@@ -48,6 +51,7 @@ import esConsumption from "./locales/es/consumption.json";
 import esCreateHomeModal from "./locales/es/createHomeModal.json";
 import esDashboard from "./locales/es/dashboard.json";
 import esDevices from "./locales/es/devices.json";
+import esDocs from "./locales/es/docs.json";
 import esEmptyState from "./locales/es/emptyState.json";
 import esErrors from "./locales/es/errors.json";
 import esFavorites from "./locales/es/favorites.json";
@@ -60,10 +64,12 @@ import esJoinHomeModal from "./locales/es/joinHomeModal.json";
 import esLegalModal from "./locales/es/legalModal.json";
 import esLanguageSwitcher from "./locales/es/languageSwitcher.json";
 import esLinkDeviceModal from "./locales/es/linkDeviceModal.json";
+import esNews from "./locales/es/news.json";
 import esNotifications from "./locales/es/notifications.json";
 import esRecoverPassword from "./locales/es/recoverPassword.json";
 import esSettings from "./locales/es/settings.json";
 import esSidebar from "./locales/es/sidebar.json";
+import esSupport from "./locales/es/support.json";
 import esThresholds from "./locales/es/thresholds.json";
 import esUsers from "./locales/es/users.json";
 import esValidations from "./locales/es/validations.json";
@@ -75,6 +81,7 @@ import frConsumption from "./locales/fr/consumption.json";
 import frCreateHomeModal from "./locales/fr/createHomeModal.json";
 import frDashboard from "./locales/fr/dashboard.json";
 import frDevices from "./locales/fr/devices.json";
+import frDocs from "./locales/fr/docs.json";
 import frEmptyState from "./locales/fr/emptyState.json";
 import frErrors from "./locales/fr/errors.json";
 import frFavorites from "./locales/fr/favorites.json";
@@ -87,10 +94,12 @@ import frJoinHomeModal from "./locales/fr/joinHomeModal.json";
 import frLegalModal from "./locales/fr/legalModal.json";
 import frLanguageSwitcher from "./locales/fr/languageSwitcher.json";
 import frLinkDeviceModal from "./locales/fr/linkDeviceModal.json";
+import frNews from "./locales/fr/news.json";
 import frNotifications from "./locales/fr/notifications.json";
 import frRecoverPassword from "./locales/fr/recoverPassword.json";
 import frSettings from "./locales/fr/settings.json";
 import frSidebar from "./locales/fr/sidebar.json";
+import frSupport from "./locales/fr/support.json";
 import frThresholds from "./locales/fr/thresholds.json";
 import frUsers from "./locales/fr/users.json";
 import frValidations from "./locales/fr/validations.json";
@@ -102,6 +111,7 @@ import ptConsumption from "./locales/pt/consumption.json";
 import ptCreateHomeModal from "./locales/pt/createHomeModal.json";
 import ptDashboard from "./locales/pt/dashboard.json";
 import ptDevices from "./locales/pt/devices.json";
+import ptDocs from "./locales/pt/docs.json";
 import ptEmptyState from "./locales/pt/emptyState.json";
 import ptErrors from "./locales/pt/errors.json";
 import ptFavorites from "./locales/pt/favorites.json";
@@ -114,10 +124,12 @@ import ptJoinHomeModal from "./locales/pt/joinHomeModal.json";
 import ptLegalModal from "./locales/pt/legalModal.json";
 import ptLanguageSwitcher from "./locales/pt/languageSwitcher.json";
 import ptLinkDeviceModal from "./locales/pt/linkDeviceModal.json";
+import ptNews from "./locales/pt/news.json";
 import ptNotifications from "./locales/pt/notifications.json";
 import ptRecoverPassword from "./locales/pt/recoverPassword.json";
 import ptSettings from "./locales/pt/settings.json";
 import ptSidebar from "./locales/pt/sidebar.json";
+import ptSupport from "./locales/pt/support.json";
 import ptThresholds from "./locales/pt/thresholds.json";
 import ptUsers from "./locales/pt/users.json";
 import ptValidations from "./locales/pt/validations.json";
@@ -131,6 +143,7 @@ const esResources = {
   createHomeModal: esCreateHomeModal,
   dashboard: esDashboard,
   devices: esDevices,
+  docs: esDocs,
   emptyState: esEmptyState,
   errors: esErrors,
   favorites: esFavorites,
@@ -143,10 +156,12 @@ const esResources = {
   legalModal: esLegalModal,
   languageSwitcher: esLanguageSwitcher,
   linkDeviceModal: esLinkDeviceModal,
+  news: esNews,
   notifications: esNotifications,
   recoverPassword: esRecoverPassword,
   settings: esSettings,
   sidebar: esSidebar,
+  support: esSupport,
   thresholds: esThresholds,
   users: esUsers,
   validations: esValidations,
@@ -161,6 +176,7 @@ const enResources = {
   createHomeModal: enCreateHomeModal,
   dashboard: enDashboard,
   devices: enDevices,
+  docs: enDocs,
   emptyState: enEmptyState,
   errors: enErrors,
   favorites: enFavorites,
@@ -173,10 +189,12 @@ const enResources = {
   legalModal: enLegalModal,
   languageSwitcher: enLanguageSwitcher,
   linkDeviceModal: enLinkDeviceModal,
+  news: enNews,
   notifications: enNotifications,
   recoverPassword: enRecoverPassword,
   settings: enSettings,
   sidebar: enSidebar,
+  support: enSupport,
   thresholds: enThresholds,
   users: enUsers,
   validations: enValidations,
@@ -191,6 +209,7 @@ const frResources = {
   createHomeModal: frCreateHomeModal,
   dashboard: frDashboard,
   devices: frDevices,
+  docs: frDocs,
   emptyState: frEmptyState,
   errors: frErrors,
   favorites: frFavorites,
@@ -203,10 +222,12 @@ const frResources = {
   legalModal: frLegalModal,
   languageSwitcher: frLanguageSwitcher,
   linkDeviceModal: frLinkDeviceModal,
+  news: frNews,
   notifications: frNotifications,
   recoverPassword: frRecoverPassword,
   settings: frSettings,
   sidebar: frSidebar,
+  support: frSupport,
   thresholds: frThresholds,
   users: frUsers,
   validations: frValidations,
@@ -221,6 +242,7 @@ const ptResources = {
   createHomeModal: ptCreateHomeModal,
   dashboard: ptDashboard,
   devices: ptDevices,
+  docs: ptDocs,
   emptyState: ptEmptyState,
   errors: ptErrors,
   favorites: ptFavorites,
@@ -233,10 +255,12 @@ const ptResources = {
   legalModal: ptLegalModal,
   languageSwitcher: ptLanguageSwitcher,
   linkDeviceModal: ptLinkDeviceModal,
+  news: ptNews,
   notifications: ptNotifications,
   recoverPassword: ptRecoverPassword,
   settings: ptSettings,
   sidebar: ptSidebar,
+  support: ptSupport,
   thresholds: ptThresholds,
   users: ptUsers,
   validations: ptValidations,

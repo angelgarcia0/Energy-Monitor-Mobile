@@ -39,7 +39,9 @@
       "browsers_one": "Alerts to this phone and the subscribed browser.",
       "browsers_other": "Alerts to this phone and the {{count}} subscribed browsers.",
       "permissionDenied": "Without the notification permission, this phone cannot receive them. You can grant it in the system settings.",
-      "registrationFailed": "This phone could not be registered to receive alerts. Try again later."
+      "registrationFailed": "This phone could not be registered to receive alerts. Try again later.",
+      "missingProjectId": "This build of the app does not have push notifications configured (the Expo project id is missing), so this phone cannot receive them.",
+      "openSystemSettings": "Open system settings"
     },
     "combined": {
       "title": "Combined mode",
@@ -70,6 +72,15 @@
       "title": "What's new",
       "description": "Latest updates, improvements, and bug fixes",
       "action": "View changelog"
+    },
+    "close": "Close",
+    "supportModal": {
+      "intro": "The administration team handles EnergyMonitor support.",
+      "steps": [
+        "Choose who to write to, if there are several administrators.",
+        "Press “Create ticket”: an email opens with the subject already written.",
+        "Describe the problem and send it: they will reply by email."
+      ]
     }
   },
   "hero": {

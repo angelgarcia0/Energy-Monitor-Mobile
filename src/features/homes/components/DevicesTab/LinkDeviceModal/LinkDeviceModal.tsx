@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, ScrollView, Text, useWindowDimensions, View } from "react-native";
+import { Keyboard, Platform, Pressable, ScrollView, Text, useWindowDimensions, View } from "react-native";
 
 import { Button } from "@/components/Button/Button";
 import { Input } from "@/components/Input/Input";
@@ -137,6 +137,26 @@ export function LinkDeviceModal({
   // Al cerrar el modal se suelta el Bluetooth: dejarlo conectado gasta batería
   // y el módulo tiene una sola conexión.
   useEffect(() => closeSession, [closeSession]);
+
+  // El teclado cubre la mitad de la pantalla. El modal ya eleva la tarjeta
+  // (KAV en iOS, ajuste de ventana en Android), pero si el scroll no se
+  // encoge la tarjeta no cabe en el espacio que queda y la contraseña y el
+  // botón Conectar siguen debajo de las teclas.
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  useEffect(() => {
+    const show = Keyboard.addListener(
+      Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow",
+      (event) => setKeyboardHeight(event.endCoordinates.height),
+    );
+    const hide = Keyboard.addListener(
+      Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide",
+      () => setKeyboardHeight(0),
+    );
+    return () => {
+      show.remove();
+      hide.remove();
+    };
+  }, []);
 
   const reset = useCallback(() => {
     setStep("discover");
@@ -454,7 +474,12 @@ export function LinkDeviceModal({
       </View>
 
       <ScrollView
-        style={[styles.scroll, { maxHeight: height * 0.55 }]}
+        style={[
+          styles.scroll,
+          // Con el teclado abierto el scroll cede su alto al teclado, con un
+          // suelo para que la zona siga siendo usable.
+          { maxHeight: Math.max(height * 0.55 - keyboardHeight, height * 0.18) },
+        ]}
         contentContainerStyle={styles.content}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}

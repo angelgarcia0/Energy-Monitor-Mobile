@@ -1,11 +1,15 @@
+import { Button } from "@/components/Button/Button";
 import { Switch } from "@/components/Switch/Switch";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, Pressable, Text, View } from "react-native";
+import { ActivityIndicator, Linking, Pressable, Text, View } from "react-native";
 import { Theme } from "@/constants/theme";
 import { errorMessage } from "@/services/http";
-import { enablePushOnThisDevice } from "@/services/notifications/pushRegistration";
+import {
+  enablePushOnThisDevice,
+  type EnablePushResult,
+} from "@/services/notifications/pushRegistration";
 import { SettingsSectionCard } from "../../components/SettingsSectionCard/SettingsSectionCard";
 import { useNotificationPreferences } from "../../hooks/useNotificationPreferences";
 import { styles } from "./NotificationSettings.styles";
@@ -29,6 +33,12 @@ export function NotificationSettings() {
   // El mensaje de error vive aquí, no en el hook, porque el hook no traduce.
   const [message, setMessage] = useState<string | null>(null);
   const [askingPermission, setAskingPermission] = useState(false);
+  // Resultado del último intento de activar push: distingue permiso denegado,
+  // build sin configurar y fallo de red para pintar un mensaje distinto en
+  // cada caso (el genérico "no se pudo" ocultaba los tres).
+  const [pushProblem, setPushProblem] = useState<
+    Exclude<EnablePushResult, "registered"> | null
+  >(null);
 
   const email = !!preferences?.emailEnabled;
   const push = !!preferences?.pushEnabled;
@@ -57,6 +67,7 @@ export function NotificationSettings() {
   const togglePush = () => {
     if (!preferences || pending || askingPermission) return;
     setMessage(null);
+    setPushProblem(null);
 
     if (push) {
       // Apagar no pide permiso ni borra el token: apagar es una preferencia, y el
@@ -68,19 +79,24 @@ export function NotificationSettings() {
 
     setAskingPermission(true);
     void enablePushOnThisDevice()
-      .then((registered) => {
-        if (registered) {
+      .then((result) => {
+        if (result === "registered") {
           void run({ emailEnabled: email, pushEnabled: true });
         } else {
-          setMessage(t("notifications.push.permissionDenied"));
+          setPushProblem(result);
         }
-      })
-      .catch(() => {
-        setMessage(t("notifications.push.registrationFailed"));
       })
       .finally(() => {
         setAskingPermission(false);
       });
+  };
+
+  /**
+   * Abre esta app en los ajustes del sistema: ahí están los permisos de
+   * notificación (iOS → la app; Android → pantalla de la app).
+   */
+  const openSystemSettings = () => {
+    void Linking.openSettings().catch(() => {});
   };
 
   const toggleCombined = () => {
@@ -172,6 +188,29 @@ export function NotificationSettings() {
           onToggle={toggleCombined}
         />
       </View>
+
+      {pushProblem ? (
+        <View style={styles.problem}>
+          <Text style={styles.message} accessibilityRole="alert">
+            {t(
+              pushProblem === "permissionDenied"
+                ? "notifications.push.permissionDenied"
+                : pushProblem === "missingProjectId"
+                  ? "notifications.push.missingProjectId"
+                  : "notifications.push.registrationFailed",
+            )}
+          </Text>
+          {pushProblem === "permissionDenied" ? (
+            <Button
+              variant="secondary"
+              size="small"
+              onPress={openSystemSettings}
+            >
+              {t("notifications.push.openSystemSettings")}
+            </Button>
+          ) : null}
+        </View>
+      ) : null}
 
       {message ? (
         <Text style={styles.message} accessibilityRole="alert">

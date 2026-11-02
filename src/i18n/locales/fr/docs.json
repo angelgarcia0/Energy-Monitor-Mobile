@@ -1,0 +1,40 @@
+{
+  "title": "Documentation",
+  "subtitle": {
+    "user": "Guide rapide pour utiliser EnergyMonitor chez vous."
+  },
+  "user": [
+    {
+      "title": "Créer votre compte",
+      "body": "Inscrivez-vous avec votre e-mail et un mot de passe, acceptez les conditions et saisissez le code à six chiffres reçu par e-mail. Vous pouvez aussi vous connecter avec Google. Le compte est créé une fois l'e-mail vérifié."
+    },
+    {
+      "title": "Foyers",
+      "body": "Créez un foyer ou rejoignez-en un avec le code d'accès partagé par son responsable. Le responsable peut inviter, retirer des membres, transférer le foyer et fixer les limites quotidienne et mensuelle. Marquez vos foyers favoris pour les retrouver vite."
+    },
+    {
+      "title": "Associer un compteur",
+      "body": "Dans le foyer, ouvrez Appareils et choisissez Associer. Cela se fait en Bluetooth : le compteur reçoit votre réseau Wi-Fi et se connecte. Vous voyez s'il est en ligne et quand il a envoyé sa dernière mesure."
+    },
+    {
+      "title": "Consommation et historique",
+      "body": "Le tableau de bord montre la puissance actuelle, la consommation du jour et du mois et un graphique des dernières 24 heures. L'historique permet de choisir une période et de voir la consommation par appareil."
+    },
+    {
+      "title": "Alertes et recommandations",
+      "body": "Vous recevez une alerte quand le foyer dépasse sa limite, quand un compteur se déconnecte ou quand un appareil consomme bien plus que d'habitude. Les recommandations d'économie viennent de votre propre consommation."
+    },
+    {
+      "title": "Notifications",
+      "body": "Dans Réglages, choisissez si les alertes arrivent par e-mail ou en notifications push sur ce téléphone. Si vous refusez l'autorisation du système, vous pouvez l'accorder dans les réglages du téléphone."
+    },
+    {
+      "title": "Mon compte",
+      "body": "Modifiez votre prénom, votre nom et votre photo, et agrandissez la photo depuis l'application. Vous pouvez changer le mot de passe ou supprimer le compte : avec le mot de passe, ou avec un code reçu par e-mail si vous êtes connecté avec Google."
+    },
+    {
+      "title": "Assistance technique",
+      "body": "Si quelque chose ne fonctionne pas, allez dans Réglages → Centre d'aide et appuyez sur Créer un ticket : un e-mail s'ouvre avec l'objet déjà rédigé pour l'équipe d'assistance, sans quitter l'application."
+    }
+  ]
+}

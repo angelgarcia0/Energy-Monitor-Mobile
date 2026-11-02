@@ -70,5 +70,5 @@ jobs:
           if [ -z "$EXPO_TOKEN" ]; then
             echo "::notice::EXPO_TOKEN is not configured; the EAS build was skipped."
           else
-            npx --yes eas build --platform android --profile preview --non-interactive --no-wait
+            npx --yes eas-cli@latest build --platform android --profile preview --non-interactive --no-wait
           fi

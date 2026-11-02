@@ -32,7 +32,9 @@
   },
   "actions": {
     "removeUser": "Eliminar a {{name}}",
-    "transferOwnership": "Hacer responsable a {{name}}"
+    "transferOwnership": "Hacer responsable a {{name}}",
+    "viewPhoto": "Ver la foto de {{name}}",
+    "closePhoto": "Cerrar foto"
   },
   "confirmRemove": {
     "title": "¿Eliminar miembro?",

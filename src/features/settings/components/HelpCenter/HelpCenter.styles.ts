@@ -47,4 +47,7 @@ export const styles = createThemeStyles(() => StyleSheet.create({
     fontWeight: Theme.typography.weight.bold,
     color: Theme.colors.primary,
   },
+  linkRowPressed: {
+    opacity: 0.6,
+  },
 }));

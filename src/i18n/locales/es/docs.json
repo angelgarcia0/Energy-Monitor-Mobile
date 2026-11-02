@@ -1,0 +1,40 @@
+{
+  "title": "Documentación",
+  "subtitle": {
+    "user": "Guía rápida para usar EnergyMonitor en tu hogar."
+  },
+  "user": [
+    {
+      "title": "Crear tu cuenta",
+      "body": "Regístrate con tu correo y una contraseña, acepta los términos y escribe el código de seis dígitos que te llega al correo. También puedes entrar con Google. La cuenta se crea al verificar el correo."
+    },
+    {
+      "title": "Hogares",
+      "body": "Crea un hogar o únete con el código de acceso que te compartió su responsable. El responsable puede invitar, quitar miembros, transferir el hogar y fijar los límites diario y mensual de consumo. Marca tus hogares favoritos para encontrarlos rápido."
+    },
+    {
+      "title": "Vincular un medidor",
+      "body": "En el hogar, entra a Dispositivos y elige Vincular. Se hace por Bluetooth: el medidor recibe tu red Wi-Fi y queda conectado. Verás si está en línea y cuándo envió su última lectura."
+    },
+    {
+      "title": "Consumo e historial",
+      "body": "El panel muestra la potencia actual, el consumo del día y del mes y una gráfica de las últimas 24 horas. El historial permite elegir un rango de fechas y ver el consumo por dispositivo."
+    },
+    {
+      "title": "Alertas y recomendaciones",
+      "body": "Recibes una alerta cuando el hogar supera su límite, cuando un medidor se desconecta o cuando un aparato consume mucho más de lo habitual. Las recomendaciones de ahorro salen de tu propio consumo."
+    },
+    {
+      "title": "Notificaciones",
+      "body": "En Ajustes eliges si los avisos llegan por correo o como notificaciones push a este teléfono. Si deniegas el permiso del sistema, puedes concederlo desde los ajustes del teléfono."
+    },
+    {
+      "title": "Mi cuenta",
+      "body": "Cambia tu nombre, tu apellido y tu foto, y amplía la foto desde la app. Puedes cambiar la contraseña, o eliminar la cuenta: con contraseña, o con un código que llega al correo si entraste con Google."
+    },
+    {
+      "title": "Soporte técnico",
+      "body": "Si algo no funciona, entra en Ajustes → Centro de ayuda y pulsa Crear ticket: se abre un correo con el asunto ya escrito para el equipo de soporte, sin salir de la app."
+    }
+  ]
+}

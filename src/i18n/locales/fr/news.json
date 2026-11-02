@@ -1,0 +1,7 @@
+{
+  "title": "Nouveautés",
+  "subtitle": "Les derniers ajouts et corrections d'EnergyMonitor.",
+  "current": "Version {{version}}",
+  "empty": "Aucune nouveauté enregistrée pour cette version pour l'instant.",
+  "note": "Cette liste est mise à jour à chaque nouvelle version de l'application."
+}

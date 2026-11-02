@@ -70,6 +70,15 @@
       "title": "Novidades",
       "description": "Últimas atualizações, melhorias e correções",
       "action": "Ver registro de alterações"
+    },
+    "close": "Fechar",
+    "supportModal": {
+      "intro": "A equipe de administração cuida do suporte do EnergyMonitor.",
+      "steps": [
+        "Escolha para quem escrever, se houver vários administradores.",
+        "Toque em «Criar ticket»: abre um e-mail com o assunto já escrito.",
+        "Descreva o problema e envie: responderão por e-mail."
+      ]
     }
   },
   "hero": {

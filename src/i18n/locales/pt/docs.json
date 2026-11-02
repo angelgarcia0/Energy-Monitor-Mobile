@@ -1,0 +1,40 @@
+{
+  "title": "Documentação",
+  "subtitle": {
+    "user": "Guia rápido para usar o EnergyMonitor em casa."
+  },
+  "user": [
+    {
+      "title": "Criar sua conta",
+      "body": "Cadastre-se com seu e-mail e uma senha, aceite os termos e digite o código de seis dígitos enviado ao e-mail. Também é possível entrar com o Google. A conta é criada quando o e-mail é verificado."
+    },
+    {
+      "title": "Lares",
+      "body": "Crie um lar ou entre em um com o código de acesso que o responsável compartilhou. O responsável pode convidar, remover membros, transferir o lar e definir os limites diário e mensal. Marque seus lares favoritos para encontrá-los rápido."
+    },
+    {
+      "title": "Vincular um medidor",
+      "body": "No lar, abra Dispositivos e escolha Vincular. É feito por Bluetooth: o medidor recebe sua rede Wi-Fi e se conecta. Você vê se ele está online e quando enviou a última leitura."
+    },
+    {
+      "title": "Consumo e histórico",
+      "body": "O painel mostra a potência atual, o consumo do dia e do mês e um gráfico das últimas 24 horas. O histórico permite escolher um período e ver o consumo por dispositivo."
+    },
+    {
+      "title": "Alertas e recomendações",
+      "body": "Você recebe um alerta quando o lar passa do limite, quando um medidor se desconecta ou quando um aparelho consome muito mais que o habitual. As recomendações de economia vêm do seu próprio consumo."
+    },
+    {
+      "title": "Notificações",
+      "body": "Em Ajustes, escolha se os avisos chegam por e-mail ou como notificações push neste telefone. Se você negar a permissão do sistema, pode concedê-la nos ajustes do telefone."
+    },
+    {
+      "title": "Minha conta",
+      "body": "Altere seu nome, sobrenome e foto, e amplie a foto pelo aplicativo. Você pode trocar a senha ou excluir a conta: com a senha, ou com um código enviado por e-mail se você entrou com o Google."
+    },
+    {
+      "title": "Suporte técnico",
+      "body": "Se algo não funcionar, vá em Ajustes → Central de ajuda e toque em Criar ticket: abre um e-mail com o assunto já escrito para a equipe de suporte, sem sair do aplicativo."
+    }
+  ]
+}

@@ -70,6 +70,15 @@
       "title": "Nouveautés",
       "description": "Dernières mises à jour, améliorations et corrections",
       "action": "Voir le journal des modifications"
+    },
+    "close": "Fermer",
+    "supportModal": {
+      "intro": "L'équipe d'administration assure l'assistance d'EnergyMonitor.",
+      "steps": [
+        "Choisissez à qui écrire, s'il y a plusieurs administrateurs.",
+        "Appuyez sur « Créer un ticket » : un e-mail s'ouvre avec l'objet déjà rédigé.",
+        "Décrivez le problème et envoyez-le : on vous répondra par e-mail."
+      ]
     }
   },
   "hero": {

@@ -39,7 +39,9 @@
       "browsers_one": "Alertas para este telefone e o navegador inscrito.",
       "browsers_other": "Alertas para este telefone e os {{count}} navegadores inscritos.",
       "permissionDenied": "Sem a permissão de notificações, este telefone não pode recebê-las. Você pode conceder em ajustes do sistema.",
-      "registrationFailed": "Não foi possível registrar este telefone para receber alertas. Tente novamente mais tarde."
+      "registrationFailed": "Não foi possível registrar este telefone para receber alertas. Tente novamente mais tarde.",
+      "missingProjectId": "Esta versão do aplicativo não tem notificações push configuradas (falta o identificador do projeto Expo), então este telefone não pode recebê-las.",
+      "openSystemSettings": "Abrir as configurações do sistema"
     },
     "combined": {
       "title": "Modo combinado",

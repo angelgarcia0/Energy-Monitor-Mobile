@@ -1,11 +1,11 @@
 {
   "expo": {
     "name": "EnergyMonitor",
-    "slug": "front-end",
-    "version": "1.0.0",
+    "slug": "energy-monitor",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "frontend",
+    "scheme": "energymonitor",
     "userInterfaceStyle": "automatic",
     "ios": {
       "icon": "./assets/images/icon.png"

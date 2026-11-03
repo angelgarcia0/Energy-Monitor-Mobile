@@ -64,7 +64,7 @@ jobs:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           EXPO_NO_TELEMETRY: "1"
           EXPO_PUBLIC_API_BASE_URL: https://energy-monitor.tech
-          EXPO_PUBLIC_EAS_PROJECT_ID: 98821905-8663-4d75-b8f4-684a26cf80cf
+          EXPO_PUBLIC_EAS_PROJECT_ID: 6d05b83d-1b09-4b1e-a2e2-c16a13402861
           EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID: 373584980038-ikk6ile2mg4aupdcn1cufehgf2d0k9rn.apps.googleusercontent.com
         run: |
           if [ -z "$EXPO_TOKEN" ]; then

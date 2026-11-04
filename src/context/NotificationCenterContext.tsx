@@ -18,7 +18,6 @@ import { useIsAppActive } from "@/features/homes/hooks/useIsAppActive";
 import { toUiActivity, type UiActivity } from "@/features/notifications/data/activityTypes";
 import { toUiAlert, type UiAlert } from "@/features/notifications/data/alertTypes";
 import {
-  ACCOUNT_SCOPE,
   ALL_SCOPE,
   inScope,
   type NotificationScope,
@@ -284,12 +283,7 @@ export function NotificationCenterProvider({
     const unread = activity.filter((entry) => !entry.read && inScope(entry, scope));
     if (unread.length === 0) return null;
     try {
-      // Lo de la cuenta no tiene hogar con el que pedirlo de una vez: va una por una.
-      if (scope === ACCOUNT_SCOPE) {
-        await Promise.all(unread.map((entry) => activityApi.markActivityRead(entry.id)));
-      } else {
-        await activityApi.markAllActivityRead(scope && scope !== ALL_SCOPE ? scope : undefined);
-      }
+      await activityApi.markAllActivityRead(scope && scope !== ALL_SCOPE ? scope : undefined);
       setActivity((prev) =>
         prev.map((entry) => (inScope(entry, scope) ? { ...entry, read: true } : entry)),
       );

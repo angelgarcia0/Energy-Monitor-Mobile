@@ -291,8 +291,12 @@ export function ActivityRow({
         <Text style={styles.message}>{message}</Text>
 
         <View style={styles.meta}>
-          <Text style={styles.metaText}>{activity.home ?? t("filter.account")}</Text>
-          <View style={styles.metaDot} />
+          {activity.home ? (
+            <>
+              <Text style={styles.metaText}>{activity.home}</Text>
+              <View style={styles.metaDot} />
+            </>
+          ) : null}
           <Text style={styles.metaText}>{formatDate(activity.date)}</Text>
         </View>
 

@@ -22,7 +22,6 @@ import {
 import type { UiActivity } from "../../data/activityTypes";
 import type { UiAlert } from "../../data/alertTypes";
 import {
-  ACCOUNT_SCOPE,
   ALL_SCOPE,
   inScope,
   type NotificationScope,
@@ -92,9 +91,7 @@ export function NotificationsScreen() {
 
   // Un hogar que ya no es del usuario (salió o se eliminó) vuelve el filtro a "todos".
   const scope =
-    storedScope === ALL_SCOPE ||
-    storedScope === ACCOUNT_SCOPE ||
-    homes.some((home) => home.idHome === storedScope)
+    storedScope === ALL_SCOPE || homes.some((home) => home.idHome === storedScope)
       ? storedScope
       : ALL_SCOPE;
 
@@ -147,7 +144,6 @@ export function NotificationsScreen() {
   const scopeOptions = [
     { value: ALL_SCOPE, label: t("filter.all") },
     ...homes.map((home) => ({ value: home.idHome, label: home.name })),
-    { value: ACCOUNT_SCOPE, label: t("filter.account") },
   ];
 
   const activeAlertsCount = scopedAlerts.filter((a) => !a.resolved).length;

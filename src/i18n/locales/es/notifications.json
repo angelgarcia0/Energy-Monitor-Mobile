@@ -131,7 +131,6 @@
   "filter": {
     "label": "Hogar",
     "all": "Todos los hogares",
-    "account": "Cuenta",
     "optionPending": "{{name}}, {{count}} pendientes"
   },
   "activity": {

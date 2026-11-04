@@ -131,7 +131,6 @@
   "filter": {
     "label": "Casa",
     "all": "Todas as casas",
-    "account": "Conta",
     "optionPending": "{{name}}, {{count}} pendentes"
   },
   "activity": {

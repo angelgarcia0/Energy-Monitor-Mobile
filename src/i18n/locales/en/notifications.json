@@ -131,7 +131,6 @@
   "filter": {
     "label": "Home",
     "all": "All homes",
-    "account": "Account",
     "optionPending": "{{name}}, {{count}} pending"
   },
   "activity": {

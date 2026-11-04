@@ -131,7 +131,6 @@
   "filter": {
     "label": "Foyer",
     "all": "Tous les foyers",
-    "account": "Compte",
     "optionPending": "{{name}}, {{count}} en attente"
   },
   "activity": {
